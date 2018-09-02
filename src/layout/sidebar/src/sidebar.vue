@@ -83,7 +83,11 @@ $item-color: rgba(255, 255, 255, 0.8);
       &:focus {
         outline: none;
         color: #fff;
-        background-color: $primary !important;
+        // background-color: $primary !important;
+
+        i {
+          color: #fff;
+        }
       }
 
       span {
