@@ -18,5 +18,7 @@ export default {
   bottom: 0;
   background-color: $bg-color;
   z-index: 1000;
+  display: flex;
+  flex-direction: row;
 }
 </style>

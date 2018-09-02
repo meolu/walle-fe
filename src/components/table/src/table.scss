@@ -1,0 +1,48 @@
+@import 'scss';
+
+@include b(table) {
+  // 背景颜色
+  &[bg-header] {
+    .el-table__header thead th {
+      background-color: $--table-row-hover-background;
+    }
+  }
+
+  @include e(search) {
+    display: flex;
+  }
+
+  @include e(form) {
+    flex: 1;
+  }
+
+  @include e(buttons) {
+    max-width: 125px;
+    min-width: 62px;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 18px;
+
+    .el-button {
+      height: 32px;
+    }
+
+    .wl-rule-btn {
+      display: inline-block;
+      margin-left: 10px;
+    }
+  }
+
+  @include e(page) {
+    margin-top: 10px;
+    text-align: right;
+  }
+
+  .el-table .cell {
+    @include text-overflow-1;
+
+    .el-button.el-button--small {
+      padding: 0;
+    }
+  }
+}

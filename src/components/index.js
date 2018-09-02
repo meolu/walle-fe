@@ -1,7 +1,10 @@
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import Table from './table'
 
-const components = []
+const components = [
+  Table
+]
 
 const ua = navigator.userAgent
 

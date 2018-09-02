@@ -83,7 +83,11 @@ $item-color: rgba(255, 255, 255, 0.8);
       &:focus {
         outline: none;
         color: #fff;
-        background-color: $primary !important;
+        // background-color: $primary !important;
+
+        i {
+          color: #fff;
+        }
       }
 
       span {
@@ -111,11 +115,8 @@ $item-color: rgba(255, 255, 255, 0.8);
 }
 
 @include b(sidebar) {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: $side-bar-width;
-  bottom: 0;
+  height: 100%;
+  min-width: $side-bar-width;
   background-color: #001529;
   z-index: 102;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
@@ -123,7 +124,7 @@ $item-color: rgba(255, 255, 255, 0.8);
   transition: width 0.3s;
 
   @include when(collapse){
-      width: 64px;
+    min-width: 64px;
   }
 
   @include e(submenu) {

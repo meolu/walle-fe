@@ -1,12 +1,12 @@
 /* stylelint-disable */
 @font-face {
-    font-family: 'iconfont';  /* project id 819129 */
-    src: url('//at.alicdn.com/t/font_819129_t07dx0cr9ob.eot');
-    src: url('//at.alicdn.com/t/font_819129_t07dx0cr9ob.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_819129_t07dx0cr9ob.woff') format('woff'),
-    url('//at.alicdn.com/t/font_819129_t07dx0cr9ob.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_819129_t07dx0cr9ob.svg#iconfont') format('svg');
-  }
+  font-family: 'iconfont';  /* project id 819129 */
+  src: url('//at.alicdn.com/t/font_819129_kpmbv3f7ji.eot');
+  src: url('//at.alicdn.com/t/font_819129_kpmbv3f7ji.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_819129_kpmbv3f7ji.woff') format('woff'),
+  url('//at.alicdn.com/t/font_819129_kpmbv3f7ji.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_819129_kpmbv3f7ji.svg#iconfont') format('svg');
+}
   
   %wl-icon {
     font-family: 'iconfont' !important;
@@ -41,5 +41,18 @@
 
     // 个人中心
     &-user::before { content: "\e610"; }
+
+    // 首页
+    &-main::before { content: "\e638"; }
+
+    // 用户管理
+    &-user-set::before { content: "\e70c"; }
+
+    // 项目管理
+    &-project-set::before { content: "\e613"; }
+
+    // 部署中心
+    &-deploy-set::before { content: "\e660"; }
+
   }
   

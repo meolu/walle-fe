@@ -9,6 +9,8 @@
 
 @include b(content) {
     height: 100%;
+    flex-grow: 1;
+    overflow: auto;
 }
 
 </style>

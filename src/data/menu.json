@@ -1,11 +1,11 @@
 [{
     "text": "首页",
-    "icon": "el-icon-menu",
+    "icon": "wl-icon-main",
     "url": "/"
   },
   {
     "text": "用户管理",
-    "icon": "el-icon-menu",
+    "icon": "wl-icon-user-set",
     "child": [{
         "text": "用户",
         "url": "/user/list"
@@ -15,18 +15,18 @@
       },
       {
         "text": "角色",
-        "url": "/user/role"
+        "url": "/user/roles"
       }
     ]
   },
   {
     "text": "项目中心",
-    "icon": "el-icon-menu",
+    "icon": "wl-icon-project-set",
     "url": "/project"
   },
   {
     "text": "部署中心",
-    "icon": "el-icon-menu",
+    "icon": "wl-icon-deploy-set",
     "url": "/task"
   }
   ]
