@@ -2,7 +2,7 @@
   "name": "walle-fe",
   "version": "1.0.0",
   "description": "瓦力前端代码",
-  "author": "''",
+  "author": "chenfengjuan",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
