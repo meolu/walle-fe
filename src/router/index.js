@@ -1,15 +1,29 @@
 import Vue from 'vue'
+// import App from '../App'
+import Layout from '@/layout'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import User from '@/views/user'
 
 Vue.use(Router)
 
+const routes = []
+
+const rootRouter = {
+  path: '/',
+  children: [],
+  component: Layout
+}
+
+// 重定向路由
+const redirectRoute = {
+  path: '*',
+  redirect: '/'
+}
+
+User(rootRouter.children)
+
+const mode = 'history'
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
-  ]
+  mode: mode,
+  routes: routes.concat(rootRouter, redirectRoute)
 })

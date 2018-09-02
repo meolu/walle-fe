@@ -1,0 +1,45 @@
+/* stylelint-disable */
+@font-face {
+    font-family: 'iconfont';  /* project id 819129 */
+    src: url('//at.alicdn.com/t/font_819129_t07dx0cr9ob.eot');
+    src: url('//at.alicdn.com/t/font_819129_t07dx0cr9ob.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_819129_t07dx0cr9ob.woff') format('woff'),
+    url('//at.alicdn.com/t/font_819129_t07dx0cr9ob.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_819129_t07dx0cr9ob.svg#iconfont') format('svg');
+  }
+  
+  %wl-icon {
+    font-family: 'iconfont' !important;
+    font-size: 16px;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: baseline;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* stylelint-enable */
+  
+  [class^="wl-icon-"],
+  [class*=" wl-icon-"] {
+    @extend %wl-icon;
+  }
+  
+  .wl-icon {
+    @extend %wl-icon;
+  
+    // 消息
+    &-msg::before { content: "\e61e"; }
+  
+    // 退出登陆
+    &-exit::before { content: "\e819"; }
+
+    // 导航展开
+    &-expend::before { content: "\e615"; }
+
+    // 个人中心
+    &-user::before { content: "\e610"; }
+  }
+  
