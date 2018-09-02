@@ -66,6 +66,13 @@ export default {
 @import 'scss';
 
 $item-color: rgba(255, 255, 255, 0.8);
+
+%icon {
+  i.wl-sidebar-icon {
+    color: #fff;
+  }
+}
+
 %item {
     height: 40px;
       line-height: 40px;
@@ -101,12 +108,6 @@ $item-color: rgba(255, 255, 255, 0.8);
           background-color: $primary;
         }
       }
-}
-
-%icon {
-  i.wl-sidebar-icon {
-    color: $primary;
-  }
 }
 
 @include b(sidebar) {
