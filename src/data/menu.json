@@ -1,0 +1,33 @@
+[{
+    "text": "首页",
+    "icon": "el-icon-menu",
+    "url": "/"
+  },
+  {
+    "text": "用户管理",
+    "icon": "el-icon-menu",
+    "child": [{
+        "text": "用户",
+        "url": "/user/list"
+      },{
+        "text": "用户组",
+        "url": "/user/group"
+      },
+      {
+        "text": "角色",
+        "url": "/user/role"
+      }
+    ]
+  },
+  {
+    "text": "项目中心",
+    "icon": "el-icon-menu",
+    "url": "/project"
+  },
+  {
+    "text": "部署中心",
+    "icon": "el-icon-menu",
+    "url": "/task"
+  }
+  ]
+  
