@@ -15,7 +15,7 @@ $font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     line-height: $header-height;
     width: 230px;
     background: $header-icon-bg;
-    transition: all 0.3s;
+    transition: width 0.08s;
     padding-left: 10px;
     display: flex;
     align-items: center;

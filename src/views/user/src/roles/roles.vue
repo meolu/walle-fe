@@ -42,51 +42,63 @@ export default {
       }
       table.list = [{
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 1
       },
       {
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 2
       },
       {
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 3
       },
       {
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 4
       },
       {
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 5
       },
       {
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 6
       },
       {
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 7
       },
       {
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 8
       },
       {
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 9
       },
       {
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 10
       },
       {
         name: '角色1',
-        userCount: 5
+        userCount: 5,
+        id: 11
       }]
     },
     edit (row) {
-
+      console.log(row)
+      this.$router.push(`/user/roles/${row.id}`)
     },
     delete (row) {
 
@@ -104,5 +116,9 @@ export default {
    background: #fff;
    min-height: calc(100% - 40px);
    padding: 10px;
+
+   .el-input {
+     width: 300px;
+   }
 }
 </style>
