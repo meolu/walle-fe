@@ -41,7 +41,7 @@
 
 <script>
 import {roleData, permissions} from './constant'
-import {roleTest} from './test'
+import {roleTest} from '../test'
 export default {
   props: {
     id: String

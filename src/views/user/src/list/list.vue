@@ -4,12 +4,13 @@
               <el-form-item>
                 <el-input
                 placeholder="请输入内容"
-                suffix-icon="el-icon-search"
                 size="small"
-                v-model="value"/>
+                v-model="value">
+                <el-button slot="append" icon="el-icon-search"></el-button>
+              </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="small" @click="addRole">添加</el-button>
+                <el-button type="primary" size="small" icon="el-icon-edit" @click="addRole">添加</el-button>
               </el-form-item>
             </el-form>
         <wl-table
@@ -17,20 +18,28 @@
             :columns="columns"
             :pageSize="15"
             @callServe="callServe"></wl-table>
+        <add-user-dialog :visible.sync="addUserDialogVisible"/>>
     </div>
 </template>
 
 <script>
 import COLUMNS from './columns'
+import {userlist} from '../test'
+import addUserDialog from './add.user.dialog.vue'
 export default {
   name: 'user-list',
+  components: {
+    addUserDialog
+  },
   data () {
     return {
       value: '',
       columns: COLUMNS.call(this),
       form: {
         search: ''
-      }
+      },
+      currentEditUser: null,
+      addUserDialogVisible: false
     }
   },
   methods: {
@@ -40,70 +49,22 @@ export default {
         size: 15,
         currentPage: 1
       }
-      table.list = [{
-        name: '角色1',
-        userCount: 5,
-        id: 1
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 2
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 3
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 4
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 5
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 6
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 7
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 8
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 9
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 10
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 11
-      }]
+      table.list = userlist
     },
     addRole () {
-      this.$router.push(`/user/roles/create`)
+      this.addUserDialogVisible = true
     },
-    edit (row) {
-      this.$router.push(`/user/roles/edit/${row.id}`)
+    edit (row, type) {
+      if (type === 'save') {
+        this.currentEditUser = null
+      } else {
+        this.currentEditUser = {
+          ...row
+        }
+      }
     },
     delete (row) {
-      this.$confirm('确定删除该角色吗?', '提示', {
+      this.$confirm('确定删除该用户吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -139,6 +100,10 @@ export default {
 
    .el-table thead th {
      background-color: $--table-header-background;
+   }
+
+   .user-delete {
+     color: #f56c6c;
    }
 }
 </style>
