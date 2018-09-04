@@ -1,9 +1,11 @@
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Table from './table'
+import Breadcrumb from './breadcrumb'
 
 const components = [
-  Table
+  Table,
+  Breadcrumb
 ]
 
 const ua = navigator.userAgent

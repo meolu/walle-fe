@@ -1,5 +1,6 @@
 <template>
     <div class="wl-role-edit">
+        <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
         <el-form :inline="true">
              <el-form-item>
                 <el-input
@@ -40,18 +41,40 @@
 
 <script>
 import {roleData, permissions} from './constant'
+import {roleTest} from './test'
 export default {
+  props: {
+    id: String
+  },
+  created () {
+    if (this.id) {
+      setTimeout(() => {
+        this.data = roleTest.permissions
+        this.name = roleTest.name
+      }, 500)
+    }
+  },
   data () {
     return {
       data: roleData,
       permissions: permissions,
-      name: ''
+      name: '',
+      breadcrumbData: [
+        {
+          to: '/user/roles',
+          name: '角色'
+        },
+        {
+          to: '',
+          name: this.id ? '编辑' : '创建'
+        }
+      ]
     }
   },
   methods: {
     objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
-        if (row.merge) {
+        if (rowIndex % 3 === 0) {
           return {
             rowspan: 3,
             colspan: 1

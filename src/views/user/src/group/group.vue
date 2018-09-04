@@ -1,6 +1,5 @@
 <template>
     <div class="wl-roles">
-      <wl-breadcrumb :data="breadcrumbData" :isBackButton="false"></wl-breadcrumb>
             <el-form :inline="true">
               <el-form-item>
                 <el-input
@@ -24,20 +23,14 @@
 <script>
 import COLUMNS from './columns'
 export default {
-  name: 'roles',
+  name: 'user-group',
   data () {
     return {
       value: '',
       columns: COLUMNS.call(this),
       form: {
         search: ''
-      },
-      breadcrumbData: [
-        {
-          to: '',
-          name: '角色'
-        }
-      ]
+      }
     }
   },
   methods: {

@@ -11,7 +11,7 @@
         "url": "/user/list"
       },{
         "text": "用户组",
-        "url": "/user/group"
+        "url": "/user/groups"
       },
       {
         "text": "角色",
