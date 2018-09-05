@@ -1,10 +1,11 @@
 <template>
-    <div class="wl-roles">
+    <div class="wl-user-list">
             <el-form :inline="true">
               <el-form-item>
                 <el-input
                 placeholder="请输入内容"
                 size="small"
+                class="search"
                 v-model="value">
                 <el-button slot="append" icon="el-icon-search"></el-button>
               </el-input>
@@ -18,7 +19,7 @@
             :columns="columns"
             :pageSize="15"
             @callServe="callServe"></wl-table>
-        <add-user-dialog :visible.sync="addUserDialogVisible"/>>
+        <add-user-dialog :visible.sync="addUserDialogVisible"/>
     </div>
 </template>
 
@@ -35,11 +36,16 @@ export default {
     return {
       value: '',
       columns: COLUMNS.call(this),
-      form: {
-        search: ''
-      },
       currentEditUser: null,
-      addUserDialogVisible: false
+      addUserDialogVisible: false,
+      roles: [{
+        id: 0,
+        name: '管理员'
+      },
+      {
+        id: 1,
+        name: '开发者'
+      }]
     }
   },
   methods: {
@@ -54,14 +60,20 @@ export default {
     addRole () {
       this.addUserDialogVisible = true
     },
-    edit (row, type) {
-      if (type === 'save') {
-        this.currentEditUser = null
-      } else {
-        this.currentEditUser = {
-          ...row
-        }
+    edit (row) {
+      this.currentEditUser = {
+        ...row
       }
+    },
+    save (row) {
+      console.log(this.currentEditUser)
+      this.currentEditUser = null
+    },
+    lock (row) {
+
+    },
+    cancel (row) {
+      this.currentEditUser = null
     },
     delete (row) {
       this.$confirm('确定删除该用户吗?', '提示', {
@@ -79,6 +91,31 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+
+    validate (key) {
+      const val = this.currentEditUser[key]
+      if (key === 'username' && !val) {
+        this.$message.error('请输入用户名')
+      }
+      if (key === 'realname' && !val) {
+        this.$message.error('请输入真实姓名')
+      }
+    },
+
+    renderTools (isEditCurrent, scope) {
+      return isEditCurrent ? (
+        <div>
+          <el-button type="text" size="small" icon="wl-icon-save" onClick={() => this.save({...scope.row})}>保存</el-button>
+          <el-button type="text" size="small" icon="el-icon-circle-close-outline" onClick={() => this.cancel({...scope.row})}>取消</el-button>
+        </div>
+      ) : (
+        <div>
+          <el-button type="text" size="small" icon="el-icon-edit" onClick={() => this.edit({...scope.row})}>编辑</el-button>
+          <el-button type="text" class="user-delete" size="small" icon="el-icon-delete" onClick={() => this.delete({...scope.row})}>删除</el-button>
+          <el-button type="text" size="small" icon="wl-icon-lock" onClick={() => this.lock({...scope.row})}>冻结</el-button>
+        </div>
+      )
     }
   }
 }
@@ -87,14 +124,14 @@ export default {
 <style lang="scss">
 @import 'scss';
 
-@include b(roles) {
+@include b(user-list) {
    margin: 20px;
    box-sizing: border-box;
    background: #fff;
    min-height: calc(100% - 40px);
    padding: 10px;
 
-   .el-input {
+   .search {
      width: 300px;
    }
 
@@ -104,6 +141,12 @@ export default {
 
    .user-delete {
      color: #f56c6c;
+   }
+
+   .el-button {
+     i {
+       font-size: 12px;
+     }
    }
 }
 </style>

@@ -6,11 +6,12 @@ export default function () {
       width: 200,
       render (h, scope, methods) {
         const {row} = scope
+        const isEditCurrent = self.currentEditUser && self.currentEditUser.id === row.id
         return (
-          self.currentEditUser && self.currentEditUser.id === row.id
-            ? <el-input value={self.currentEditUser.username} size="small" placeholder="请输入内容"
-              on-input={(val) => { self.currentEditUser.username = val }}></el-input>
-            : row.username
+          !isEditCurrent ? row.username
+            : <el-input value={self.currentEditUser.username} size="small" placeholder="请输入内容"
+              on-input={(val) => { self.currentEditUser.username = val }}
+              on-blur={(val) => { self.validate('username') }}></el-input>
         )
       }
     },
@@ -19,31 +20,40 @@ export default function () {
       width: 200,
       render (h, scope, methods) {
         const {row} = scope
+        const isEditCurrent = self.currentEditUser && self.currentEditUser.id === row.id
         return (
-          self.currentEditUser && self.currentEditUser.id === row.id
-            ? <el-input value={self.currentEditUser.realname} size="small" placeholder="请输入内容"
-              on-input={(val) => { self.currentEditUser.realname = val }}></el-input>
-            : row.realname
+          !isEditCurrent ? row.realname
+            : <el-input value={self.currentEditUser.realname} size="small" placeholder="请输入内容"
+              on-input={(val) => { self.currentEditUser.realname = val }}
+              on-blur={(val) => { self.validate('realname') }}></el-input>
+
         )
       }
     },
     {
       label: '邮箱',
       width: 250,
-      render (h, scope, methods) {
-        const {row} = scope
-        return (
-          self.currentEditUser && self.currentEditUser.id === row.id
-            ? <el-input value={self.currentEditUser.email} size="small" placeholder="请输入内容"
-              on-input={(val) => { self.currentEditUser.email = val }}></el-input>
-            : row.email
-        )
-      }
+      prop: 'email'
     },
     {
       prop: 'role',
       label: '角色',
-      width: 200
+      width: 200,
+      render (h, scope, methods) {
+        const {row} = scope
+        const isEditCurrent = self.currentEditUser && self.currentEditUser.id === row.id
+        return (
+          !isEditCurrent ? row.realname
+            : <el-select size="small" value={self.currentEditUser.role} placeholder="请分配角色" on-input={(val) => { self.currentEditUser.role = val }}>
+              {
+                self.roles.map(item => {
+                  return <el-option key={item.id} label={item.name} value={item.id}></el-option>
+                })
+              }
+            </el-select>
+
+        )
+      }
     },
     {
       label: '操作',
@@ -51,12 +61,7 @@ export default function () {
       render (h, scope, methods) {
         const {row} = scope
         const isEditCurrent = self.currentEditUser && self.currentEditUser.id === row.id
-        return (
-          <div>
-            <el-button type="text" size="small" icon="el-icon-edit" onClick={() => self.edit({...scope.row}, isEditCurrent ? 'save' : 'edit')}>{ isEditCurrent ? '保存' : '编辑'}</el-button>
-            <el-button type="text" class="user-delete" size="small" icon="el-icon-delete" onClick={() => self.delete({...scope.row})}>删除</el-button>
-          </div>
-        )
+        return self.renderTools(isEditCurrent, scope)
       }
     }
   ]

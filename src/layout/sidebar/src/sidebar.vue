@@ -121,7 +121,7 @@ $item-color: rgba(255, 255, 255, 0.8);
   z-index: 102;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: width 0.3s;
+  transition: min-width 0.2s ease-in;
 
   @include when(collapse){
     min-width: 64px;
