@@ -19,7 +19,7 @@
             :columns="columns"
             :pageSize="15"
             @callServe="callServe"></wl-table>
-        <add-user-dialog :visible.sync="addUserDialogVisible"/>
+        <add-user-dialog :visible.sync="addUserDialogVisible" :user="currentEditUser" @confirm="confirm" @close="close"/>
     </div>
 </template>
 
@@ -61,19 +61,13 @@ export default {
       this.addUserDialogVisible = true
     },
     edit (row) {
+      this.addUserDialogVisible = true
       this.currentEditUser = {
         ...row
       }
     },
-    save (row) {
-      console.log(this.currentEditUser)
-      this.currentEditUser = null
-    },
     lock (row) {
 
-    },
-    cancel (row) {
-      this.currentEditUser = null
     },
     delete (row) {
       this.$confirm('确定删除该用户吗?', '提示', {
@@ -93,23 +87,16 @@ export default {
       })
     },
 
-    validate (key) {
-      const val = this.currentEditUser[key]
-      if (key === 'username' && !val) {
-        this.$message.error('请输入用户名')
-      }
-      if (key === 'realname' && !val) {
-        this.$message.error('请输入真实姓名')
-      }
+    confirm (user) {
+      this.currentEditUser = null
     },
 
-    renderTools (isEditCurrent, scope) {
-      return isEditCurrent ? (
-        <div>
-          <el-button type="text" size="small" icon="wl-icon-save" onClick={() => this.save({...scope.row})}>保存</el-button>
-          <el-button type="text" size="small" icon="el-icon-circle-close-outline" onClick={() => this.cancel({...scope.row})}>取消</el-button>
-        </div>
-      ) : (
+    close () {
+      this.currentEditUser = null
+    },
+
+    renderTools (scope) {
+      return (
         <div>
           <el-button type="text" size="small" icon="el-icon-edit" onClick={() => this.edit({...scope.row})}>编辑</el-button>
           <el-button type="text" class="user-delete" size="small" icon="el-icon-delete" onClick={() => this.delete({...scope.row})}>删除</el-button>

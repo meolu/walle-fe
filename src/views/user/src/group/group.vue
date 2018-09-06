@@ -1,15 +1,16 @@
 <template>
-    <div class="wl-roles">
+    <div class="wl-group">
             <el-form :inline="true">
               <el-form-item>
                 <el-input
-                placeholder="请输入内容"
-                suffix-icon="el-icon-search"
+                placeholder="请输入用户组"
                 size="small"
-                v-model="value"/>
+                v-model="value">
+                  <el-button slot="append" icon="el-icon-search"></el-button>
+                </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="small" @click="addRole">添加</el-button>
+                <el-button type="primary" size="small" @click="addRole">添加用户组</el-button>
               </el-form-item>
             </el-form>
         <wl-table
@@ -22,6 +23,7 @@
 
 <script>
 import COLUMNS from './columns'
+import {grouplist} from '../test'
 export default {
   name: 'user-group',
   data () {
@@ -40,61 +42,7 @@ export default {
         size: 15,
         currentPage: 1
       }
-      table.list = [{
-        name: '角色1',
-        userCount: 5,
-        id: 1
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 2
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 3
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 4
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 5
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 6
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 7
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 8
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 9
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 10
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 11
-      }]
+      table.list = grouplist
     },
     addRole () {
       this.$router.push(`/user/roles/create`)
@@ -103,7 +51,7 @@ export default {
       this.$router.push(`/user/roles/edit/${row.id}`)
     },
     delete (row) {
-      this.$confirm('确定删除该角色吗?', '提示', {
+      this.$confirm('确定删除该用户组吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -126,7 +74,7 @@ export default {
 <style lang="scss">
 @import 'scss';
 
-@include b(roles) {
+@include b(group) {
    margin: 20px;
    box-sizing: border-box;
    background: #fff;
@@ -135,6 +83,10 @@ export default {
 
    .el-input {
      width: 300px;
+   }
+
+   .user-delete {
+     color: #f56c6c;
    }
 
    .el-table thead th {

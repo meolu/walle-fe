@@ -5,9 +5,10 @@
               <el-form-item>
                 <el-input
                 placeholder="请输入内容"
-                suffix-icon="el-icon-search"
                 size="small"
-                v-model="value"/>
+                v-model="value">
+                  <el-button slot="append" icon="el-icon-search"></el-button>
+                </el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" size="small" @click="addRole">添加</el-button>
@@ -142,6 +143,10 @@ export default {
 
    .el-input {
      width: 300px;
+   }
+
+   .user-delete {
+     color: #f56c6c;
    }
 
    .el-table thead th {

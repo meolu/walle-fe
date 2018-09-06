@@ -17,8 +17,8 @@ export default function () {
       render (h, scope, methods) {
         return (
           <div>
-            <el-button type="text" size="small" onClick={() => self.edit({...scope.row})}>编辑</el-button>
-            <el-button type="text" size="small" onClick={() => self.delete({...scope.row})}>删除</el-button>
+            <el-button type="text" icon="el-icon-edit" size="small" onClick={() => self.edit({...scope.row})}>编辑</el-button>
+            <el-button type="text" class="user-delete" icon="el-icon-delete" size="small" onClick={() => self.delete({...scope.row})}>删除</el-button>
           </div>
         )
       }
