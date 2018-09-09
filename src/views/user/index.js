@@ -1,6 +1,7 @@
 const List = () => import('./src/list/list.vue')
 const Roles = () => import('./src/roles/roles.vue')
 const Groups = () => import('./src/group/group.vue')
+const GroupEdit = () => import('./src/group/group.edit.vue')
 const RoleEdit = () => import('./src/roles/role.edit.vue')
 
 export default function (router) {
@@ -15,18 +16,30 @@ export default function (router) {
     component: Groups
   },
   {
+    path: '/user/group/create',
+    name: 'GroupCreate',
+    component: GroupEdit,
+    props: true
+  },
+  {
+    path: '/user/group/edit/:id',
+    name: 'GroupEdit',
+    component: GroupEdit,
+    props: true
+  },
+  {
     path: '/user/roles',
     name: 'userRoles',
     component: Roles
   },
   {
-    path: '/user/roles/create',
+    path: '/user/role/create',
     name: 'RoleCreate',
     component: RoleEdit,
     props: true
   },
   {
-    path: '/user/roles/edit/:id',
+    path: '/user/role/edit/:id',
     name: 'RoleEdit',
     component: RoleEdit,
     props: true

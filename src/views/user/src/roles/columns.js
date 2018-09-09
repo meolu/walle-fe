@@ -2,12 +2,12 @@ export default function () {
   const self = this
   return [
     {
-      prop: 'name',
+      prop: 'role_name',
       label: '角色',
       width: 250
     },
     {
-      prop: 'userCount',
+      prop: 'users',
       label: '用户数',
       width: 250
     },

@@ -1,13 +1,14 @@
 <template>
     <div class="wl-roles">
       <wl-breadcrumb :data="breadcrumbData" :isBackButton="false"></wl-breadcrumb>
-            <el-form :inline="true">
+            <el-form :inline="true" @submit.native.prevent>
               <el-form-item>
                 <el-input
                 placeholder="请输入内容"
                 size="small"
+                @keyup.enter.native="search"
                 v-model="value">
-                  <el-button slot="append" icon="el-icon-search"></el-button>
+                  <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
                 </el-input>
               </el-form-item>
               <el-form-item>
@@ -17,13 +18,13 @@
         <wl-table
             ref="table"
             :columns="columns"
-            :pageSize="15"
             @callServe="callServe"></wl-table>
     </div>
 </template>
 
 <script>
 import COLUMNS from './columns'
+import {getRoles, deleteRole} from '@/services/role.service'
 export default {
   name: 'roles',
   data () {
@@ -42,73 +43,31 @@ export default {
     }
   },
   methods: {
-    callServe (table = this.$refs.table) {
-      table.page = {
-        total: 100,
-        size: 15,
-        currentPage: 1
-      }
-      table.list = [{
-        name: '角色1',
-        userCount: 5,
-        id: 1
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 2
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 3
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 4
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 5
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 6
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 7
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 8
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 9
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 10
-      },
-      {
-        name: '角色1',
-        userCount: 5,
-        id: 11
-      }]
+    async callServe (table = this.$refs.table) {
+      let {data: {list, count}} = await getRoles({
+        size: table.page.size,
+        page: table.page.currentPage,
+        kw: this.value
+      })
+      table.page.total = count
+      table.list = list
+    },
+    search () {
+      this.callServe()
     },
     addRole () {
-      this.$router.push(`/user/roles/create`)
+      this.$router.push(`/user/role/create`)
     },
     edit (row) {
-      this.$router.push(`/user/roles/edit/${row.id}`)
+      this.$router.push(`/user/role/edit/${row.id}`)
+    },
+    async deleteRole (row) {
+      await deleteRole(row.id)
+      this.callServe()
+      this.$message({
+        type: 'success',
+        message: '删除成功!'
+      })
     },
     delete (row) {
       this.$confirm('确定删除该角色吗?', '提示', {
@@ -116,10 +75,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
+        this.deleteRole(row)
       }).catch(() => {
         this.$message({
           type: 'info',

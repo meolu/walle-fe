@@ -1,6 +1,8 @@
 <template>
     <div class="wl-content">
-        <slot></slot>
+        <div class="wl-content__main">
+            <slot></slot>
+        </div>
     </div>
 </template>
 
@@ -11,6 +13,12 @@
     height: 100%;
     flex-grow: 1;
     overflow: auto;
+
+    @include e(main) {
+        min-width: 900px;
+        height: 100%;
+        overflow: auto;
+    }
 }
 
 </style>

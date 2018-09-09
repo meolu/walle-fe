@@ -1,8 +1,8 @@
 <template>
     <div class="wl-role-edit">
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
-        <el-form :inline="true">
-             <el-form-item>
+        <el-form :inline="true" @submit.native.prevent ref="form">
+             <el-form-item :rules="rules.name">
                 <el-input
                 placeholder="角色名称"
                 size="small"
@@ -33,7 +33,7 @@
         </el-table>
         <el-form :inline="true" class="submit-form">
             <el-form-item>
-               <el-button type="primary" size="small">submit</el-button>
+               <el-button type="primary" size="small" @click="submit">submit</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -41,17 +41,21 @@
 
 <script>
 import {roleData, permissions} from './constant'
-import {roleTest} from '../test'
+import {addRole, updateRole, getRole} from '@/services/role.service'
 export default {
   props: {
     id: String
   },
-  created () {
-    if (this.id) {
-      setTimeout(() => {
-        this.data = roleTest.permissions
-        this.name = roleTest.name
-      }, 500)
+  watch: {
+    async id (val) {
+      let {data: {role_name, access_ids}} = await getRole(val) // eslint-disable-line
+      this.name = role_name // eslint-disable-line
+      this.data = access_ids // eslint-disable-line
+    }
+  },
+  computed: {
+    isNew () {
+      return !this.id
     }
   },
   data () {
@@ -68,7 +72,12 @@ export default {
           to: '',
           name: this.id ? '编辑' : '创建'
         }
-      ]
+      ],
+      rules: {
+        name: [
+          { required: true, message: '请输入角色名称', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -89,6 +98,26 @@ export default {
     },
     handleCheckedPermissionChange (row) {
       console.log(row)
+    },
+    submit () {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.sendData()
+        } else {
+          return false
+        }
+      })
+    },
+    requestData () {
+      return {
+        role_name: this.name,
+        permission_ids: this.data
+      }
+    },
+    async sendData () {
+      this.error = this.initError()
+      this.isNew && await addRole(this.requestData())
+      this.isNew || await updateRole(this.user.id, this.requestData())
     }
   }
 }

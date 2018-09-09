@@ -3,21 +3,22 @@
         class="wl-add-user"
         width = "600px"
         :title = "isNew ? '新增用户' : '编辑用户'"
-        :visible.sync="visible"
-        :append-to-body=true>
+        :visible="visible"
+        :before-close="onCancel"
+        :append-to-body="true">
         <el-form :model="form" ref="form">
-          <el-form-item label="用户名" label-width="120px" prop="username" :rules="rules.username">
+          <el-form-item label="用户名" label-width="120px" prop="username" :rules="rules.username" :error="error.username">
             <el-input size="small" v-model="form.username" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="邮箱" label-width="120px" prop="email" :rules="isNew ? rules.email : []">
+            <el-form-item label="邮箱" label-width="120px" prop="email" :rules="isNew ? rules.email : []"  :error="error.email">
                 <el-input size="small" v-model="form.email" auto-complete="off" :disabled="!isNew"></el-input>
             </el-form-item>
-            <el-form-item label="密码" label-width="120px" prop="password" :rules="rules.password">
+            <el-form-item label="密码" label-width="120px" prop="password" :rules="rules.password" :error="error.password">
             <el-input size="small" v-model="form.password" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="角色" label-width="120px" prop="role" :rules="rules.role">
-              <el-select size="small" v-model="form.role" placeholder="请分配角色">
-                  <el-option v-for="role in roles" :key="role.id" :label="role.name" :value="role.id"></el-option>
+            <el-form-item label="角色" label-width="120px" prop="role_id" :rules="rules.role_id" :error="error.role_id">
+              <el-select size="small" v-model="form.role_id" placeholder="请分配角色" class="wl-add-user__option">
+                  <el-option v-for="role in roles" :key="role.id" :label="role.role_name" :value="role.id"></el-option>
               </el-select>
             </el-form-item>
         </el-form>
@@ -29,6 +30,8 @@
 </template>
 
 <script>
+import {addUser, updateUser} from '@/services/user.service'
+import {getRoles} from '@/services/role.service'
 export default {
   props: {
     visible: {
@@ -39,53 +42,49 @@ export default {
   },
   data () {
     return {
-      roles: [{
-        id: 0,
-        name: '管理员'
-      },
-      {
-        id: 1,
-        name: '开发者'
-      }],
-      form: {
-        email: '',
-        password: '',
-        username: '',
-        role: null
-      },
+      roles: [],
+      error: this.initError(),
+      form: this.initForm(0),
       rules: {
         email: [
           { required: true, message: '请输入邮箱地址', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: '请设置密码', trigger: 'blur' }
+          { required: true, message: '请设置密码', trigger: 'blur' },
+          { pattern: /(?=\d{0,}[a-zA-Z])(?=[a-zA-Z]{0,}\d)[a-zA-Z0-9]{6,}/, message: '密码强度不足', trigger: 'blur' }
         ],
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' }
         ],
-        role: [
+        role_id: [
           { required: true, message: '请选择用户角色', trigger: 'blur' }
         ]
       }
     }
   },
   watch: {
+    visible: {
+      immediate: true,
+      handler (val) {
+        if (val) {
+          this.getRoles({}, {
+            target: '.wl-add-user__option'
+          })
+        }
+      }
+    },
     user (val) {
-      console.log(val)
-      if (val) {
-        let {username, email, password, role} = val
-        this.form.username = username
-        this.form.email = email
-        this.form.password = password
-        this.form.role = role
-        this.$refs.form && this.$refs.form.validate()
-      } else {
-        this.form = {
-          email: '',
-          password: '',
-          username: '',
-          role: null
+      if (this.visible) {
+        if (val) {
+          let {username, email, password, role_id: roleId} = val // eslint-disable-line
+          this.form.username = username
+          this.form.email = email
+          this.form.password = password
+          this.form.role_id = roleId
+          this.$refs.form && this.$refs.form.validate()
+        } else {
+          this.form = this.initForm()
         }
       }
     }
@@ -96,11 +95,14 @@ export default {
     }
   },
   methods: {
+    async getRoles () {
+      let {data: {list}} = await getRoles()
+      this.roles = list
+    },
     onOk () {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          this.$emit('update:visible')
-          this.$emit('confirm')
+          this.sendData()
         } else {
           return false
         }
@@ -109,6 +111,37 @@ export default {
     onCancel () {
       this.$emit('update:visible')
       this.$emit('close')
+    },
+    initForm () {
+      return {
+        email: '',
+        password: '',
+        username: '',
+        role_id: null
+      }
+    },
+    initError () {
+      return {
+        email: '',
+        password: '',
+        username: '',
+        role_id: ''
+      }
+    },
+    async sendData () {
+      try {
+        this.error = this.initError()
+        this.isNew && await addUser(this.form)
+        this.isNew || await updateUser(this.user.id, this.form)
+        this.$emit('update:visible')
+        this.$emit('confirm')
+      } catch ({code, message}) {
+        if (message) {
+          for (let key in message) {
+            this.error[key] = message[key][0]
+          }
+        }
+      }
     }
   }
 }

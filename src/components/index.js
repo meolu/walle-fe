@@ -9,9 +9,12 @@ const components = [
 ]
 
 const ua = navigator.userAgent
+// console.log(ElementUI)
 
 const install = (Vue) => {
   Vue.use(ElementUI)
+
+  Vue.$loading = Vue.prototype.$loading = ElementUI.Loading.service
 
   components.forEach(component => {
     Vue.use(component)

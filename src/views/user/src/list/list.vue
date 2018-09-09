@@ -1,13 +1,14 @@
 <template>
     <div class="wl-user-list">
-            <el-form :inline="true">
+            <el-form :inline="true" @submit.native.prevent>
               <el-form-item>
                 <el-input
                 placeholder="请输入内容"
                 size="small"
                 class="search"
+                @keyup.enter.native="search"
                 v-model="value">
-                <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
               </el-input>
               </el-form-item>
               <el-form-item>
@@ -17,7 +18,6 @@
         <wl-table
             ref="table"
             :columns="columns"
-            :pageSize="15"
             @callServe="callServe"></wl-table>
         <add-user-dialog :visible.sync="addUserDialogVisible" :user="currentEditUser" @confirm="confirm" @close="close"/>
     </div>
@@ -25,8 +25,8 @@
 
 <script>
 import COLUMNS from './columns'
-import {userlist} from '../test'
 import addUserDialog from './add.user.dialog.vue'
+import {getUsers, deleteUser} from '@/services/user.service'
 export default {
   name: 'user-list',
   components: {
@@ -37,25 +37,21 @@ export default {
       value: '',
       columns: COLUMNS.call(this),
       currentEditUser: null,
-      addUserDialogVisible: false,
-      roles: [{
-        id: 0,
-        name: '管理员'
-      },
-      {
-        id: 1,
-        name: '开发者'
-      }]
+      addUserDialogVisible: false
     }
   },
   methods: {
-    callServe (table = this.$refs.table) {
-      table.page = {
-        total: 100,
-        size: 15,
-        currentPage: 1
-      }
-      table.list = userlist
+    async callServe (table = this.$refs.table) {
+      let {data: {list, count}} = await getUsers({
+        size: table.page.size,
+        page: table.page.currentPage,
+        kw: this.value
+      })
+      table.page.total = count
+      table.list = list
+    },
+    search () {
+      this.callServe()
     },
     addRole () {
       this.addUserDialogVisible = true
@@ -75,20 +71,22 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
+        this.deleteUser(row)
+      }).catch(() => {})
+    },
+
+    async deleteUser (row) {
+      await deleteUser(row.id)
+      this.callServe()
+      this.$message({
+        type: 'success',
+        message: '删除成功!'
       })
     },
 
     confirm (user) {
       this.currentEditUser = null
+      this.callServe()
     },
 
     close () {

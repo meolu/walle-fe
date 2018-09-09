@@ -1,4 +1,4 @@
-import {roleDefine, statusDefine} from '../constant'
+// import {statusDefine} from '../constant'
 export default function () {
   const self = this
   return [
@@ -10,16 +10,20 @@ export default function () {
     {
       label: '角色',
       width: 250,
-      render (h, scope, methods) {
-        return roleDefine[scope.row.role].name
-      }
+      prop: 'role_name'
+      // render (h, scope, methods) {
+      //   return scope.row.role_name
+      //   // return roleDefine[scope.row.role].name
+      // }
     },
     {
       label: '状态',
       width: 250,
-      render (h, scope, methods) {
-        return statusDefine[scope.row.status].name
-      }
+      prop: 'status'
+      // render (h, scope, methods) {
+      //   return scope.row.status
+      //   // return statusDefine[scope.row.status].name
+      // }
     },
     {
       label: '操作',

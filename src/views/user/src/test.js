@@ -216,3 +216,69 @@ export const grouplist = [{
   userCount: 5,
   id: 11
 }]
+
+export const groupEditTest = {
+  name: 'group_name',
+  users: [
+    {
+      id: 0,
+      name: 'user0',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 1,
+      name: 'user1',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 2,
+      name: 'user2',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 3,
+      name: 'user3',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 4,
+      name: 'user4',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 5,
+      name: 'user5',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 6,
+      name: 'user6',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 7,
+      name: 'user7',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 8,
+      name: 'user8',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 9,
+      name: 'user9',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 10,
+      name: 'user10',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    },
+    {
+      id: 11,
+      name: 'user11',
+      icon: 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+    }
+  ]
+}

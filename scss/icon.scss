@@ -1,11 +1,11 @@
 /* stylelint-disable */
 @font-face {
   font-family: 'iconfont';  /* project id 819129 */
-  src: url('//at.alicdn.com/t/font_819129_at651nxej09.eot');
-  src: url('//at.alicdn.com/t/font_819129_at651nxej09.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_819129_at651nxej09.woff') format('woff'),
-  url('//at.alicdn.com/t/font_819129_at651nxej09.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_819129_at651nxej09.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_819129_ksc43nde13.eot');
+  src: url('//at.alicdn.com/t/font_819129_ksc43nde13.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_819129_ksc43nde13.woff') format('woff'),
+  url('//at.alicdn.com/t/font_819129_ksc43nde13.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_819129_ksc43nde13.svg#iconfont') format('svg');
 }
   
   %wl-icon {
@@ -63,6 +63,9 @@
 
     // 保存
     &-save::before { content: "\e636"; }
+
+    // 删除
+    &-delete::before { content: "\e629"; }
 
   }
   
