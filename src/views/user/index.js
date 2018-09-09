@@ -8,40 +8,47 @@ export default function (router) {
   router.push({
     path: '/user/list',
     name: 'userList',
+    meta: {isMenu: true},
     component: List
   },
   {
     path: '/user/groups',
     name: 'userGroups',
+    meta: {isMenu: true},
     component: Groups
   },
   {
     path: '/user/group/create',
     name: 'GroupCreate',
     component: GroupEdit,
+    meta: {isMenu: true, menu: '/user/groups'},
     props: true
   },
   {
     path: '/user/group/edit/:id',
     name: 'GroupEdit',
+    meta: {isMenu: true, menu: '/user/groups'},
     component: GroupEdit,
     props: true
   },
   {
     path: '/user/roles',
     name: 'userRoles',
+    meta: {isMenu: true},
     component: Roles
   },
   {
     path: '/user/role/create',
     name: 'RoleCreate',
     component: RoleEdit,
+    meta: {isMenu: true, menu: '/user/roles'},
     props: true
   },
   {
     path: '/user/role/edit/:id',
     name: 'RoleEdit',
     component: RoleEdit,
+    meta: {isMenu: true, menu: '/user/roles'},
     props: true
   })
 }

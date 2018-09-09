@@ -10,6 +10,7 @@ import qs from 'qs'
  */
 export function getGroups (params = {}) {
   return get('group/', params, {
+    isRemoveField: true,
     target: '.wl-table'
   })
 }

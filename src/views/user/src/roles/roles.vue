@@ -48,6 +48,8 @@ export default {
         size: table.page.size,
         page: table.page.currentPage,
         kw: this.value
+      }, {
+        target: '.wl-table'
       })
       table.page.total = count
       table.list = list

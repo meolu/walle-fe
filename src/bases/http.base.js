@@ -65,7 +65,6 @@ export function post (url, params = {}, config = {}) {
  */
 export function put (url, params = {}, config = {}) {
   let opts = {...DEFAULT_CONFIG, ...POST_HEADER, ...config}
-  console.log(getParams(params, opts))
   return fetch.put(getUrl(url, opts.isApiHost), getParams(params, opts), opts)
 }
 

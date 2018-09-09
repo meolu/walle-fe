@@ -51,7 +51,7 @@ export default {
     initSelected (to) {
       let {meta, path} = to
       if (meta && meta.isMenu) {
-        this.selected = path
+        this.selected = meta.menu || path
       }
     }
   },

@@ -26,7 +26,7 @@
 <script>
 import COLUMNS from './columns'
 import addUserDialog from './add.user.dialog.vue'
-import {getUsers, deleteUser} from '@/services/user.service'
+import {getUsers, deleteUser, updateUser} from '@/services/user.service'
 export default {
   name: 'user-list',
   components: {
@@ -62,8 +62,13 @@ export default {
         ...row
       }
     },
-    lock (row) {
-
+    async lock (row) {
+      await updateUser(row.id, {
+        status: 2,
+        role_id: row.role_id,
+        username: row.username
+      })
+      this.callServe()
     },
     delete (row) {
       this.$confirm('确定删除该用户吗?', '提示', {

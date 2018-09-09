@@ -42,6 +42,7 @@ export function addUser (params = {}) {
  */
 export function updateUser (id, params = {}) {
   return put(`user/${id}`, params, {
+    target: '.wl-table',
     headers: {
       'content-type': 'multipart/form-data'
     },
@@ -60,4 +61,17 @@ export function updateUser (id, params = {}) {
  */
 export function deleteUser (id, params = {}) {
   return Delete(`user/${id}`, params)
+}
+
+/**
+ *
+ * 获取用户权限信息
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function getUserMenu (params = {}) {
+  return get('public/menu/', params, {
+    isLoading: false
+  })
 }

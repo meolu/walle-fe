@@ -13,7 +13,7 @@
             <el-form-item label="邮箱" label-width="120px" prop="email" :rules="isNew ? rules.email : []"  :error="error.email">
                 <el-input size="small" v-model="form.email" auto-complete="off" :disabled="!isNew"></el-input>
             </el-form-item>
-            <el-form-item label="密码" label-width="120px" prop="password" :rules="rules.password" :error="error.password">
+            <el-form-item label="密码" label-width="120px" prop="password" :rules="isNew ? rules.password : updatePasswordRules" :error="error.password">
             <el-input size="small" v-model="form.password" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="角色" label-width="120px" prop="role_id" :rules="rules.role_id" :error="error.role_id">
@@ -45,6 +45,7 @@ export default {
       roles: [],
       error: this.initError(),
       form: this.initForm(0),
+      updatePasswordRules: [{ pattern: /(?=\d{0,}[a-zA-Z])(?=[a-zA-Z]{0,}\d)[a-zA-Z0-9]{6,}/, message: '密码强度不足', trigger: 'blur' }],
       rules: {
         email: [
           { required: true, message: '请输入邮箱地址', trigger: 'blur' },
@@ -82,7 +83,7 @@ export default {
           this.form.email = email
           this.form.password = password
           this.form.role_id = roleId
-          this.$refs.form && this.$refs.form.validate()
+          // this.$refs.form && this.$refs.form.validate()
         } else {
           this.form = this.initForm()
         }
