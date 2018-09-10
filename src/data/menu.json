@@ -4,10 +4,10 @@
     "url": "/"
   },
   {
-    "text": "用户管理",
+    "text": "用户中心",
     "icon": "wl-icon-user-set",
     "child": [{
-        "text": "用户",
+        "text": "用户管理",
         "url": "/user/list"
       },{
         "text": "用户组",
@@ -22,7 +22,18 @@
   {
     "text": "项目中心",
     "icon": "wl-icon-project-set",
-    "url": "/project"
+    "child": [{
+        "text": "项目管理",
+        "url": "/project/list"
+      },{
+        "text": "环境管理",
+        "url": "/project/environment"
+      },
+      {
+        "text": "服务器管理",
+        "url": "/project/server"
+      }
+    ]
   },
   {
     "text": "部署中心",

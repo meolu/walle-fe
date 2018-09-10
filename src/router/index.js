@@ -3,6 +3,7 @@ import Vue from 'vue'
 import Layout from '@/layout'
 import Router from 'vue-router'
 import User from '@/views/user'
+import Project from '@/views/project'
 
 Vue.use(Router)
 
@@ -21,6 +22,7 @@ const redirectRoute = {
 }
 
 User(rootRouter.children)
+Project(rootRouter.children)
 
 const mode = 'history'
 export default new Router({
