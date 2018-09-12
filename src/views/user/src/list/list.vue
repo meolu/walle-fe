@@ -12,7 +12,7 @@
               </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="small" icon="el-icon-edit" @click="addRole">添加</el-button>
+                <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">添加</el-button>
               </el-form-item>
             </el-form>
         <wl-table
@@ -53,7 +53,7 @@ export default {
     search () {
       this.callServe()
     },
-    addRole () {
+    addUser () {
       this.addUserDialogVisible = true
     },
     edit (row) {
