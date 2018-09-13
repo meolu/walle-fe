@@ -94,7 +94,7 @@ export default {
       try {
         this.error = this.initError()
         this.isNew && await addServer(this.form)
-        this.isNew || await updateServer(this.environment.id, this.form)
+        this.isNew || await updateServer(this.server.id, this.form)
         this.$emit('update:visible')
         this.$emit('confirm')
       } catch ({code, message}) {

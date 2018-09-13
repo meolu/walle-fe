@@ -84,7 +84,10 @@ export default {
       try {
         this.error = this.initError()
         this.isNew && await addEnvironment(this.form)
-        this.isNew || await updateEnvironment(this.environment.id, this.form)
+        this.isNew || await updateEnvironment(this.environment.id, {
+          ...this.form,
+          status: this.environment.status
+        })
         this.$emit('update:visible')
         this.$emit('confirm')
       } catch ({code, message}) {
