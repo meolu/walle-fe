@@ -8,11 +8,11 @@
                 size="small"
                 v-model="name"/>
             </el-form-item>
-            <select-user @select="handleFilterSelect"></select-user>
+            <select-user @select="handleFilterSelect" :groupUserList="groupUserList"></select-user>
         </el-form>
         <div class="wl-group-edit__list">
             <div class="wl-group-edit__placeholder" v-if="groupUserList.length===0">请添加用户</div>
-            <user-list v-else v-model="groupUserList"></user-list>
+            <user-list v-else v-model="groupUserList" ></user-list>
         </div>
         <el-form :inline="true" class="submit-form">
             <el-form-item>
@@ -60,24 +60,28 @@ export default {
   },
   methods: {
     async getGroupInfo () {
-      let {data:{group_name, user_ids}} = await getGroup(this.id) // eslint-disable-line
+      let {data:{group_name, user_info}} = await getGroup(this.id) // eslint-disable-line
       this.name = group_name // eslint-disable-line
-      this.groupUserList = user_ids // eslint-disable-line
+      this.groupUserList = user_info // eslint-disable-line
     },
     handleFilterSelect (user) {
-      this.groupUserList.push({
-        id: user.id,
-        icon: user.icon,
-        name: user.username
-      })
+      this.groupUserList.push(user)
     },
     requestForm () {
       return {
         group_name: this.name,
-        user_ids: this.groupUserList
+        user_ids: this.groupUserList.map(user => user.id).join(',')
       }
     },
     async submit () {
+      if (!this.name) {
+        this.$message.error('请输入用户组名称')
+        return null
+      }
+      if (this.groupUserList.length === 0) {
+        this.$message.error('请添加用户')
+        return null
+      }
       if (this.isNew) {
         await addGroup(this.requestForm())
       } else {

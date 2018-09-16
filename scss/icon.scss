@@ -1,11 +1,11 @@
 /* stylelint-disable */
 @font-face {
   font-family: 'iconfont';  /* project id 819129 */
-  src: url('//at.alicdn.com/t/font_819129_ksc43nde13.eot');
-  src: url('//at.alicdn.com/t/font_819129_ksc43nde13.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_819129_ksc43nde13.woff') format('woff'),
-  url('//at.alicdn.com/t/font_819129_ksc43nde13.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_819129_ksc43nde13.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_819129_9j6zi64gpqe.eot');
+  src: url('//at.alicdn.com/t/font_819129_9j6zi64gpqe.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_819129_9j6zi64gpqe.woff') format('woff'),
+  url('//at.alicdn.com/t/font_819129_9j6zi64gpqe.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_819129_9j6zi64gpqe.svg#iconfont') format('svg');
 }
   
   %wl-icon {
@@ -66,6 +66,12 @@
 
     // 删除
     &-delete::before { content: "\e629"; }
+
+    // 邮箱
+    &-email::before { content: "\e61f"; }
+
+    // 密码
+    &-password::before { content: "\e608"; }
 
   }
   

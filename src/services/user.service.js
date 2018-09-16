@@ -75,3 +75,39 @@ export function getUserMenu (params = {}) {
     isLoading: false
   })
 }
+
+/**
+ *
+ * 登陆
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function login (params = {}) {
+  return post('passport/login', params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
+}
+
+/**
+ *
+ * 退出
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function logout (params = {}) {
+  return post('passport/logout', params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
+}

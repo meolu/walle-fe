@@ -2,10 +2,12 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Table from './table'
 import Breadcrumb from './breadcrumb'
+import Split from './split'
 
 const components = [
   Table,
-  Breadcrumb
+  Breadcrumb,
+  Split
 ]
 
 const ua = navigator.userAgent

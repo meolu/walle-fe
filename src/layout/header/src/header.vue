@@ -22,44 +22,47 @@
             </el-badge>
           </span>
         </div> -->
-        <el-dropdown class="user-info">
+        <el-dropdown class="user-info" @command="command">
           <span>
             <img src="https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png">
             陈凤娟
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item><i class="wl-icon-user"></i> &nbsp;&nbsp;个人中心</el-dropdown-item>
-            <el-dropdown-item divided><i class="wl-icon-exit"></i> &nbsp;&nbsp;退出登录</el-dropdown-item>
+            <el-dropdown-item command="self"><i class="wl-icon-user"></i> &nbsp;&nbsp;个人中心</el-dropdown-item>
+            <el-dropdown-item divided command="logout"><i class="wl-icon-exit"></i> &nbsp;&nbsp;退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
     </div>
+    <self-dialog :visible.sync="visible"></self-dialog>
   </header>
 </template>
 <script>
+// import {logout} from '@/services/user.service'
+import SelfDialog from './self.dialog.vue'
 export default {
   name: 'wl-header',
+  components: {
+    SelfDialog
+  },
   data () {
     return {
       user: '',
-      isCollapse: false
+      isCollapse: false,
+      visible: false
     }
   },
   methods: {
-    async logout () {
-      this.$router.replace('/login')
-      let arr = ['operatorId', 'token', 'userName']
-      arr.forEach(key => {
-        this.$cookie.set(key, null, {
-          path: '/',
-          expires: new Date(0)
-        })
-      })
-      window.location.reload()
+    command (command) {
+      this[command] && this[command]()
     },
-    onReload () {
-      window.location.reload()
+    logout () {
+      // await logout()
+      this.$router.replace('/login')
+    },
+    self () {
+      this.visible = true
     },
     onCollapse () {
       this.isCollapse = !this.isCollapse

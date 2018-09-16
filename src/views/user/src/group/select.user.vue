@@ -19,21 +19,34 @@
 <script>
 import {getUsers} from '@/services/user.service'
 export default {
+  props: {
+    groupUserList: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
       keyword: ''
     }
   },
+  computed: {
+    userIds () {
+      return this.groupUserList.map(user => user.id)
+    }
+  },
   methods: {
     handleSelect (args) {
-      this.keyword = args.username
+      this.keyword = ''
       this.$emit('select', args)
     },
     async querySearchAsync (queryString, cb) {
       let {data: {list}} = await getUsers({
         kw: queryString
       })
-      cb(list)
+      cb(list.filter(user => {
+        return this.userIds.indexOf(user.id) === -1
+      }))
     },
     resultlight (value, qry) {
       if (!value) {

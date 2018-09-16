@@ -8,11 +8,11 @@ import qs from 'qs'
  * @param {any} [params={}]
  * @returns Promise
  */
-export function getEnvironments (params = {}) {
-  return get('environment/', params, {
-    isRemoveField: true,
-    target: '.wl-table'
-  })
+export function getEnvironments (params = {}, config = {
+  isRemoveField: true,
+  target: '.wl-table'
+}) {
+  return get('environment/', params, config)
 }
 
 /**

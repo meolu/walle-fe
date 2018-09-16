@@ -1,10 +1,10 @@
 <template>
     <div class="wl-group-users">
         <el-row :gutter="20" v-for="(row, i) in data" :key="i">
-            <el-col :span="6" v-for="(user, col) in row" :key="user.id">
+            <el-col :span="6" v-for="(user, col) in row" :key="'user_' + user.id">
                 <span class="item">
-                    <img class="icon" :src="user.icon || defaultIcon"/>
-                    <span class="wl-group-users__name">{{user.name}}</span>
+                    <img class="icon" :src="user.avatar || defaultIcon"/>
+                    <span class="wl-group-users__name">{{user.username}}</span>
                     <i class="wl-icon-delete close" @click="()=>{deleteUser(user, i, col)}"></i>
                 </span>
             </el-col>
