@@ -3,11 +3,13 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Table from './table'
 import Breadcrumb from './breadcrumb'
 import Split from './split'
+import FullScreen from './fullscreen'
 
 const components = [
   Table,
   Breadcrumb,
-  Split
+  Split,
+  FullScreen
 ]
 
 const ua = navigator.userAgent

@@ -2,12 +2,12 @@
     <div class="wl-project-edit">
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
         <wl-split title="基本配置"></wl-split>
-        <el-form ref="form" :model="form" label-position="top" size="small" :inline="true">
+        <el-form ref="form1" :model="form" label-position="top" size="small" :inline="true">
           <el-form-item label="项目名称" prop="name" :rules="rules.name">
             <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
           </el-form-item>
           <el-form-item label="环境" prop="environment_id" :rules="rules.environment_id">
-            <el-select v-model="form.environment_id" placeholder="请选择环境" :multiple="true" :loading="loadingEnvironments">
+            <el-select v-model="form.environment_id" placeholder="请选择环境" :loading="loadingEnvironments">
               <el-option v-for="environment in environments" :key="'environment'+environment.id" :label="environment.env_name" :value="environment.id"></el-option>
             </el-select>
           </el-form-item>
@@ -22,7 +22,7 @@
           </el-form-item>
         </el-form>
         <wl-split title="目标集群"></wl-split>
-        <el-form ref="form" :model="form" label-position="top" size="small" :inline="true">
+        <el-form ref="form2" :model="form" label-position="top" size="small" :inline="true">
           <el-form-item label="目标集群登录用户" prop="target_user" :rules="rules.target_user">
             <el-input v-model="form.target_user" placeholder="请输入目标集群用户名"></el-input>
           </el-form-item>
@@ -39,7 +39,7 @@
           v-model="target_servers"
           :data="servers">
         </el-transfer>
-        <el-form ref="form" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__target">
+        <el-form ref="form3" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__target">
           <el-form-item label="目标集群部署路径" prop="target_root" :rules="rules.target_root">
             <el-input v-model="form.target_root" placeholder="请输入目标集群部署路径"></el-input>
           </el-form-item>
@@ -51,34 +51,72 @@
           </el-form-item>
         </el-form>
         <wl-split title="任务配置"></wl-split>
-        <el-form ref="form" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__editor">
-          <el-form-item label="部署排除文件">
-             <codemirror v-model="form.excludes" :options="editorOption"></codemirror>
+        <el-form ref="form4" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__editor">
+          <el-form-item>
+            <div slot="label"><span>部署排除文件</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen1')">全屏编辑</span></div>
+            <wl-fullscreen ref="fullscreen1">
+              <codemirror v-model="form.excludes" :options="editorOption"></codemirror>
+            </wl-fullscreen>
           </el-form-item>
-          <el-form-item label="高级任务-变量">
+          <el-form-item>
+            <div slot="label"><span>高级任务-变量</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen2')">全屏编辑</span></div>
+            <wl-fullscreen ref="fullscreen2">
             <codemirror v-model="form.task_vars" :options="editorOption"></codemirror>
+            </wl-fullscreen>
           </el-form-item>
-          <el-form-item label="高级任务-deploy prev">
+          <el-form-item>
+            <div slot="label"><span>高级任务-deploy prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen3')">全屏编辑</span></div>
+            <wl-fullscreen ref="fullscreen3">
             <codemirror v-model="form.prev_deploy" :options="editorOption"></codemirror>
+            </wl-fullscreen>
           </el-form-item>
-          <el-form-item label="高级任务-deploy post">
+          <el-form-item>
+            <div slot="label"><span>高级任务-deploy post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen4')">全屏编辑</span></div>
+            <wl-fullscreen ref="fullscreen4">
             <codemirror v-model="form.post_deploy" :options="editorOption"></codemirror>
+            </wl-fullscreen>
           </el-form-item>
-          <el-form-item label="高级任务-release prev">
+          <el-form-item>
+            <div slot="label"><span>高级任务-release prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen5')">全屏编辑</span></div>
+            <wl-fullscreen ref="fullscreen5">
             <codemirror v-model="form.prev_release" :options="editorOption"></codemirror>
+            </wl-fullscreen>
           </el-form-item>
-          <el-form-item label="高级任务-release post">
+          <el-form-item>
+            <div slot="label"><span>高级任务-release post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen6')">全屏编辑</span></div>
+            <wl-fullscreen ref="fullscreen6">
             <codemirror v-model="form.post_release" :options="editorOption"></codemirror>
+            </wl-fullscreen>
           </el-form-item>
         </el-form>
+        <el-form ref="form5" :model="form" label-position="top" size="small" :inline="true">
+          <el-form-item label="上线通知" prop="message_type">
+            <el-select v-model="form.message_type" placeholder="请选择上线通知">
+              <el-option key="message_type1" label="钉钉通知" value="钉钉通知"></el-option>
+              <el-option key="message_type2" label="邮箱通知" value="邮箱通知"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item v-if="form.message_type && form.message_type==='钉钉通知'" label="钉钉hock地址" prop="message_target" :rules="rules.message_target">
+            <el-input v-model="form.message_target" placeholder="请输入钉钉hock地址"></el-input>
+          </el-form-item>
+          <el-form-item v-if="form.message_type && form.message_type==='邮箱通知'" label="邮箱地址" prop="message_target" :rules="rules.message_target">
+            <el-input v-model="form.message_target" placeholder="请输入邮箱地址使用,分隔多个邮箱"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-form ref="form6" :model="form" size="small" :inline="true">
+          <el-form-item>
+            <el-checkbox v-model="form.is_check">上线单是否开启审核</el-checkbox>
+          </el-form-item>
+        </el-form>
+        <el-button type="primary" @click="submitForm">提交</el-button>
     </div>
 </template>
 
 <script>
-// import {addRole, updateRole, getRole} from '@/services/role.service'
 import { codemirror } from 'vue-codemirror-lite'
 import {getEnvironments} from '@/services/environment.service'
 import {getServers} from '@/services/server.service'
+import {getProject, addProject, updateProject} from '@/services/project.service'
 require('codemirror/mode/shell/shell')
 export default {
   props: {
@@ -88,6 +126,7 @@ export default {
     codemirror
   },
   created () {
+    if (this.id) this.init()
     this.getEnvironments()
     this.getServers()
   },
@@ -116,24 +155,7 @@ export default {
         lineNumbers: true,
         matchBrackets: true
       },
-      form: {
-        name: '',
-        environment_id: '',
-        repo_url: '',
-        repo_mode: 'branch',
-        target_user: '',
-        target_port: '',
-        excludes: '',
-        server_ids: '',
-        keep_version_num: '',
-        target_root: '',
-        target_library: '',
-        task_vars: '',
-        prev_deploy: '',
-        post_deploy: '',
-        prev_release: '',
-        post_release: ''
-      },
+      form: this.initForm(),
       rules: {
         name: [
           { required: true, message: '请输入项目名称', trigger: 'blur' }
@@ -155,15 +177,11 @@ export default {
         ],
         target_releases: [
           { required: true, message: '请输入目标集群部署仓库', trigger: 'blur' }
+        ],
+        message_target: [
+          { required: true, message: '请输入内容', trigger: 'blur' }
         ]
       }
-    }
-  },
-  watch: {
-    async id (val) {
-    //   let {data: {role_name, access_ids}} = await getRole(val) // eslint-disable-line
-    //   this.name = role_name // eslint-disable-line
-    //   this.data = access_ids // eslint-disable-line
     }
   },
   computed: {
@@ -172,6 +190,37 @@ export default {
     }
   },
   methods: {
+    initForm () {
+      return {
+        name: '',
+        environment_id: '',
+        repo_url: '',
+        repo_mode: 'branch',
+        target_user: '',
+        target_port: '',
+        excludes: '',
+        server_ids: '',
+        keep_version_num: '',
+        target_root: '',
+        target_library: '',
+        task_vars: '',
+        prev_deploy: '',
+        post_deploy: '',
+        prev_release: '',
+        post_release: '',
+        message_type: '',
+        message_target: '',
+        is_check: ''
+      }
+    },
+    async init () {
+      const {data} = await getProject(this.id)
+      this.target_servers = data.server_ids.map(item => item.id)
+      this.form = {
+        ...this.initForm(),
+        ...data
+      }
+    },
     async getEnvironments () {
       const {data: {list}} = await getEnvironments({}, {
         isRemoveField: true,
@@ -183,10 +232,46 @@ export default {
     async getServers () {
       let {data: {list}} = await getServers()
       this.servers = list
-      console.log(this.servers)
     },
     filterMethod (query, item) {
       return item.name.indexOf(query) > -1
+    },
+    fullscreenOpen (name) {
+      this.$refs[name] && this.$refs[name].toggle()
+    },
+    requestForm () {
+      return {
+        ...this.form,
+        server_ids: this.target_servers.join(',')
+      }
+    },
+    submitForm () {
+      let count = 0
+      const callback = (valid) => {
+        if (valid) {
+          count++
+          if (count === 4) this.submit()
+        } else {
+          return false
+        }
+      }
+      this.$refs.form1.validate(callback)
+      this.$refs.form2.validate(callback)
+      this.$refs.form3.validate(callback)
+      this.$refs.form5.validate(callback)
+    },
+    async submit () {
+      console.log(this.requestForm())
+      if (this.isNew) {
+        await addProject(this.requestForm())
+      } else {
+        await updateProject(this.id, this.requestForm())
+      }
+      this.$message({
+        type: 'success',
+        message: this.isNew ? '添加成功' : '修改成功'
+      })
+      this.$router.push('/project/list')
     }
   }
 }
@@ -239,6 +324,28 @@ export default {
      margin: 10px 0 20px 0;
    }
 
+   .wl-split {
+     color: $primary;
+     border-bottom: 1px solid $primary;
+     margin-bottom: 20px;
+   }
+
+   .CodeMirror .CodeMirror-code {
+     line-height: 18px;
+   }
+
+   .vue-codemirror-wrap,
+   .CodeMirror {
+     height: 100%;
+   }
+
+   .fullscreen {
+     position: absolute;
+     right: 0;
+     top: 0;
+     color: $primary;
+   }
+
    @include e(target) {
     .el-input {
         width: 280px;
@@ -256,6 +363,11 @@ export default {
        height: 100px;
        overflow: auto;
      }
+
+     .el-form-item--mini.el-form-item,
+     .el-form-item--small.el-form-item  {
+       position: relative;
+    }
    }
 }
 </style>

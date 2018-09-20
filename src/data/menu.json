@@ -38,7 +38,11 @@
   {
     "text": "部署中心",
     "icon": "wl-icon-deploy-set",
-    "url": "/task"
+    "child": [{
+      "text": "上线单管理",
+      "url": "/task/list"
+    }
+  ]
   }
   ]
   

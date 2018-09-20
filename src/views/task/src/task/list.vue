@@ -1,10 +1,10 @@
 <template>
-    <div class="wl-project">
+    <div class="wl-task">
       <wl-breadcrumb :data="breadcrumbData" :isBackButton="false"></wl-breadcrumb>
             <el-form :inline="true" @submit.native.prevent>
               <el-form-item>
                 <el-input
-                placeholder="请输入项目名称"
+                placeholder="请输入上线单名称"
                 size="small"
                 @keyup.enter.native="search"
                 v-model="value">
@@ -12,7 +12,7 @@
                 </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="small" @click="addProject">新建项目</el-button>
+                <el-button type="primary" size="small" @click="addTask">新建上线单</el-button>
               </el-form-item>
             </el-form>
         <wl-table
@@ -24,9 +24,9 @@
 
 <script>
 import COLUMNS from './columns'
-import {getProjects, deleteProject} from '@/services/project.service'
+import {getTasks, deleteTask} from '@/services/task.service'
 export default {
-  name: 'roles',
+  name: 'tasks',
   data () {
     return {
       value: '',
@@ -37,14 +37,14 @@ export default {
       breadcrumbData: [
         {
           to: '',
-          name: '项目'
+          name: '上线单'
         }
       ]
     }
   },
   methods: {
     async callServe (table = this.$refs.table) {
-      let {data: {list, count}} = await getProjects({
+      let {data: {list, count}} = await getTasks({
         size: table.page.size,
         page: table.page.currentPage,
         kw: this.value
@@ -55,14 +55,17 @@ export default {
     search () {
       this.callServe()
     },
-    addProject () {
-      this.$router.push(`/project/create`)
+    addTask () {
+      this.$router.push(`/task/create`)
     },
     edit (row) {
-      this.$router.push(`/project/edit/${row.id}`)
+      this.$router.push(`/task/edit/${row.id}`)
     },
-    async deleteRole (row) {
-      await deleteProject(row.id)
+    review (row) {
+    // 审核上线单
+    },
+    async deleteTask (row) {
+      await deleteTask(row.id)
       this.callServe()
       this.$message({
         type: 'success',
@@ -70,12 +73,12 @@ export default {
       })
     },
     delete (row) {
-      this.$confirm('确定删除该角色吗?', '提示', {
+      this.$confirm('确定删除本上线单吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.deleteRole(row)
+        this.deleteTask(row)
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -90,7 +93,7 @@ export default {
 <style lang="scss">
 @import 'scss';
 
-@include b(project) {
+@include b(task) {
    margin: 20px;
    box-sizing: border-box;
    background: #fff;

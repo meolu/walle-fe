@@ -5,6 +5,7 @@ import Router from 'vue-router'
 import Login from '@/views/login'
 import User from '@/views/user'
 import Project from '@/views/project'
+import Task from '@/views/task'
 
 Vue.use(Router)
 
@@ -25,6 +26,7 @@ const redirectRoute = {
 Login(routes)
 User(rootRouter.children)
 Project(rootRouter.children)
+Task(rootRouter.children)
 
 const mode = 'history'
 export default new Router({
