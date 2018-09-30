@@ -1,4 +1,5 @@
 import {get, post, put, Delete} from '@/bases/http.base'
+import qs from 'qs'
 
 /**
  *
@@ -7,10 +8,11 @@ import {get, post, put, Delete} from '@/bases/http.base'
  * @param {any} [params={}]
  * @returns Promise
  */
-export function getProjects (params = {}) {
+export function getProjects (params = {}, config = {}) {
   return get('project/', params, {
     target: '.wl-table',
-    isRemoveField: true
+    isRemoveField: true,
+    ...config
   })
 }
 
@@ -33,7 +35,14 @@ export function getProject (id, params = {}, config = {}) {
  * @returns Promise
  */
 export function addProject (params = {}) {
-  return post('project', params)
+  return post('project', params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
 }
 
 /**
@@ -44,7 +53,14 @@ export function addProject (params = {}) {
  * @returns Promise
  */
 export function updateProject (id, params = {}) {
-  return put(`project/${id}`, params)
+  return put(`project/${id}`, params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
 }
 
 /**

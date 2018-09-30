@@ -90,17 +90,21 @@
           </el-form-item>
         </el-form>
         <el-form ref="form5" :model="form" label-position="top" size="small" :inline="true">
-          <el-form-item label="上线通知" prop="message_type">
-            <el-select v-model="form.message_type" placeholder="请选择上线通知">
-              <el-option key="message_type1" label="钉钉通知" value="钉钉通知"></el-option>
-              <el-option key="message_type2" label="邮箱通知" value="邮箱通知"></el-option>
+          <el-form-item label="上线通知" prop="notice_type">
+            <el-select v-model="form.notice_type" placeholder="请选择上线通知">
+              <el-option key="notice_type1" label="短信通知" value="sms"></el-option>
+              <el-option key="notice_type2" label="钉钉通知" value="dingding"></el-option>
+              <el-option key="notice_type3" label="邮箱通知" value="email"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item v-if="form.message_type && form.message_type==='钉钉通知'" label="钉钉hock地址" prop="message_target" :rules="rules.message_target">
-            <el-input v-model="form.message_target" placeholder="请输入钉钉hock地址"></el-input>
+          <el-form-item v-if="form.notice_type && form.notice_type==='dingding'" label="钉钉hock地址" prop="notice_hook" :rules="rules.notice_hook">
+            <el-input v-model="form.notice_hook" placeholder="请输入钉钉hock地址，英文分号分隔"></el-input>
           </el-form-item>
-          <el-form-item v-if="form.message_type && form.message_type==='邮箱通知'" label="邮箱地址" prop="message_target" :rules="rules.message_target">
-            <el-input v-model="form.message_target" placeholder="请输入邮箱地址使用,分隔多个邮箱"></el-input>
+          <el-form-item v-if="form.notice_type && form.notice_type==='email'" label="邮箱地址" prop="notice_hook" :rules="rules.notice_hook">
+            <el-input v-model="form.notice_hook" placeholder="请输入邮箱地址，英文分号分隔"></el-input>
+          </el-form-item>
+          <el-form-item v-if="form.notice_type && form.notice_type==='sms'" label="手机号" prop="notice_hook" :rules="rules.notice_hook">
+            <el-input v-model="form.notice_hook" placeholder="请输入手机号，英文分号分隔"></el-input>
           </el-form-item>
         </el-form>
         <el-form ref="form6" :model="form" size="small" :inline="true">
@@ -178,7 +182,7 @@ export default {
         target_releases: [
           { required: true, message: '请输入目标集群部署仓库', trigger: 'blur' }
         ],
-        message_target: [
+        notice_hook: [
           { required: true, message: '请输入内容', trigger: 'blur' }
         ]
       }
@@ -208,8 +212,8 @@ export default {
         post_deploy: '',
         prev_release: '',
         post_release: '',
-        message_type: '',
-        message_target: '',
+        notice_type: '',
+        notice_hook: '',
         is_check: ''
       }
     },

@@ -70,6 +70,7 @@ export default {
     requestForm () {
       return {
         group_name: this.name,
+        // uid_roles: JSON.stringify(this.groupUserList.map(user => { return {user_id: user.id, role: 'developer'} }))
         user_ids: this.groupUserList.map(user => user.id).join(',')
       }
     },
@@ -82,6 +83,7 @@ export default {
         this.$message.error('请添加用户')
         return null
       }
+      console.log(this.requestForm())
       if (this.isNew) {
         await addGroup(this.requestForm())
       } else {
