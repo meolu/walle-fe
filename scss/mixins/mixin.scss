@@ -1,0 +1,58 @@
+//BEM Styling mixins
+
+$elementSeparator: '__';
+$modifierSeparator: '--';
+$namespace: 'wl';
+$state-prefix: 'is-';
+
+// @access public
+// @param {String} $element - Element's name
+@mixin b($element) {
+  $b: $namespace+'-'+$element !global;
+  .#{$b} {
+    @content;
+  }
+}
+
+// @access public
+// @param {String} $element - Element's name
+@mixin e($element) {
+    &#{$elementSeparator+$element} {
+        @content;
+    }
+}
+
+// @access public
+// @param {String} $modifier - Modifier's name
+@mixin m($modifier) {
+	@at-root {
+    // '&' is a double-wrapped list,
+		// Get the oldest ancestor
+    $oldest_ancestor: nth(&, 1);
+    // parent will be the last item in ancestors
+    $parent: nth($oldest_ancestor, length($oldest_ancestor));
+    // modifier should have all properties of parent
+    #{$parent+$modifierSeparator+$modifier} {
+			@extend #{$parent};
+		}
+    // '@content' will be in a nested selector however, if that is the context
+    #{&}#{$modifierSeparator+$modifier} {
+			@content;
+		}
+  }
+}
+
+@mixin when($state) {
+  @at-root {
+    &.#{$state-prefix + $state} {
+      @content;
+    }
+  }
+}
+
+@mixin text-overflow-1 {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

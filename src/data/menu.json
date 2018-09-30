@@ -1,0 +1,48 @@
+[{
+    "text": "首页",
+    "icon": "wl-icon-main",
+    "url": "/"
+  },
+  {
+    "text": "用户中心",
+    "icon": "wl-icon-user-set",
+    "child": [{
+        "text": "用户管理",
+        "url": "/user/list"
+      },{
+        "text": "用户组",
+        "url": "/user/groups"
+      },
+      {
+        "text": "角色",
+        "url": "/user/roles"
+      }
+    ]
+  },
+  {
+    "text": "项目中心",
+    "icon": "wl-icon-project-set",
+    "child": [{
+        "text": "项目管理",
+        "url": "/project/list"
+      },{
+        "text": "环境管理",
+        "url": "/project/environment"
+      },
+      {
+        "text": "服务器管理",
+        "url": "/project/server"
+      }
+    ]
+  },
+  {
+    "text": "部署中心",
+    "icon": "wl-icon-deploy-set",
+    "child": [{
+      "text": "上线单管理",
+      "url": "/task/list"
+    }
+  ]
+  }
+  ]
+  

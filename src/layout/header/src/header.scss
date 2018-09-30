@@ -1,0 +1,114 @@
+@import 'scss';
+
+$font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+
+@include b(header) {
+  position: absolute;
+  z-index: 304;
+  width: 100%;
+  background-color: #fff;
+  height: $header-height;
+  display: flex;
+  box-shadow: 0 -1px 4px rgba(0, 21, 41, 0.08);
+
+  .logo {
+    line-height: $header-height;
+    width: 230px;
+    background: $header-icon-bg;
+    transition: width 0.2s ease-in;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+
+    @include when(collapse){
+      width: 54px;
+    }
+
+    img {
+      margin-top: -5px;
+      height: 46px;
+      border: none;
+      margin-right: 5px;
+    }
+
+    h1 {
+      font-family: $font-family;
+      font-size: 18px;
+      color: #fff;
+
+      @include text-overflow-1;
+    }
+  }
+
+  .tool {
+    flex: 1;
+    display: flex;
+
+    .btn-collapse {
+      font-size: 20px;
+      line-height: $header-height;
+      cursor: pointer;
+      transition: all 0.3s;
+      padding: 0 12px;
+    }
+
+    .user {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 20px;
+    }
+  }
+
+  @include e(btns) {
+    width: 96px;
+    height: 100%;
+    display: flex;
+
+    .btn {
+      text-align: center;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      width: 50%;
+      height: 100%;
+      cursor: pointer;
+      padding: 0 12px;
+      box-sizing: border-box;
+
+      i {
+        font-size: 18px;
+      }
+
+      &:hover {
+        background: $--select-option-hover-background;
+      }
+    }
+  }
+
+  .user-info {
+    padding: 18px 12px;
+    transition: all 0.3s;
+
+    span {
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      height: 24px;
+      font-family: $font-family;
+      font-size: 14px;
+      cursor: pointer;
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    img {
+      width: 24px;
+      height: 24px;
+      border-radius: 24px;
+      padding-right: 12px;
+    }
+  }
+}

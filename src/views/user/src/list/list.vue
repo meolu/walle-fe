@@ -1,0 +1,142 @@
+<template>
+    <div class="wl-user-list">
+            <el-form :inline="true" @submit.native.prevent>
+              <el-form-item>
+                <el-input
+                placeholder="请输入内容"
+                size="small"
+                class="search"
+                @keyup.enter.native="search"
+                v-model="value">
+                <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+              </el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">添加</el-button>
+              </el-form-item>
+            </el-form>
+        <wl-table
+            ref="table"
+            :columns="columns"
+            @callServe="callServe"></wl-table>
+        <add-user-dialog :visible.sync="addUserDialogVisible" :user="currentEditUser" @confirm="confirm" @close="close"/>
+    </div>
+</template>
+
+<script>
+import COLUMNS from './columns'
+import addUserDialog from './add.user.dialog.vue'
+import {getUsers, deleteUser, updateUser} from '@/services/user.service'
+export default {
+  name: 'user-list',
+  components: {
+    addUserDialog
+  },
+  data () {
+    return {
+      value: '',
+      columns: COLUMNS.call(this),
+      currentEditUser: null,
+      addUserDialogVisible: false
+    }
+  },
+  methods: {
+    async callServe (table = this.$refs.table) {
+      let {data: {list, count}} = await getUsers({
+        size: table.page.size,
+        page: table.page.currentPage,
+        kw: this.value
+      })
+      table.page.total = count
+      table.list = list
+    },
+    search () {
+      this.callServe()
+    },
+    addUser () {
+      this.addUserDialogVisible = true
+    },
+    edit (row) {
+      this.addUserDialogVisible = true
+      this.currentEditUser = {
+        ...row
+      }
+    },
+    async lock (row) {
+      await updateUser(row.id, {
+        status: 2,
+        role_id: row.role_id,
+        username: row.username
+      })
+      this.callServe()
+    },
+    delete (row) {
+      this.$confirm('确定删除该用户吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteUser(row)
+      }).catch(() => {})
+    },
+
+    async deleteUser (row) {
+      await deleteUser(row.id)
+      this.callServe()
+      this.$message({
+        type: 'success',
+        message: '删除成功!'
+      })
+    },
+
+    confirm (user) {
+      this.currentEditUser = null
+      this.callServe()
+    },
+
+    close () {
+      this.currentEditUser = null
+    },
+
+    renderTools (scope) {
+      return (
+        <div>
+          <el-button type="text" size="small" icon="el-icon-edit" onClick={() => this.edit({...scope.row})}>编辑</el-button>
+          <el-button type="text" class="user-delete" size="small" icon="el-icon-delete" onClick={() => this.delete({...scope.row})}>删除</el-button>
+          <el-button type="text" size="small" icon="wl-icon-lock" onClick={() => this.lock({...scope.row})}>冻结</el-button>
+        </div>
+      )
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+@import 'scss';
+
+@include b(user-list) {
+   margin: 20px;
+   box-sizing: border-box;
+   background: #fff;
+   min-height: calc(100% - 40px);
+   padding: 10px;
+
+   .search {
+     width: 300px;
+   }
+
+   .el-table thead th {
+     background-color: $--table-header-background;
+   }
+
+   .user-delete {
+     color: #f56c6c;
+   }
+
+   .el-button {
+     i {
+       font-size: 12px;
+     }
+   }
+}
+</style>
