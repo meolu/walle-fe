@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        class="wl-add-user"
+        class="wl-add-space"
         width = "600px"
         :title = "isNew ? '新增空间' : '编辑空间'"
         :visible="visible"
@@ -11,7 +11,7 @@
             <el-input size="small" v-model="form.name" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="所属人" label-width="120px" prop="user_id" :rules="rules.user_id" :error="error.user_id">
-              <el-select size="small" v-model="form.user_id" placeholder="请分配用户" class="wl-add-user__option">
+              <el-select size="small" v-model="form.user_id" placeholder="请分配用户" class="wl-add-space__option">
                   <el-option v-for="user in users" :key="user.id" :label="user.name" :value="user.id"></el-option>
               </el-select>
             </el-form-item>
@@ -55,7 +55,7 @@ export default {
       handler (val) {
         if (val) {
           this.getUsers({}, {
-            target: '.wl-add-user__option'
+            target: '.wl-add-space__option'
           })
         }
       }
@@ -129,7 +129,7 @@ export default {
 <style lang="scss">
 @import 'scss';
 
-@include b(add-user) {
+@include b(add-space) {
     .el-dialog__header {
         background: #fff;
         border-bottom: 1px solid #e8e8e8;
