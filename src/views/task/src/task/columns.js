@@ -1,3 +1,10 @@
+const TASK_STATUS = {
+  0: '待审核',
+  1: '审核通过',
+  2: '审核拒绝',
+  3: '上线完成',
+  4: '上线失败'
+}
 export default function () {
   const self = this
   return [
@@ -38,7 +45,10 @@ export default function () {
     {
       prop: 'status',
       label: '状态',
-      width: 80
+      width: 80,
+      render (h, scope) {
+        return TASK_STATUS[scope.row.status]
+      }
     },
     {
       label: '操作',
@@ -46,7 +56,8 @@ export default function () {
       render (h, scope, methods) {
         return (
           <div>
-            <el-button type="text" size="small" onClick={() => self.review({...scope.row})}>审核</el-button>
+            {self.renderReview({...scope.row})}
+            {self.renderDeploy({...scope.row})}
             <el-button type="text" icon="el-icon-edit" size="small" onClick={() => self.edit({...scope.row})}>编辑</el-button>
             <el-button type="text" class="user-delete" icon="el-icon-delete" size="small" onClick={() => self.delete({...scope.row})}>删除</el-button>
           </div>

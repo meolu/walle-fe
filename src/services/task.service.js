@@ -1,4 +1,5 @@
 import {get, post, put, Delete} from '@/bases/http.base'
+import qs from 'qs'
 
 /**
  *
@@ -33,7 +34,14 @@ export function getTask (id, params = {}, config = {}) {
  * @returns Promise
  */
 export function addTask (params = {}) {
-  return post('task', params)
+  return post('task/', params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
 }
 
 /**
@@ -44,7 +52,14 @@ export function addTask (params = {}) {
  * @returns Promise
  */
 export function updateTask (id, params = {}) {
-  return put(`task/${id}`, params)
+  return put(`task/${id}`, params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
 }
 
 /**

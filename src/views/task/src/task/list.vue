@@ -24,7 +24,7 @@
 
 <script>
 import COLUMNS from './columns'
-import {getTasks, deleteTask} from '@/services/task.service'
+import {getTasks, deleteTask, updateTask} from '@/services/task.service'
 export default {
   name: 'tasks',
   data () {
@@ -61,8 +61,34 @@ export default {
     edit (row) {
       this.$router.push(`/task/edit/${row.id}`)
     },
-    review (row) {
+    renderReview (row) {
+      if (row.status === 0) {
+        return <el-button type="text" size="small" onClick={() => this.review({...row})}>审核</el-button>
+      }
+      return null
+    },
+    renderDeploy (row) {
+      if (row.status === 1) {
+        return <el-button type="text" size="small" onClick={() => this.deploy({...row})}>上线</el-button>
+      }
+      return null
+    },
+    async review (row) {
     // 审核上线单
+      await updateTask(row.id, {
+        name: row.name,
+        project_id: row.project_id,
+        servers: row.servers,
+        status: 1
+      })
+      this.callServe()
+      this.$message({
+        type: 'success',
+        message: '审核通过!'
+      })
+    },
+    deploy (row) {
+      // 上线
     },
     async deleteTask (row) {
       await deleteTask(row.id)

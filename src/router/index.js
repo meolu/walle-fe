@@ -6,6 +6,7 @@ import Login from '@/views/login'
 import User from '@/views/user'
 import Project from '@/views/project'
 import Task from '@/views/task'
+import Space from '@/views/space'
 
 Vue.use(Router)
 
@@ -27,6 +28,7 @@ Login(routes)
 User(rootRouter.children)
 Project(rootRouter.children)
 Task(rootRouter.children)
+Space(rootRouter.children)
 
 const mode = 'history'
 export default new Router({

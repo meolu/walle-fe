@@ -1,11 +1,11 @@
 /* stylelint-disable */
 @font-face {
   font-family: 'iconfont';  /* project id 819129 */
-  src: url('//at.alicdn.com/t/font_819129_9j6zi64gpqe.eot');
-  src: url('//at.alicdn.com/t/font_819129_9j6zi64gpqe.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_819129_9j6zi64gpqe.woff') format('woff'),
-  url('//at.alicdn.com/t/font_819129_9j6zi64gpqe.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_819129_9j6zi64gpqe.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_819129_winr8ru53z.eot');
+  src: url('//at.alicdn.com/t/font_819129_winr8ru53z.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_819129_winr8ru53z.woff') format('woff'),
+  url('//at.alicdn.com/t/font_819129_winr8ru53z.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_819129_winr8ru53z.svg#iconfont') format('svg');
 }
   
   %wl-icon {
@@ -57,6 +57,9 @@
 
     // 部署中心
     &-deploy-set::before { content: "\e660"; }
+
+    // 空间管理
+    &-space-set::before { content: "\e62a"; }
 
     // 冻结账户
     &-lock::before { content: "\e616"; }

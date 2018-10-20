@@ -3,39 +3,27 @@ import qs from 'qs'
 
 /**
  *
- * 获取项目列表
+ * 获取空间列表
  * @export
  * @param {any} [params={}]
  * @returns Promise
  */
-export function getProjects (params = {}, config = {}) {
-  return get('project/', params, {
-    target: '.wl-table',
+export function getSpaces (params = {}) {
+  return get('space/', params, {
     isRemoveField: true,
-    ...config
+    target: '.wl-table'
   })
 }
 
 /**
  *
- * 获取项目
+ * 新增空间
  * @export
  * @param {any} [params={}]
  * @returns Promise
  */
-export function getProject (id, params = {}, config = {}) {
-  return get(`project/${id}`, params, config)
-}
-
-/**
- *
- * 新增项目
- * @export
- * @param {any} [params={}]
- * @returns Promise
- */
-export function addProject (params = {}) {
-  return post('project/', params, {
+export function addSpace (params = {}) {
+  return post('space/', params, {
     headers: {
       'content-type': 'multipart/form-data'
     },
@@ -47,13 +35,14 @@ export function addProject (params = {}) {
 
 /**
  *
- * 更新项目
+ * 更新空间
  * @export
  * @param {any} [params={}]
  * @returns Promise
  */
-export function updateProject (id, params = {}) {
-  return put(`project/${id}`, params, {
+export function updateSpace (id, params = {}) {
+  return put(`space/${id}`, params, {
+    target: '.wl-table',
     headers: {
       'content-type': 'multipart/form-data'
     },
@@ -65,11 +54,11 @@ export function updateProject (id, params = {}) {
 
 /**
  *
- * 删除项目
+ * 删除空间
  * @export
  * @param {any} [params={}]
  * @returns Promise
  */
-export function deleteProject (id, params = {}) {
-  return Delete(`project/${id}`, params)
+export function deleteSpace (id, params = {}) {
+  return Delete(`space/${id}`, params)
 }
