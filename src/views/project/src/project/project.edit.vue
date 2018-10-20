@@ -109,7 +109,7 @@
         </el-form>
         <el-form ref="form6" :model="form" size="small" :inline="true">
           <el-form-item>
-            <el-checkbox v-model="form.is_check">上线单是否开启审核</el-checkbox>
+            <el-checkbox v-model="form.enable_audit">上线单是否开启审核</el-checkbox>
           </el-form-item>
         </el-form>
         <el-button type="primary" @click="submitForm">提交</el-button>
@@ -214,7 +214,8 @@ export default {
         post_release: '',
         notice_type: '',
         notice_hook: '',
-        is_check: ''
+        enable_audit: '',
+        status: 1
       }
     },
     async init () {
@@ -222,7 +223,8 @@ export default {
       this.target_servers = data.server_ids.map(item => item.id)
       this.form = {
         ...this.initForm(),
-        ...data
+        ...data,
+        enable_audit: !!data.enable_audit
       }
     },
     async getEnvironments () {
@@ -246,7 +248,8 @@ export default {
     requestForm () {
       return {
         ...this.form,
-        server_ids: this.target_servers.join(',')
+        server_ids: this.target_servers.join(','),
+        enable_audit: this.form.enable_audit ? 1 : 0
       }
     },
     submitForm () {

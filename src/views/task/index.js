@@ -17,7 +17,7 @@ export default function (router) {
     props: true
   },
   {
-    path: '/task/edit/:id',
+    path: '/task/edit/:taskId',
     name: 'TaskEdit',
     component: TaskEdit,
     meta: {isMenu: true, menu: '/task/list'},
@@ -28,6 +28,13 @@ export default function (router) {
     name: 'TaskCreate',
     meta: {isMenu: true, menu: '/task/list'},
     component: TaskCreate,
+    props: true
+  },
+  {
+    path: '/task/create/:projectId',
+    name: 'TaskCreateOfProject',
+    meta: {isMenu: true, menu: '/task/list'},
+    component: TaskEdit,
     props: true
   })
 }

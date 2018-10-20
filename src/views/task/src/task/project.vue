@@ -28,7 +28,7 @@ export default {
       this.data = list
     },
     enter (project) {
-      this.$router.push('/task/edit')
+      this.$router.push(`/task/create/${project.id}`)
     }
   }
 }

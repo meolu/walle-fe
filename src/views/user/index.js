@@ -1,8 +1,8 @@
 const List = () => import('./src/list/list.vue')
-const Roles = () => import('./src/roles/roles.vue')
+// const Roles = () => import('./src/roles/roles.vue')
 const Groups = () => import('./src/group/group.vue')
 const GroupEdit = () => import('./src/group/group.edit.vue')
-const RoleEdit = () => import('./src/roles/role.edit.vue')
+// const RoleEdit = () => import('./src/roles/role.edit.vue')
 
 export default function (router) {
   router.push({
@@ -30,25 +30,26 @@ export default function (router) {
     meta: {isMenu: true, menu: '/user/groups'},
     component: GroupEdit,
     props: true
-  },
-  {
-    path: '/user/roles',
-    name: 'userRoles',
-    meta: {isMenu: true},
-    component: Roles
-  },
-  {
-    path: '/user/role/create',
-    name: 'RoleCreate',
-    component: RoleEdit,
-    meta: {isMenu: true, menu: '/user/roles'},
-    props: true
-  },
-  {
-    path: '/user/role/edit/:id',
-    name: 'RoleEdit',
-    component: RoleEdit,
-    meta: {isMenu: true, menu: '/user/roles'},
-    props: true
-  })
+  }
+  // {
+  //   path: '/user/roles',
+  //   name: 'userRoles',
+  //   meta: {isMenu: true},
+  //   component: Roles
+  // },
+  // {
+  //   path: '/user/role/create',
+  //   name: 'RoleCreate',
+  //   component: RoleEdit,
+  //   meta: {isMenu: true, menu: '/user/roles'},
+  //   props: true
+  // },
+  // {
+  //   path: '/user/role/edit/:id',
+  //   name: 'RoleEdit',
+  //   component: RoleEdit,
+  //   meta: {isMenu: true, menu: '/user/roles'},
+  //   props: true
+  // }
+  )
 }

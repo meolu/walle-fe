@@ -4,6 +4,11 @@
     "url": "/"
   },
   {
+    "text": "空间管理",
+    "icon": "wl-icon-space-set",
+    "url": "/space/list"
+  },
+  {
     "text": "用户中心",
     "icon": "wl-icon-user-set",
     "child": [{
@@ -12,10 +17,6 @@
       },{
         "text": "用户组",
         "url": "/user/groups"
-      },
-      {
-        "text": "角色",
-        "url": "/user/roles"
       }
     ]
   },
