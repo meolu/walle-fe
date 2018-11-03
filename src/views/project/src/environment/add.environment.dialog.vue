@@ -41,13 +41,11 @@ export default {
   },
   watch: {
     environment (val) {
-      if (this.visible) {
-        if (val) {
+      if (val) {
           let {env_name: name} = val // eslint-disable-line
-          this.form.env_name = name
-        } else {
-          this.form = this.initForm()
-        }
+        this.form.env_name = name
+      } else {
+        this.form = this.initForm()
       }
     }
   },

@@ -6,25 +6,26 @@
       :unique-opened="true"
       :collapse="isCollapse"
       @select="select" >
-      <el-submenu v-if="item.child"  :index="'m' + index" v-for="(item, index) in menus" :key="'menu' + index" popper-class="wl-sidebar__submenu">
+      <el-submenu v-if="item.sub_menu&&item.sub_menu.length>0"  :index="'m' + index" v-for="(item, index) in menus" :key="'menu' + index" popper-class="wl-sidebar__submenu">
         <template slot="title"><i class="wl-sidebar-icon" v-if="item.icon" :class="[item.icon]"></i>
-        <span slot="title">{{ item.text }}</span>
+        <span slot="title">{{ item.title }}</span>
         </template>
-        <el-menu-item  v-for="(child, cIndex) in item.child"
+        <el-menu-item  v-for="(child, cIndex) in item.sub_menu"
           :index="child.url || 'child' + index + '-' + cIndex"
           :key="'wlCMenu' + index + '-' + cIndex">
-            <span slot="title">{{ child.text }}</span>
+            <span slot="title">{{ child.title }}</span>
         </el-menu-item>
       </el-submenu>
       <el-menu-item v-else :index="item.url || 'm' + index">
         <i class="wl-sidebar-icon" v-if="item.icon" :class="[item.icon]"></i>
-        <span slot="title">{{ item.text }}</span>
+        <span slot="title">{{ item.title }}</span>
       </el-menu-item>
     </el-menu>
   </el-scrollbar>
 </template>
 <script>
-import menu from '@/data/menu.json'
+// import menu from '@/data/menu.json'
+import {mapGetters} from 'vuex'
 export default {
   name: 'wl-sidebar',
   props: {
@@ -35,12 +36,15 @@ export default {
   },
   data () {
     return {
-      menus: menu,
+      menus: [],
       selected: 'm0'
     }
   },
   created () {
     this.initSelected(this.$route)
+  },
+  computed: {
+    ...mapGetters(['menu'])
   },
   methods: {
     select (index) {
@@ -58,6 +62,13 @@ export default {
   watch: {
     $route (to) {
       this.initSelected(to)
+    },
+    menu: {
+      deep: true,
+      immediate: true,
+      handler (val) {
+        this.menus = val
+      }
     }
   }
 }

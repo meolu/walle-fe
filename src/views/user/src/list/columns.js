@@ -1,29 +1,26 @@
-// import {statusDefine} from '../constant'
+import Avatar from '../components/avatar.vue'
 export default function () {
   const self = this
   return [
     {
       label: '用户名',
       width: 250,
-      prop: 'username'
+      prop: 'username',
+      render (h, scope) {
+        return (
+          <Avatar name={scope.row.username} avatar={scope.row.avatar}></Avatar>
+        )
+      }
     },
     {
-      label: '角色',
+      label: '邮箱',
       width: 250,
-      prop: 'role_name'
-      // render (h, scope, methods) {
-      //   return scope.row.role_name
-      //   // return roleDefine[scope.row.role].name
-      // }
+      prop: 'email'
     },
     {
       label: '状态',
       width: 250,
       prop: 'status'
-      // render (h, scope, methods) {
-      //   return scope.row.status
-      //   // return statusDefine[scope.row.status].name
-      // }
     },
     {
       label: '操作',

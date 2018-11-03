@@ -19,8 +19,8 @@ export default function () {
       width: 180
     },
     {
-      prop: 'user_id',
-      label: '用户id',
+      prop: 'name',
+      label: '用户名',
       width: 120
     },
     {
@@ -58,7 +58,7 @@ export default function () {
           <div>
             {self.renderReview({...scope.row})}
             {self.renderDeploy({...scope.row})}
-            <el-button type="text" icon="el-icon-edit" size="small" onClick={() => self.edit({...scope.row})}>编辑</el-button>
+            <el-button type="text" class={self.getClass({...scope.row})} icon="el-icon-edit" size="small" onClick={() => self.edit({...scope.row})}>编辑</el-button>
             <el-button type="text" class="user-delete" icon="el-icon-delete" size="small" onClick={() => self.delete({...scope.row})}>删除</el-button>
           </div>
         )

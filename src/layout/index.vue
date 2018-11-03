@@ -15,6 +15,8 @@ import wlBody from './body'
 import wlHeader from './header'
 import wlSidebar from './sidebar'
 import wlContent from './content'
+import {mapGetters, mapActions} from 'vuex'
+
 export default {
   name: 'layout',
   components: {wlBody, wlHeader, wlSidebar, wlContent},
@@ -23,7 +25,18 @@ export default {
       isCollapse: false
     }
   },
+  created () {
+    if (!this.user) {
+      this.getUserInfo()
+    }
+  },
+  computed: {
+    ...mapGetters(['user'])
+  },
   methods: {
+    ...mapActions({
+      getUserInfo: 'FETCH_USER_INFO'
+    }),
     toggle (isCollapse) {
       this.isCollapse = isCollapse
     }

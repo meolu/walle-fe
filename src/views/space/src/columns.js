@@ -10,7 +10,7 @@ export default function () {
     {
       label: '空间所属人',
       width: 250,
-      prop: 'user_id'
+      prop: 'user_name'
       // render (h, scope, methods) {
       //   return scope.row.role_name
       //   // return roleDefine[scope.row.role].name

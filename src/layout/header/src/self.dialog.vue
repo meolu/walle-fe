@@ -6,7 +6,7 @@
         :visible="visible"
         :before-close="onCancel"
         :append-to-body="true">
-        <el-tabs v-model="activeName" @tab-click="handleClick" tab-position="left">
+        <el-tabs v-model="activeName" tab-position="left">
             <el-tab-pane label="基本设置" name="info">
                 <div class="wl-self__info">
                     <el-form ref="form" :model="info" label-position="top">
@@ -14,7 +14,14 @@
                             <span class="item">
                                 <img class="icon" :src="info.avatar || defaultIcon"/>
                             </span>
-                            <el-button size="small" type="primary">点击上传</el-button>
+                            <el-upload
+                                class="avatar-uploader"
+                                :action="uploadSrc"
+                                :show-file-list="false"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                            </el-upload>
                         </el-form-item>
                         <el-form-item label="昵称" prop="username" :rules="rules.username">
                             <el-input v-model="info.username"></el-input>
@@ -23,7 +30,7 @@
                             <el-input v-model="info.email"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button size="small" type="primary">更新基本信息</el-button>
+                            <el-button size="small" type="primary" @click="save">更新基本信息</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -34,7 +41,10 @@
 </template>
 
 <script>
-const defaultIcon = 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+import {mapGetters, mapActions} from 'vuex'
+import {updateUser} from '@/services/user.service'
+import {defaultIcon} from '@/config/global.config'
+
 export default {
   props: {
     visible: {
@@ -62,16 +72,56 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['user']),
+    uploadSrc () {
+      if (this.user) {
+        return `http://${location.host}/api/user/${this.user.id}/avater`
+      } else {
+        return ''
+      }
+    }
+  },
+  watch: {
+    user: {
+      immediate: true,
+      deep: true,
+      handler (val) {
+        if (val) this.info = {...val}
+      }
+    }
+  },
   methods: {
-    onOk () {
-
-    },
+    ...mapActions({
+      getUser: 'FETCH_USER_INFO'
+    }),
     onCancel () {
       this.$emit('update:visible')
       this.$emit('close')
     },
-    handleClick () {
+    async save () {
+      console.log(this.info)
+      await updateUser(this.user.id, {
+        username: this.info.username,
+        email: this.info.email
+      })
+      this.getUser()
+      this.onCancel()
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
 
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
+    handleAvatarSuccess (res, file) {
+      this.info.avatar = URL.createObjectURL(file.raw)
     }
   }
 }

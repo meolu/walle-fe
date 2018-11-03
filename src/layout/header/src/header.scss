@@ -111,4 +111,15 @@ $font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica, sans-serif;
       padding-right: 12px;
     }
   }
+
+  .el-input__inner {
+    border: 0;
+  }
+
+  @include e(space-menu) {
+    .selected {
+      color: #409eff;
+      font-weight: 700;
+    }
+  }
 }

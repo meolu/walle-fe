@@ -67,7 +67,7 @@ export default {
     return {
       breadcrumbData: [
         {
-          to: '/task/list',
+          to: '/deploy/index',
           name: '上线单'
         },
         {
@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     checkServers () {
-      if (this.project.server_ids.length === this.task.servers.split(',').length) {
+      if (this.project.servers_info.length === this.task.servers_info.length) {
         return '全量服务器上线'
       } else {
         return '自定义服务器上线'
@@ -112,11 +112,11 @@ export default {
       const {data} = await getProject(projectId || this.task.project_id)
       this.project = data
       if (!this.isNew) {
-        this.form.servers = this.project.server_ids.filter(item => {
+        this.form.servers = this.project.servers_info.filter(item => {
           return this.task.servers.split(',').indexOf(item.id.toString()) > -1
         })
       } else {
-        this.form.servers = [].concat(this.project.server_ids)
+        this.form.servers = [].concat(this.project.servers_info)
       }
       if (!this.isNew) {
         this.form.servers_mode = this.checkServers()
@@ -179,7 +179,7 @@ export default {
         type: 'success',
         message: '添加成功'
       })
-      this.$router.push('/task/list')
+      this.$router.push('/deploy/index')
     },
     async updateTask () {
       await updateTask(this.$route.params.taskId, this.requertForm())
@@ -187,7 +187,7 @@ export default {
         type: 'success',
         message: '修改成功'
       })
-      this.$router.push('/task/list')
+      this.$router.push('/deploy/index')
     },
     deleteServer (tag, index) {
       this.form.servers.splice(index, 1)
@@ -198,7 +198,7 @@ export default {
       immediate: true,
       handler (val) {
         if (val === '全量服务器上线') {
-          this.form.servers = this.project && this.project.server_ids ? [].concat(this.project.server_ids) : []
+          this.form.servers = this.project && this.project.servers_info ? [].concat(this.project.servers_info) : []
         }
       }
     },

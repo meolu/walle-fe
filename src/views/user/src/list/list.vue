@@ -26,7 +26,7 @@
 <script>
 import COLUMNS from './columns'
 import addUserDialog from './add.user.dialog.vue'
-import {getUsers, deleteUser, updateUser} from '@/services/user.service'
+import {getUsers, deleteUser, blockUser, activeUser} from '@/services/user.service'
 export default {
   name: 'user-list',
   components: {
@@ -63,11 +63,11 @@ export default {
       }
     },
     async lock (row) {
-      await updateUser(row.id, {
-        status: 2,
-        role_id: row.role_id,
-        username: row.username
-      })
+      if (row.status === '正常') {
+        await blockUser(row.id)
+      } else if (row.status === 2) {
+        await activeUser(row.id)
+      }
       this.callServe()
     },
     delete (row) {
@@ -103,7 +103,7 @@ export default {
         <div>
           <el-button type="text" size="small" icon="el-icon-edit" onClick={() => this.edit({...scope.row})}>编辑</el-button>
           <el-button type="text" class="user-delete" size="small" icon="el-icon-delete" onClick={() => this.delete({...scope.row})}>删除</el-button>
-          <el-button type="text" size="small" icon="wl-icon-lock" onClick={() => this.lock({...scope.row})}>冻结</el-button>
+          <el-button type="text" size="small" icon="wl-icon-lock" onClick={() => this.lock({...scope.row})}>{scope.row.status === '正常' ? '冻结' : '激活'}</el-button>
         </div>
       )
     }

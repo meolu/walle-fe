@@ -18,7 +18,7 @@
             </el-form-item>
             <el-form-item label="角色" label-width="120px" prop="role_id" :rules="rules.role_id" :error="error.role_id">
               <el-select size="small" v-model="form.role_id" placeholder="请分配角色" class="wl-add-user__option">
-                  <el-option v-for="role in roles" :key="role.id" :label="role.role_name" :value="role.id"></el-option>
+                  <el-option v-for="(role, id) in roles" :key="id" :label="role" :value="id"></el-option>
               </el-select>
             </el-form-item>
         </el-form>
@@ -31,7 +31,8 @@
 
 <script>
 import {addUser, updateUser} from '@/services/user.service'
-import {getRoles} from '@/services/role.service'
+// import {getRoles} from '@/services/role.service'
+import {ROLES} from '@/config/global.config'
 export default {
   props: {
     visible: {
@@ -42,7 +43,7 @@ export default {
   },
   data () {
     return {
-      roles: [],
+      roles: ROLES,
       error: this.initError(),
       form: this.initForm(0),
       updatePasswordRules: [{ pattern: /(?=\d{0,}[a-zA-Z])(?=[a-zA-Z]{0,}\d)[a-zA-Z0-9]{6,}/, message: '密码强度不足', trigger: 'blur' }],
@@ -65,16 +66,16 @@ export default {
     }
   },
   watch: {
-    visible: {
-      immediate: true,
-      handler (val) {
-        if (val) {
-          this.getRoles({}, {
-            target: '.wl-add-user__option'
-          })
-        }
-      }
-    },
+    // visible: {
+    //   immediate: true,
+    //   handler (val) {
+    //     if (val) {
+    //       this.getRoles({}, {
+    //         target: '.wl-add-user__option'
+    //       })
+    //     }
+    //   }
+    // },
     user (val) {
       if (this.visible) {
         if (val) {
@@ -96,10 +97,10 @@ export default {
     }
   },
   methods: {
-    async getRoles () {
-      let {data: {list}} = await getRoles()
-      this.roles = list
-    },
+    // async getRoles () {
+    //   let {data: {list}} = await getRoles()
+    //   this.roles = list
+    // },
     onOk () {
       this.$refs.form.validate((valid) => {
         if (valid) {
