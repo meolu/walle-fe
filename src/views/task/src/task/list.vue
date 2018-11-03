@@ -24,7 +24,7 @@
 
 <script>
 import COLUMNS from './columns'
-import {getTasks, deleteTask, updateTask} from '@/services/task.service'
+import {getTasks, deleteTask, auditTask, rejectTask} from '@/services/task.service'
 export default {
   name: 'tasks',
   data () {
@@ -63,9 +63,22 @@ export default {
     },
     renderReview (row) {
       if (row.status === 0) {
-        return <el-button type="text" size="small" onClick={() => this.review({...row})}>审核</el-button>
+        return <el-popover
+          placement="bottom-start">
+          <div class="wl-task__review">
+            <p>审核是否通过？</p>
+            <div class="footer">
+              <el-button type="text" size="small" onClick={() => { this.rejectTask(row) }}>驳回</el-button>
+              <el-button type="primary" size="mini" onClick={() => { this.auditTask(row) }}>通过</el-button>
+            </div>
+          </div>
+          <el-button type="text" class="review" slot="reference" size="small">审核</el-button>
+        </el-popover>
       }
       return null
+    },
+    closePopover () {
+      document.body.click()
     },
     renderDeploy (row) {
       if (row.status === 1) {
@@ -73,14 +86,20 @@ export default {
       }
       return null
     },
-    async review (row) {
-    // 审核上线单
-      await updateTask(row.id, {
-        name: row.name,
-        project_id: row.project_id,
-        servers: row.servers,
-        status: 1
+    async rejectTask (row) {
+      // 驳回上线单
+      await rejectTask(row.id)
+      this.closePopover()
+      this.callServe()
+      this.$message({
+        type: 'success',
+        message: '审核驳回!'
       })
+    },
+    async auditTask (row) {
+      // 审核上线单
+      await auditTask(row.id)
+      this.closePopover()
       this.callServe()
       this.$message({
         type: 'success',
@@ -89,6 +108,7 @@ export default {
     },
     deploy (row) {
       // 上线
+      this.$router.push(`/task/deploy/${row.id}`)
     },
     async deleteTask (row) {
       await deleteTask(row.id)
@@ -111,6 +131,11 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    getClass (row) {
+      if (row.status !== 0 && row.status !== 1) {
+        return 'empty'
+      }
     }
   }
 }
@@ -137,5 +162,25 @@ export default {
    .el-table thead th {
      background-color: $--table-header-background;
    }
+
+   .cell .review {
+     margin-right: 10px;
+   }
+   .cell .empty {
+     margin-left: 36px;
+   }
+
+   @include e(review) {
+    p {
+      text-align: center;
+      font-size: 14px;
+      line-height: 30px;
+      margin-bottom: 10px;
+    }
+
+    .footer {
+      text-align: right;
+    }
+  }
 }
 </style>

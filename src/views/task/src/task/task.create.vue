@@ -20,7 +20,7 @@ export default {
     return {
       breadcrumbData: [
         {
-          to: '/task/list',
+          to: '/deploy/index',
           name: '上线单'
         },
         {

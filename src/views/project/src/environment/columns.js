@@ -1,3 +1,7 @@
+const STATUS = {
+  0: '无效',
+  1: '正常'
+}
 export default function () {
   const self = this
   return [
@@ -9,7 +13,10 @@ export default function () {
     {
       label: '状态',
       width: 250,
-      prop: 'status'
+      prop: 'status',
+      render (h, scope) {
+        return STATUS[scope.row.status]
+      }
     },
     {
       label: '操作',

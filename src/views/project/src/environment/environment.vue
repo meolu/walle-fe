@@ -55,6 +55,7 @@ export default {
     },
     addEnvironment () {
       this.addEnvironmentDialogVisible = true
+      this.currentEditEnvironment = null
     },
     edit (row) {
       this.addEnvironmentDialogVisible = true

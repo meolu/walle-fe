@@ -12,7 +12,7 @@
               </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" size="small" icon="el-icon-edit" @click="addEnvironment">添加</el-button>
+                <el-button type="primary" size="small" icon="el-icon-edit" @click="addServer">添加</el-button>
               </el-form-item>
             </el-form>
         <wl-table
@@ -53,8 +53,9 @@ export default {
     search () {
       this.callServe()
     },
-    addEnvironment () {
+    addServer () {
       this.addServerDialogVisible = true
+      this.currentEditServer = null
     },
     edit (row) {
       this.addServerDialogVisible = true
@@ -63,7 +64,7 @@ export default {
       }
     },
     delete (row) {
-      this.$confirm('确定删除该环境吗?', '提示', {
+      this.$confirm('确定删除该服务器吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

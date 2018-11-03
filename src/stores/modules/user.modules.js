@@ -2,30 +2,36 @@ import { getUserMenu } from '@/services/user.service'
 
 const state = {
   user: null,
-  menu: null
+  menu: null,
+  space: null
 }
 
 const getters = {
-  userName ({ user }) {
-    return user.name
+  user ({ user }) {
+    return user
+  },
+  space ({space}) {
+    return space
+  },
+  menu ({menu}) {
+    return menu
   }
 }
 
 const mutations = {
-  FETCH_USER_INFO (state, {user, menu}) {
+  SET_USER_INFO (state, {user, space, menu}) {
     state.user = user
     state.menu = menu
+    state.space = space
   }
 }
 
 const actions = {
   async FETCH_USER_INFO ({ commit }) {
-    let user = null
-    try {
-      const { data } = await getUserMenu()
-      user = data
-    } catch (err) {}
-    commit('FETCH_USER_INFO', user)
+    // try {
+    const { data } = await getUserMenu()
+    // } catch (err) {}
+    commit('SET_USER_INFO', data)
   }
 }
 

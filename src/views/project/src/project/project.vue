@@ -61,6 +61,9 @@ export default {
     edit (row) {
       this.$router.push(`/project/edit/${row.id}`)
     },
+    editmembers (row) {
+      this.$router.push(`/project/members/${row.id}`)
+    },
     async deleteRole (row) {
       await deleteProject(row.id)
       this.callServe()
@@ -70,7 +73,7 @@ export default {
       })
     },
     delete (row) {
-      this.$confirm('确定删除该角色吗?', '提示', {
+      this.$confirm('确定删除该项目吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

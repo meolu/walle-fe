@@ -1,13 +1,5 @@
 <template>
   <header class="wl-header">
-    <!-- 消息模板 -->
-    <!-- <el-popover
-      ref="poperMsg"
-      placement="bottom"
-      width="200"
-      trigger="click">
-      <h1>我是消息模板</h1>
-    </el-popover> -->
     <div class="logo" :class="{'is-collapse': isCollapse}">
       <img src='~assets/img/logo.png'>
       <h1>&nbsp; Walle</h1>
@@ -15,17 +7,23 @@
     <div class="tool">
       <i class="btn-collapse wl-icon-expend" @click="onCollapse"></i>
       <div class="user">
-        <!-- <div class="wl-header__btns">
-          <span class="btn" v-popover:poperMsg>
-            <el-badge :value="10" :max="99">
-              <i class="wl-icon-msg"></i>
-            </el-badge>
+        <el-dropdown v-if="space" class="user-info" @command="toggleSpace" trigger="click">
+          <span>
+            {{space.current.name}}
+            <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
-        </div> -->
+          <el-dropdown-menu slot="dropdown" class="wl-header__space-menu">
+            <el-dropdown-item
+              :class="{'selected':item.id===space.current.id}"
+              v-for="item in space.available"
+              :key="item.id"
+              :command="item">{{item.name}}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <el-dropdown class="user-info" @command="command">
           <span>
-            <img src="https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png">
-            陈凤娟
+            <img :src="user&&user.avatar||defaultIcon">
+            <span v-if="user&&user.username">{{user.username}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
@@ -39,8 +37,10 @@
   </header>
 </template>
 <script>
-// import {logout} from '@/services/user.service'
+import {mapGetters} from 'vuex'
 import SelfDialog from './self.dialog.vue'
+import {defaultIcon} from '@/config/global.config'
+
 export default {
   name: 'wl-header',
   components: {
@@ -48,10 +48,13 @@ export default {
   },
   data () {
     return {
-      user: '',
       isCollapse: false,
-      visible: false
+      visible: false,
+      defaultIcon
     }
+  },
+  computed: {
+    ...mapGetters(['space', 'user'])
   },
   methods: {
     command (command) {
@@ -67,6 +70,10 @@ export default {
     onCollapse () {
       this.isCollapse = !this.isCollapse
       this.$emit('toggle', this.isCollapse)
+    },
+    toggleSpace (space) {
+      console.log(space)
+      // this.activeSpace = space
     }
   }
 }

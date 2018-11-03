@@ -48,14 +48,12 @@ export default {
   },
   watch: {
     server (val) {
-      if (this.visible) {
-        if (val) {
-          let {host, name} = val
-          this.form.name = name
-          this.form.host = host
-        } else {
-          this.form = this.initForm()
-        }
+      if (val) {
+        let {host, name} = val
+        this.form.name = name
+        this.form.host = host
+      } else {
+        this.form = this.initForm()
       }
     }
   },

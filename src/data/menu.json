@@ -1,49 +1,40 @@
-[{
-    "text": "首页",
+[
+  {
+    "title": "首页",
     "icon": "wl-icon-main",
     "url": "/"
   },
   {
-    "text": "空间管理",
+    "title": "空间管理",
     "icon": "wl-icon-space-set",
-    "url": "/space/list"
+    "url": "/space/index"
   },
   {
-    "text": "用户中心",
+    "title": "用户管理",
     "icon": "wl-icon-user-set",
-    "child": [{
-        "text": "用户管理",
-        "url": "/user/list"
-      },{
-        "text": "用户组",
-        "url": "/user/groups"
-      }
-    ]
+    "url": "/user/index"
   },
   {
-    "text": "项目中心",
+    "title": "项目中心",
     "icon": "wl-icon-project-set",
-    "child": [{
-        "text": "项目管理",
-        "url": "/project/list"
+    "sub_menu": [{
+        "title": "项目管理",
+        "url": "/project/index"
       },{
-        "text": "环境管理",
-        "url": "/project/environment"
+        "title": "环境管理",
+        "url": "/environment/index"
       },
       {
-        "text": "服务器管理",
-        "url": "/project/server"
+        "title": "服务器管理",
+        "url": "/server/index"
       }
     ]
   },
   {
-    "text": "部署中心",
+    "title": "部署中心",
     "icon": "wl-icon-deploy-set",
-    "child": [{
-      "text": "上线单管理",
-      "url": "/task/list"
-    }
-  ]
+    "url": "/deploy/index",
+    "sub_menu": []
   }
   ]
   

@@ -12,7 +12,7 @@
             </el-form-item>
             <el-form-item label="所属人" label-width="120px" prop="user_id" :rules="rules.user_id" :error="error.user_id">
               <el-select size="small" v-model="form.user_id" placeholder="请分配用户" class="wl-add-space__option">
-                  <el-option v-for="user in users" :key="user.id" :label="user.name" :value="user.id"></el-option>
+                  <el-option v-for="user in users" :key="user.id" :label="user.username" :value="user.id"></el-option>
               </el-select>
             </el-form-item>
         </el-form>
@@ -38,7 +38,7 @@ export default {
     return {
       users: [],
       error: this.initError(),
-      form: this.initForm(0),
+      form: this.initForm(),
       rules: {
         name: [
           { required: true, message: '请输入用户名', trigger: 'blur' }
@@ -54,6 +54,9 @@ export default {
       immediate: true,
       handler (val) {
         if (val) {
+          Object.assign(this.form, {
+            ...this.initForm(0)
+          })
           this.getUsers({}, {
             target: '.wl-add-space__option'
           })
@@ -110,6 +113,7 @@ export default {
     async sendData () {
       try {
         this.error = this.initError()
+        console.log(this.form)
         this.isNew && await addSpace(this.form)
         this.isNew || await updateSpace(this.space.id, this.form)
         this.$emit('update:visible')

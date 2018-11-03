@@ -54,6 +54,44 @@ export function updateUser (id, params = {}) {
 
 /**
  *
+ * 冻结用户
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function blockUser (id, params = {}) {
+  return put(`user/${id}/block/`, params, {
+    target: '.wl-table',
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
+}
+
+/**
+ *
+ * 激活用户
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function activeUser (id, params = {}) {
+  return put(`user/${id}/active/`, params, {
+    target: '.wl-table',
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
+}
+
+/**
+ *
  * 删除用户
  * @export
  * @param {any} [params={}]
@@ -71,7 +109,7 @@ export function deleteUser (id, params = {}) {
  * @returns Promise
  */
 export function getUserMenu (params = {}) {
-  return get('public/menu/', params, {
+  return get('general/menu', params, {
     isLoading: false
   })
 }
@@ -103,6 +141,24 @@ export function login (params = {}) {
  */
 export function logout (params = {}) {
   return post('passport/logout', params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
+}
+
+/**
+ *
+ * 用户头像上传
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function avater (id, params = {}) {
+  return post(`user/${id}/avater`, params, {
     headers: {
       'content-type': 'multipart/form-data'
     },

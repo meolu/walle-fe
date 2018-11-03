@@ -64,6 +64,42 @@ export function updateTask (id, params = {}) {
 
 /**
  *
+ * 通过上线单
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function auditTask (id, params = {}) {
+  return put(`task/${id}/audit`, params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
+}
+
+/**
+ *
+ * 驳回上线单
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function rejectTask (id, params = {}) {
+  return put(`task/${id}/reject`, params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
+}
+
+/**
+ *
  * 删除上线单
  * @export
  * @param {any} [params={}]
@@ -72,3 +108,14 @@ export function updateTask (id, params = {}) {
 export function deleteTask (id, params = {}) {
   return Delete(`task/${id}`, params)
 }
+
+// export function deployTask (params = {}) {
+//   return post('deploy/', params, {
+//     headers: {
+//       'content-type': 'multipart/form-data'
+//     },
+//     transformRequest: [function (data) {
+//       return qs.stringify(data)
+//     }]
+//   })
+// }

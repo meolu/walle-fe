@@ -138,7 +138,7 @@ export default {
     return {
       breadcrumbData: [
         {
-          to: '/project/list',
+          to: '/project/index',
           name: '项目'
         },
         {
@@ -220,7 +220,7 @@ export default {
     },
     async init () {
       const {data} = await getProject(this.id)
-      this.target_servers = data.server_ids.map(item => item.id)
+      this.target_servers = data.servers_info.map(item => item.id)
       this.form = {
         ...this.initForm(),
         ...data,
@@ -278,7 +278,7 @@ export default {
         type: 'success',
         message: this.isNew ? '添加成功' : '修改成功'
       })
-      this.$router.push('/project/list')
+      this.$router.push('/project/index')
     }
   }
 }

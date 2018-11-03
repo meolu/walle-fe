@@ -65,6 +65,24 @@ export function updateProject (id, params = {}) {
 
 /**
  *
+ * 更新项目
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function updateProjectMembers (id, params = {}) {
+  return put(`project/${id}/members`, params, {
+    // headers: {
+    //   'content-type': 'row'
+    // },
+    // transformRequest: [function (data) {
+    //   return qs.stringify(data)
+    // }]
+  })
+}
+
+/**
+ *
  * 删除项目
  * @export
  * @param {any} [params={}]

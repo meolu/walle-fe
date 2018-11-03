@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import component from './components'
+import store from './stores'
 import router from './router'
 
 Vue.config.productionTip = false
@@ -13,6 +14,7 @@ Vue.use(component)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

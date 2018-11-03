@@ -60,9 +60,9 @@ export default {
   },
   methods: {
     async getGroupInfo () {
-      let {data:{group_name, user_info}} = await getGroup(this.id) // eslint-disable-line
+      let {data:{group_name, members}} = await getGroup(this.id) // eslint-disable-line
       this.name = group_name // eslint-disable-line
-      this.groupUserList = user_info // eslint-disable-line
+      this.groupUserList = members // eslint-disable-line
     },
     handleFilterSelect (user) {
       this.groupUserList.push(user)
