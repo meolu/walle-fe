@@ -58,8 +58,8 @@ export default function () {
           <div>
             {self.renderReview({...scope.row})}
             {self.renderDeploy({...scope.row})}
-            <el-button type="text" class={self.getClass({...scope.row})} icon="el-icon-edit" size="small" onClick={() => self.edit({...scope.row})}>编辑</el-button>
-            <el-button type="text" class="user-delete" icon="el-icon-delete" size="small" onClick={() => self.delete({...scope.row})}>删除</el-button>
+            {self.renderEditTool({...scope.row})}
+            {self.renderDeleteTool({...scope.row})}
           </div>
         )
       }

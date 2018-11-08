@@ -47,13 +47,18 @@ export default {
     }
   },
   watch: {
-    server (val) {
+    visible (val) {
       if (val) {
-        let {host, name} = val
-        this.form.name = name
-        this.form.host = host
-      } else {
-        this.form = this.initForm()
+        if (this.server) {
+          let {host, name} = this.server
+          this.form.name = name
+          this.form.host = host
+        } else {
+          this.form = this.initForm()
+        }
+        this.$nextTick(() => {
+          this.$refs.form && this.$refs.form.clearValidate()
+        })
       }
     }
   },

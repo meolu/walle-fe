@@ -11,7 +11,7 @@
                 <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
               </el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item v-if="enableCreate">
                 <el-button type="primary" size="small" icon="el-icon-edit" @click="addEnvironment">添加</el-button>
               </el-form-item>
             </el-form>
@@ -34,6 +34,7 @@ export default {
   },
   data () {
     return {
+      enableCreate: false,
       value: '',
       columns: COLUMNS.call(this),
       currentEditEnvironment: null,
@@ -42,11 +43,12 @@ export default {
   },
   methods: {
     async callServe (table = this.$refs.table) {
-      let {data: {list, count}} = await getEnvironments({
+      let {data: {list, count, enable_create}} = await getEnvironments({ // eslint-disable-line
         size: table.page.size,
         page: table.page.currentPage,
         kw: this.value
       })
+      this.enableCreate = enable_create // eslint-disable-line
       table.page.total = count
       table.list = list
     },
@@ -91,11 +93,27 @@ export default {
       this.currentEditEnvironment = null
     },
 
+    renderEditTool (row) {
+      if (row.enable_update) {
+        return <el-button type="text" size="small" icon="el-icon-edit" onClick={() => this.edit({...row})}>编辑</el-button>
+      } else {
+        return null
+      }
+    },
+
+    renderDeleteTool (row) {
+      if (row.enable_delete) {
+        return <el-button type="text" class="user-delete" size="small" icon="el-icon-delete" onClick={() => this.delete({...row})}>删除</el-button>
+      } else {
+        return null
+      }
+    },
+
     renderTools (scope) {
       return (
         <div>
-          <el-button type="text" size="small" icon="el-icon-edit" onClick={() => this.edit({...scope.row})}>编辑</el-button>
-          <el-button type="text" class="user-delete" size="small" icon="el-icon-delete" onClick={() => this.delete({...scope.row})}>删除</el-button>
+          {this.renderEditTool(scope.row)}
+          {this.renderDeleteTool(scope.row)}
         </div>
       )
     }

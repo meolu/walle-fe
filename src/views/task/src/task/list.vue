@@ -11,7 +11,7 @@
                   <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
                 </el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item v-if="enableCreate">
                 <el-button type="primary" size="small" @click="addTask">新建上线单</el-button>
               </el-form-item>
             </el-form>
@@ -29,6 +29,7 @@ export default {
   name: 'tasks',
   data () {
     return {
+      enableCreate: false,
       value: '',
       columns: COLUMNS.call(this),
       form: {
@@ -44,11 +45,12 @@ export default {
   },
   methods: {
     async callServe (table = this.$refs.table) {
-      let {data: {list, count}} = await getTasks({
+      let {data: {list, count, enable_create}} = await getTasks({ // eslint-disable-line
         size: table.page.size,
         page: table.page.currentPage,
         kw: this.value
       })
+      this.enableCreate = enable_create // eslint-disable-line
       table.page.total = count
       table.list = list
     },
@@ -61,8 +63,11 @@ export default {
     edit (row) {
       this.$router.push(`/task/edit/${row.id}`)
     },
+    closePopover () {
+      document.body.click()
+    },
     renderReview (row) {
-      if (row.status === 0) {
+      if (row.status === 0 && row.enable_audit) {
         return <el-popover
           placement="bottom-start">
           <div class="wl-task__review">
@@ -77,14 +82,25 @@ export default {
       }
       return null
     },
-    closePopover () {
-      document.body.click()
-    },
     renderDeploy (row) {
-      if (row.status === 1) {
+      if (row.status === 1 && row.enable_online) {
         return <el-button type="text" size="small" onClick={() => this.deploy({...row})}>上线</el-button>
       }
       return null
+    },
+    renderEditTool (row) {
+      if (row.enable_update) {
+        return <el-button type="text" class={this.getClass({...row})} icon="el-icon-edit" size="small" onClick={() => this.edit({...row})}>编辑</el-button>
+      } else {
+        return null
+      }
+    },
+    renderDeleteTool (row) {
+      if (row.enable_delete) {
+        return <el-button type="text" class="user-delete" icon="el-icon-delete" size="small" onClick={() => this.delete({...row})}>删除</el-button>
+      } else {
+        return null
+      }
     },
     async rejectTask (row) {
       // 驳回上线单

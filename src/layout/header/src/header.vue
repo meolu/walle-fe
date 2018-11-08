@@ -40,6 +40,7 @@
 import {mapGetters} from 'vuex'
 import SelfDialog from './self.dialog.vue'
 import {defaultIcon} from '@/config/global.config'
+import {logout} from '@/services/user.service'
 
 export default {
   name: 'wl-header',
@@ -60,8 +61,8 @@ export default {
     command (command) {
       this[command] && this[command]()
     },
-    logout () {
-      // await logout()
+    async logout () {
+      await logout()
       this.$router.replace('/login')
     },
     self () {
