@@ -1,5 +1,6 @@
 <template>
     <el-row class="wl-task-project">
+        <div v-if="data.length===0" class="wl-task-project__no-data">这里还没有项目</div>
         <el-col :span="6" v-for="project in data" :key="project.id">
             <div class="wl-task-project__item" @click="()=>{enter(project)}">{{project.name}}</div>
         </el-col>
@@ -22,7 +23,9 @@ export default {
   },
   methods: {
     async getProjects () {
-      let {data: {list}} = await getProjects({}, {
+      let {data: {list}} = await getProjects({
+        environment_id: this.environmentId
+      }, {
         target: '.wl-task-project'
       })
       this.data = list
@@ -57,6 +60,10 @@ export default {
             font-size: 15px;
             opacity: 1;
         }
+    }
+
+    @include e(no-data) {
+      text-align: center;
     }
 }
 </style>
