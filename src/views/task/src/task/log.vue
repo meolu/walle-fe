@@ -5,7 +5,7 @@
                 <template v-for="(item,i) in value">
                     <div class="wl-task-log__line" :key="i+'command'">
                         <a></a>
-                        <span class="command">{{getLogCommand(item)}}</span>
+                        <span class="command">$ {{getLogCommand(item)}}</span>
                     </div>
                     <div class="wl-task-log__line" :key="i+'log'" v-if="getLogContext(item)">
                         <a></a>
@@ -98,7 +98,7 @@ export default {
         }
 
         span {
-          color: #bbb;
+          color: #B1FD79;
         }
 
         .error {
@@ -106,7 +106,7 @@ export default {
         }
 
         .success {
-          color: #B1FD79;
+          color: #bbb;
         }
       }
 }

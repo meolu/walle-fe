@@ -1,7 +1,7 @@
 <template>
   <header class="wl-header">
     <div class="logo" :class="{'is-collapse': isCollapse}">
-      <img src='~assets/img/logo.png'>
+      <img src='~assets/img/logo3.png'>
       <h1>&nbsp; Walle</h1>
     </div>
     <div class="tool">
@@ -37,7 +37,7 @@
   </header>
 </template>
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 import SelfDialog from './self.dialog.vue'
 import {defaultIcon} from '@/config/global.config'
 import {logout} from '@/services/user.service'
@@ -58,6 +58,9 @@ export default {
     ...mapGetters(['space', 'user'])
   },
   methods: {
+    ...mapActions({
+      getUserInfo: 'FETCH_USER_INFO'
+    }),
     command (command) {
       this[command] && this[command]()
     },
@@ -75,6 +78,8 @@ export default {
     toggleSpace (space) {
       console.log(space)
       // this.activeSpace = space
+      this.$router.push('/')
+      this.getUserInfo()
     }
   }
 }
