@@ -3,6 +3,7 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item v-for="item in data" :key="item.name" :to="{ path: item.to }">{{item.name}}</el-breadcrumb-item>
         </el-breadcrumb>
+          <slot></slot>
          <el-button v-if="isBackButton" type="primary" size="small" @click="back">返回</el-button>
     </div>
 </template>

@@ -199,6 +199,7 @@ export default {
       handler (val) {
         if (val === '全量服务器上线') {
           this.form.servers = this.project && this.project.servers_info ? [].concat(this.project.servers_info) : []
+          console.log(this.form.servers)
         }
       }
     },

@@ -1,0 +1,2 @@
+webpackJsonp([9],{"/Fi9":function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var s={render:function(){this.$createElement;this._self._c;return this._m(0)},staticRenderFns:[function(){var t=this.$createElement,e=this._self._c||t;return e("div",{staticClass:"wl-home"},[e("h2",[this._v("更快，更优，更 Cool !"),e("br"),this._v("欢迎使用 WALLE")])])}]};var i=n("VU/8")(null,s,!1,function(t){n("aEAt")},null,null);e.default=i.exports},aEAt:function(t,e){}});
+//# sourceMappingURL=9.7b32da01054d38f1c85a.js.map

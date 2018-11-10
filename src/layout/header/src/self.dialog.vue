@@ -16,6 +16,7 @@
                             </span>
                             <el-upload
                                 class="avatar-uploader"
+                                name="avater"
                                 :action="uploadSrc"
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccess"

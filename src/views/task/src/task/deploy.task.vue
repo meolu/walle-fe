@@ -1,26 +1,31 @@
 <template>
     <div class="wl-task-deploy">
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
-        <el-steps :active="activeStep" finish-status="finish">
+        <div class="wl-task-deploy__header" v-if="task">
+          <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
+           <el-button type="success" size="small" @click="start" :disabled="isStart">开始</el-button>
+        </div>
+        <el-steps :active="activeStep" finish-status="finish" v-if="isStart">
+          <el-step title="prev_deploy"></el-step>
+            <el-step title="deploy"></el-step>
+            <el-step title="post_deploy"></el-step>
             <el-step title="prev_release"></el-step>
             <el-step title="release"></el-step>
             <el-step title="post_release"></el-step>
-            <el-step title="prev_deploy"></el-step>
-            <el-step title="deploy"></el-step>
-            <el-step title="post_deploy"></el-step>
         </el-steps>
-        <deploy-log :value="record"></deploy-log>
+        <deploy-log :value="record" v-if="isStart"></deploy-log>
     </div>
 </template>
 <script>
 import DeployLog from './log.vue'
+import {getTask} from '@/services/task.service'
 const STAGE = {
-  prev_release: 1,
-  release: 2,
-  post_release: 3,
-  prev_deploy: 4,
-  deploy: 5,
-  post_deploy: 6
+  prev_deploy: 1,
+  deploy: 2,
+  post_deploy: 3,
+  prev_release: 4,
+  release: 5,
+  post_release: 6
 }
 export default {
   components: {DeployLog},
@@ -42,16 +47,26 @@ export default {
       activeStep: 0,
       record: [],
       loading: null,
-      reConnectCount: 5
+      reConnectCount: 5,
+      task: null,
+      isStart: false
     }
   },
   created () {
-    this.initWebSocket()
+    this.getTask()
   },
   destroyed () {
     this.websock.close() // 离开路由之后断开websocket连接
   },
   methods: {
+    async getTask () {
+      const {data} = await getTask(this.taskId)
+      this.task = data
+    },
+    start () {
+      this.isStart = true
+      this.initWebSocket()
+    },
     initWebSocket () { // 初始化weosocket
       const wsuri = `ws://api.walle-web.io/websocket/console`
       this.websock = new WebSocket(wsuri)
@@ -82,8 +97,6 @@ export default {
     websocketonmessage (e) { // 数据接收
       const redata = JSON.parse(e.data)
       this.record.push(redata)
-      // this.activeStep++
-      console.log(redata)
       if (redata && redata.stage) {
         this.activeStep = STAGE[redata.stage]
       }
@@ -113,6 +126,17 @@ export default {
 
    .wl-breadcrumb {
      min-height: 35px;
+   }
+
+   @include e(header) {
+     line-height: 40px;
+     height: 40px;
+     margin-bottom: 20px;
+
+     .title {
+       margin-right: 10px;
+       font-size: 16px;
+     }
    }
 }
 </style>

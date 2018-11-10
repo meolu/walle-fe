@@ -3,6 +3,7 @@ import Vue from 'vue'
 import Layout from '@/layout'
 import Router from 'vue-router'
 import Login from '@/views/login'
+import Home from '@/views/home'
 import User from '@/views/user'
 import Project from '@/views/project'
 import Task from '@/views/task'
@@ -25,6 +26,7 @@ const redirectRoute = {
 }
 
 Login(routes)
+Home(rootRouter.children)
 User(rootRouter.children)
 Project(rootRouter.children)
 Task(rootRouter.children)

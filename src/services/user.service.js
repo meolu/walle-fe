@@ -110,7 +110,7 @@ export function deleteUser (id, params = {}) {
  */
 export function getUserMenu (params = {}) {
   return get('general/menu', params, {
-    isLoading: false
+    target: '.wl-layout'
   })
 }
 
