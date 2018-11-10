@@ -16,7 +16,7 @@
                             </span>
                             <el-upload
                                 class="avatar-uploader"
-                                name="avater"
+                                name="avatar"
                                 :action="uploadSrc"
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccess"
@@ -77,7 +77,7 @@ export default {
     ...mapGetters(['user']),
     uploadSrc () {
       if (this.user) {
-        return `http://${location.host}/api/user/${this.user.id}/avater`
+        return `http://${location.host}/api/user/${this.user.id}/avatar`
       } else {
         return ''
       }
@@ -101,10 +101,10 @@ export default {
       this.$emit('close')
     },
     async save () {
-      console.log(this.info)
       await updateUser(this.user.id, {
         username: this.info.username,
-        email: this.info.email
+        email: this.info.email,
+        avatar: this.info.avatar
       })
       this.getUser()
       this.onCancel()
@@ -122,7 +122,7 @@ export default {
       return isJPG && isLt2M
     },
     handleAvatarSuccess (res, file) {
-      this.info.avatar = URL.createObjectURL(file.raw)
+      this.info.avatar = res.data.avatar
     }
   }
 }
