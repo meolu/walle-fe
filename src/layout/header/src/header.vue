@@ -41,6 +41,7 @@ import {mapGetters, mapActions} from 'vuex'
 import SelfDialog from './self.dialog.vue'
 import {defaultIcon} from '@/config/global.config'
 import {logout} from '@/services/user.service'
+import {switchSpace} from '@/services/space.service'
 
 export default {
   name: 'wl-header',
@@ -75,9 +76,8 @@ export default {
       this.isCollapse = !this.isCollapse
       this.$emit('toggle', this.isCollapse)
     },
-    toggleSpace (space) {
-      console.log(space)
-      // this.activeSpace = space
+    async toggleSpace (space) {
+      await switchSpace(space.id)
       this.$router.push('/')
       this.getUserInfo()
     }

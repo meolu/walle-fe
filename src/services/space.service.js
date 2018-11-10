@@ -62,3 +62,14 @@ export function updateSpace (id, params = {}) {
 export function deleteSpace (id, params = {}) {
   return Delete(`space/${id}`, params)
 }
+
+/**
+ *
+ * 切换空间
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function switchSpace (id, params = {}) {
+  return put(`space/${id}/switch`, params)
+}
