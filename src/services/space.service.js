@@ -17,6 +17,17 @@ export function getSpaces (params = {}) {
 
 /**
  *
+ * 获取空间
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function getSpace (id, params = {}) {
+  return get(`space/${id}`, params)
+}
+
+/**
+ *
  * 新增空间
  * @export
  * @param {any} [params={}]

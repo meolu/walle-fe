@@ -140,7 +140,7 @@ export default {
         width: 70px;
         height: 70px;
         border-radius: 36px;
-        padding-right: 12px;
+        margin-right: 12px;
     }
 
     .item {

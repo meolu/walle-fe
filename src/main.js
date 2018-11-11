@@ -3,12 +3,16 @@
 import Vue from 'vue'
 import App from './App'
 import component from './components'
+import RouterConfig from './config/router.config'
 import store from './stores'
 import router from './router'
 
 Vue.config.productionTip = false
 
 Vue.use(component)
+
+// router 处理
+RouterConfig(router, store)
 
 /* eslint-disable no-new */
 new Vue({

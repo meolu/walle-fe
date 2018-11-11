@@ -8,4 +8,10 @@ export const ROLES = {
   REPORTER: '访客'
 }
 
+export const ROLES_PROJECT = {
+  MASTER: '项目管理员',
+  DEVELOPER: '开发者',
+  REPORTER: '访客'
+}
+
 export const defaultIcon = 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
