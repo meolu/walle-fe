@@ -17,7 +17,8 @@
    </div>
 </template>
 <script>
-import {getUsers} from '@/services/user.service'
+import {getSpace} from '@/services/space.service'
+import {mapGetters} from 'vuex'
 export default {
   props: {
     members: {
@@ -28,8 +29,12 @@ export default {
   },
   data () {
     return {
-      keyword: ''
+      keyword: '',
+      users: []
     }
+  },
+  created () {
+    this.getUsers()
   },
   watch: {
     value: {
@@ -40,6 +45,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['space']),
     userIds () {
       return this.members.map(user => user.id)
     }
@@ -48,11 +54,12 @@ export default {
     handleSelect (args) {
       this.$emit('select', args)
     },
-    async querySearchAsync (queryString, cb) {
-      let {data: {list}} = await getUsers({
-        kw: queryString
-      })
-      cb(list.filter(user => {
+    async getUsers () {
+      let {data: {members}} = await getSpace(this.space.current.id)
+      this.users = members
+    },
+    querySearchAsync (queryString, cb) {
+      cb(this.users.filter(user => {
         return this.userIds.indexOf(user.id) === -1
       }))
     },

@@ -44,7 +44,7 @@
 <script>
 import {getProject, updateProjectMembers} from '@/services/project.service'
 import {getRoles} from '@/services/role.service'
-import {ROLES} from '@/config/global.config'
+import {ROLES_PROJECT} from '@/config/global.config'
 import SelectUser from './select.user.vue'
 import EditMemberDialog from './edit.member.dialog.vue'
 
@@ -75,7 +75,7 @@ export default {
         role_id: ''
       },
       members: [], // 当前项目的成员列表
-      roles: ROLES,
+      roles: ROLES_PROJECT,
       project: null, // 当前项目信息
       editDialogVisible: false,
       editCurrentMember: null
@@ -122,7 +122,8 @@ export default {
       this.roles = list
     },
     requestForm (newMember) {
-      return [].concat(this.members, newMember)
+      return newMember
+      // return [].concat(this.members, newMember)
     },
     editItem (item) {
       this.editDialogVisible = true
@@ -136,10 +137,13 @@ export default {
       this.updateProject()
     },
     confirm (form) {
-      Object.assign(this.editCurrentMember, {
-        ...form
-      })
-      this.updateProject()
+      // Object.assign(this.editCurrentMember, {
+      //   ...form
+      // })
+      this.updateProject([{
+        user_id: form.user_id,
+        role: form.role
+      }])
     }
   }
 }
