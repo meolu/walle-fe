@@ -18,7 +18,8 @@
 </template>
 <script>
 import {getSpace} from '@/services/space.service'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
+
 export default {
   props: {
     members: {
@@ -33,8 +34,11 @@ export default {
       users: []
     }
   },
-  created () {
-    this.getUsers()
+  async created () {
+    if (!this.space) {
+      await this.getUserInfo()
+      this.getUsers()
+    }
   },
   watch: {
     value: {
@@ -51,6 +55,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      getUserInfo: 'FETCH_USER_INFO'
+    }),
     handleSelect (args) {
       this.$emit('select', args)
     },

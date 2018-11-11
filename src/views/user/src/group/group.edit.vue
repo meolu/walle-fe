@@ -83,7 +83,6 @@ export default {
         this.$message.error('请添加用户')
         return null
       }
-      console.log(this.requestForm())
       if (this.isNew) {
         await addGroup(this.requestForm())
       } else {

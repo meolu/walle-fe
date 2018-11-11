@@ -6,11 +6,11 @@
                 添加成员
             </div>
             <div class="wl-project-member__add-body">
-                <el-form ref="form" :model="form" label-width="80px" size="small">
-                    <el-form-item label="成员名称">
+                <el-form ref="form" :model="form" label-width="80px" size="small" :rules="rules">
+                    <el-form-item label="成员名称" prop="username" :error="error.username">
                         <select-user @select="handleFilterSelect" :members="members" :value="form.username"></select-user>
                     </el-form-item>
-                    <el-form-item label="成员角色">
+                    <el-form-item label="成员角色" prop="role_id">
                         <el-select size="small" v-model="form.role_id" placeholder="请分配角色" :style="{width: '400px'}">
                             <el-option v-for="(role, index) in roles" :key="index" :label="role" :value="index"></el-option>
                         </el-select>
@@ -74,6 +74,14 @@ export default {
         username: '',
         role_id: ''
       },
+      rules: {
+        role_id: [
+          { required: true, message: '请选择角色' }
+        ]
+      },
+      error: {
+        username: ''
+      },
       members: [], // 当前项目的成员列表
       roles: ROLES_PROJECT,
       project: null, // 当前项目信息
@@ -90,6 +98,15 @@ export default {
       return this.id === undefined
     }
   },
+  watch: {
+    'form.username': {
+      handler (val) {
+        if (val) {
+          this.error.username = ''
+        }
+      }
+    }
+  },
   methods: {
     handleFilterSelect (user) {
       Object.assign(this.form, {
@@ -97,15 +114,26 @@ export default {
       })
     },
     addMember () {
-      let newMember = [{
-        user_id: this.form.user_id,
-        role: this.form.role_id
-      }]
-      this.updateProject(newMember)
-      this.form = {
-        username: '',
-        role_id: ''
+      let isvalid = true
+      if (!this.form.username) {
+        this.error.username = '请选择用户名'
+        isvalid = false
       }
+      this.$refs.form.validate((valid) => {
+        if (valid && isvalid) {
+          let newMember = [{
+            user_id: this.form.user_id,
+            role: this.form.role_id
+          }]
+          this.updateProject(newMember)
+          this.form = {
+            username: '',
+            role_id: ''
+          }
+        } else {
+          return false
+        }
+      })
     },
     async getProject () {
       let {data} = await getProject(this.id)

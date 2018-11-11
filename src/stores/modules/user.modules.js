@@ -28,10 +28,13 @@ const mutations = {
 
 const actions = {
   async FETCH_USER_INFO ({ commit }) {
-    // try {
-    const { data } = await getUserMenu()
-    // } catch (err) {}
-    commit('SET_USER_INFO', data)
+    try {
+      const { data } = await getUserMenu()
+      commit('SET_USER_INFO', data)
+      return Promise.resolve()
+    } catch (err) {
+      return Promise.reject(err)
+    }
   }
 }
 
