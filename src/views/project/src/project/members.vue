@@ -150,8 +150,8 @@ export default {
       this.roles = list
     },
     requestForm (newMember) {
-      return newMember
-      // return [].concat(this.members, newMember)
+      // return newMember
+      return [].concat(this.members, newMember)
     },
     editItem (item) {
       this.editDialogVisible = true
@@ -165,13 +165,14 @@ export default {
       this.updateProject()
     },
     confirm (form) {
-      // Object.assign(this.editCurrentMember, {
-      //   ...form
-      // })
-      this.updateProject([{
-        user_id: form.user_id,
-        role: form.role
-      }])
+      Object.assign(this.editCurrentMember, {
+        ...form
+      })
+      this.updateProject()
+      // this.updateProject([{
+      //   user_id: form.user_id,
+      //   role: form.role
+      // }])
     }
   }
 }
