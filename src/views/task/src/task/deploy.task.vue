@@ -68,7 +68,7 @@ export default {
       this.initWebSocket()
     },
     initWebSocket () { // 初始化weosocket
-      const wsuri = `ws://api.walle-web.io/websocket/console`
+      const wsuri = `ws://${location.host}/websocket/console`
       this.websock = new WebSocket(wsuri)
       this.websock.onmessage = this.websocketonmessage
       this.websock.onopen = this.websocketonopen
