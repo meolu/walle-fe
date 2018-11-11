@@ -15,28 +15,18 @@ import wlBody from './body'
 import wlHeader from './header'
 import wlSidebar from './sidebar'
 import wlContent from './content'
-import {mapGetters, mapActions} from 'vuex'
+import user from '@/mixins/user.mixins'
 
 export default {
   name: 'layout',
+  mixins: [user],
   components: {wlBody, wlHeader, wlSidebar, wlContent},
   data () {
     return {
       isCollapse: false
     }
   },
-  created () {
-    if (!this.user) {
-      this.getUserInfo()
-    }
-  },
-  computed: {
-    ...mapGetters(['user'])
-  },
   methods: {
-    ...mapActions({
-      getUserInfo: 'FETCH_USER_INFO'
-    }),
     toggle (isCollapse) {
       this.isCollapse = isCollapse
     }

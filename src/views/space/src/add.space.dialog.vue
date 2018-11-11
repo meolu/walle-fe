@@ -113,7 +113,6 @@ export default {
     async sendData () {
       try {
         this.error = this.initError()
-        console.log(this.form)
         this.isNew && await addSpace(this.form)
         this.isNew || await updateSpace(this.space.id, this.form)
         this.$emit('update:visible')

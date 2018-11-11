@@ -268,7 +268,6 @@ export default {
       this.$refs.form5.validate(callback)
     },
     async submit () {
-      console.log(this.requestForm())
       if (this.isNew) {
         await addProject(this.requestForm())
       } else {

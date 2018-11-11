@@ -97,7 +97,6 @@ export default {
       }
     },
     handleCheckedPermissionChange (row) {
-      console.log(row)
     },
     submit () {
       this.$refs.form.validate((valid) => {
