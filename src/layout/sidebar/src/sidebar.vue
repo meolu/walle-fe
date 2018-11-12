@@ -26,6 +26,7 @@
 <script>
 // import menu from '@/data/menu.json'
 import {mapGetters} from 'vuex'
+import {defaultRouteNoSpace} from '@/config/global.config'
 export default {
   name: 'wl-sidebar',
   props: {
@@ -40,11 +41,8 @@ export default {
       selected: 'm0'
     }
   },
-  created () {
-    this.initSelected(this.$route)
-  },
   computed: {
-    ...mapGetters(['menu'])
+    ...mapGetters(['menu', 'space'])
   },
   methods: {
     select (index) {
@@ -55,7 +53,8 @@ export default {
     initSelected (to) {
       let {meta, path} = to
       if (meta && meta.isMenu) {
-        this.selected = meta.menu || path
+        let menu = defaultRouteNoSpace.indexOf(meta.menu) > -1 ? meta.menu : `/${this.space.current.name}${meta.menu}`
+        this.selected = meta.menu ? menu : path
       }
     }
   },
@@ -68,6 +67,7 @@ export default {
       immediate: true,
       handler (val) {
         this.menus = val
+        if (this.space) this.initSelected(this.$route)
       }
     }
   }

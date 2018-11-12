@@ -6,7 +6,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user', 'space'])
   },
   methods: {
     ...mapActions({

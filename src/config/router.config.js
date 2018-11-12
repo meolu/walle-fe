@@ -3,11 +3,15 @@
  * @param {any} router 路由
  * @param {any} store vuex store
  */
-export default function RouterConfig(router, store) { // eslint-disable-line
+export default function RouterConfig(router, {getters,dispatch}) { // eslint-disable-line
   router.beforeEach(async (to, from, next) => {
-    let { name, matched, fullPath, path } = to // eslint-disable-line
-    if (to.hash) {
-      return
+    let { path, meta, params } = to // eslint-disable-line
+    if (params.space && !getters.user) {
+      await dispatch('FETCH_USER_INFO')
+      let space = getters.space.current.name
+      if (meta.isSpace && space !== params.space) {
+        next('/')
+      }
     }
     if (/^http/.test(path)) {
       let url = path.split('http')[1]

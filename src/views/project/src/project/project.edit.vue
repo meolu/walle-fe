@@ -124,7 +124,11 @@ import {getProject, addProject, updateProject} from '@/services/project.service'
 require('codemirror/mode/shell/shell')
 export default {
   props: {
-    id: String
+    id: String,
+    space: {
+      type: String,
+      required: true
+    }
   },
   components: {
     codemirror
@@ -138,7 +142,7 @@ export default {
     return {
       breadcrumbData: [
         {
-          to: '/project/index',
+          to: `/${this.space}/project/index`,
           name: '项目'
         },
         {

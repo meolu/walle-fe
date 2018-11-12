@@ -31,13 +31,13 @@ export default {
   data () {
     return {
       keyword: '',
-      users: []
+      existMembers: []
     }
   },
   async created () {
-    if (!this.space) {
+    if (!this.user) {
       await this.getUserInfo()
-      this.getUsers()
+      this.getExistMembers()
     }
   },
   watch: {
@@ -49,7 +49,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['space']),
+    ...mapGetters(['space', 'user']),
     userIds () {
       return this.members.map(user => user.id)
     }
@@ -61,12 +61,12 @@ export default {
     handleSelect (args) {
       this.$emit('select', args)
     },
-    async getUsers () {
+    async getExistMembers () {
       let {data: {members}} = await getSpace(this.space.current.id)
-      this.users = members
+      this.existMembers = members
     },
     querySearchAsync (queryString, cb) {
-      cb(this.users.filter(user => {
+      cb(this.existMembers.filter(user => {
         return this.userIds.indexOf(user.id) === -1
       }))
     },

@@ -25,8 +25,11 @@
 <script>
 import COLUMNS from './columns'
 import {getProjects, deleteProject} from '@/services/project.service'
+import userMixins from '@/mixins/user.mixins'
+
 export default {
   name: 'roles',
+  mixins: [userMixins],
   data () {
     return {
       enableCreate: false,
@@ -58,13 +61,13 @@ export default {
       this.callServe()
     },
     addProject () {
-      this.$router.push(`/project/create`)
+      this.$router.push(`/${this.space.current.name}/project/create`)
     },
     edit (row) {
-      this.$router.push(`/project/edit/${row.id}`)
+      this.$router.push(`/${this.space.current.name}/project/edit/${row.id}`)
     },
     editmembers (row) {
-      this.$router.push(`/project/members/${row.id}`)
+      this.$router.push(`/${this.space.current.name}/project/members/${row.id}`)
     },
     renderEditTool (row) {
       if (row.enable_update) {

@@ -15,3 +15,5 @@ export const ROLES_PROJECT = {
 }
 
 export const defaultIcon = 'https://gw.alipayobjects.com/zos/rmsportal/eHBsAsOrrJcnvFlnzNTT.png'
+
+export const defaultRouteNoSpace = ['/', '/space/index', '/user/index', '/environment/index', '/server/index', '/deploy/index']
