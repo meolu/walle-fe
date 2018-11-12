@@ -30,13 +30,17 @@ const STAGE = {
 export default {
   components: {DeployLog},
   props: {
-    taskId: [String, Number]
+    taskId: [String, Number],
+    space: {
+      type: String,
+      required: true
+    }
   },
   data () {
     return {
       breadcrumbData: [
         {
-          to: '/deploy/index',
+          to: `/${this.space}/deploy/index`,
           name: '上线单'
         },
         {
@@ -56,7 +60,7 @@ export default {
     this.getTask()
   },
   destroyed () {
-    this.websock.close() // 离开路由之后断开websocket连接
+    this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
   methods: {
     async getTask () {

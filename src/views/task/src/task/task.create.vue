@@ -3,7 +3,7 @@
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
         <el-collapse v-model="activeName" accordion>
             <el-collapse-item v-for="environment in environments" :key="environment.id" :title="environment.env_name" :name="environment.id">
-                <project :environmentId="environment.id"></project>
+                <project :environmentId="environment.id" :space="space"></project>
             </el-collapse-item>
         </el-collapse>
     </div>
@@ -15,12 +15,18 @@ export default {
   created () {
     this.getEnvironments()
   },
+  props: {
+    space: {
+      type: String,
+      required: true
+    }
+  },
   components: {Project},
   data () {
     return {
       breadcrumbData: [
         {
-          to: '/deploy/index',
+          to: `/${this.space}/deploy/index`,
           name: '上线单'
         },
         {

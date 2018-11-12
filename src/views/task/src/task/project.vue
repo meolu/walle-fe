@@ -11,7 +11,11 @@
 import {getProjects} from '@/services/project.service'
 export default {
   props: {
-    environmentId: Number
+    environmentId: Number,
+    space: {
+      type: String,
+      required: true
+    }
   },
   data () {
     return {
@@ -31,7 +35,7 @@ export default {
       this.data = list
     },
     enter (project) {
-      this.$router.push(`/task/create/${project.id}`)
+      this.$router.push(`/${this.space}/task/create/${project.id}`)
     }
   }
 }

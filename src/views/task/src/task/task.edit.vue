@@ -53,7 +53,11 @@ import {getBranches, getTags, getCommits} from '@/services/repo.service'
 
 export default {
   props: {
-    taskId: String
+    taskId: String,
+    space: {
+      type: String,
+      required: true
+    }
   },
   async created () {
     if (this.isNew) {
@@ -67,7 +71,7 @@ export default {
     return {
       breadcrumbData: [
         {
-          to: '/deploy/index',
+          to: `/${this.space}/deploy/index`,
           name: '上线单'
         },
         {
@@ -178,7 +182,7 @@ export default {
         type: 'success',
         message: '添加成功'
       })
-      this.$router.push('/deploy/index')
+      this.$router.push(`/${this.space}/deploy/index`)
     },
     async updateTask () {
       await updateTask(this.$route.params.taskId, this.requertForm())
@@ -186,7 +190,7 @@ export default {
         type: 'success',
         message: '修改成功'
       })
-      this.$router.push('/deploy/index')
+      this.$router.push(`/${this.space}/deploy/index`)
     },
     deleteServer (tag, index) {
       this.form.servers.splice(index, 1)
