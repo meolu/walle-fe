@@ -5,41 +5,42 @@ const TaskDeploy = () => import('./src/task/deploy.task.vue')
 
 export default function (router) {
   router.push({
-    path: '/deploy/index',
+    path: '/:space/deploy/index',
     name: 'taskList',
-    meta: {isMenu: true},
-    component: List
+    meta: {isMenu: true, menu: '/deploy/index'},
+    component: List,
+    props: true
   },
   {
-    path: '/task/edit',
+    path: '/:space/task/edit',
     name: 'TaskEdit',
     component: TaskEdit,
     meta: {isMenu: true, menu: '/deploy/index'},
     props: true
   },
   {
-    path: '/task/edit/:taskId',
+    path: '/:space/task/edit/:taskId',
     name: 'TaskEditOfTask',
     component: TaskEdit,
     meta: {isMenu: true, menu: '/deploy/index'},
     props: true
   },
   {
-    path: '/task/create',
+    path: '/:space/task/create',
     name: 'TaskCreate',
     meta: {isMenu: true, menu: '/deploy/index'},
     component: TaskCreate,
     props: true
   },
   {
-    path: '/task/create/:projectId',
+    path: '/:space/task/create/:projectId',
     name: 'TaskCreateOfProject',
     meta: {isMenu: true, menu: '/deploy/index'},
     component: TaskEdit,
     props: true
   },
   {
-    path: '/task/deploy/:taskId',
+    path: '/:space/task/deploy/:taskId',
     name: 'TaskDeploy',
     meta: {isMenu: true, menu: '/deploy/index'},
     component: TaskDeploy,

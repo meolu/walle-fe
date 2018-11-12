@@ -1,4 +1,5 @@
 import { getUserMenu } from '@/services/user.service'
+import {defaultRouteNoSpace} from '@/config/global.config'
 
 const state = {
   user: null,
@@ -20,9 +21,24 @@ const getters = {
 
 const mutations = {
   SET_USER_INFO (state, {user, space, menu}) {
+    if (menu) {
+      let except = defaultRouteNoSpace
+      let spaceName = space.current.name || 'admain'
+      const processMenu = function (menus) {
+        menus.forEach(item => {
+          if (item.url && except.indexOf(item.url) === -1) {
+            item.url = `/${spaceName}${item.url}`
+          }
+          if (item.sub_menu && item.sub_menu.length > 0) {
+            processMenu(item.sub_menu)
+          }
+        })
+      }
+      processMenu(menu)
+    }
     state.user = user
-    state.menu = menu
     state.space = space
+    state.menu = menu
   }
 }
 

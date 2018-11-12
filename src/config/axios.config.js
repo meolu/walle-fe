@@ -51,12 +51,16 @@ service.interceptors.response.use(
       return response.data
     }
     if (code !== 0) {
-      // 是否自动提示消息
-      if (config.isAutoMsg) {
-        Vue.prototype.$notify.error({
-          title: `${config.messageTitle || ''}`,
-          message: `${config.messagePrefix || ''}${message}`
-        })
+      if (code === 1000) {
+        window.location.href = `${window.location}login`
+      } else {
+        // 是否自动提示消息
+        if (config.isAutoMsg) {
+          Vue.prototype.$notify.error({
+            title: `${config.messageTitle || ''}`,
+            message: `${config.messagePrefix || ''}${message}`
+          })
+        }
       }
       return Promise.reject({ code, data, message }) // eslint-disable-line
     } else {

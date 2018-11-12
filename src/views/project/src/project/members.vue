@@ -55,13 +55,17 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    space: {
+      type: String,
+      required: true
     }
   },
   data () {
     return {
       breadcrumbData: [
         {
-          to: '/project/index',
+          to: `/${this.space}/project/index`,
           name: '项目'
         },
         {
@@ -141,7 +145,6 @@ export default {
       this.members = data.members || []
     },
     async updateProject (newMember = []) {
-      console.log('requestForm', this.requestForm(newMember))
       await updateProjectMembers(this.id, this.requestForm(newMember))
       this.getProject()
     },
@@ -150,7 +153,6 @@ export default {
       this.roles = list
     },
     requestForm (newMember) {
-      // return newMember
       return [].concat(this.members, newMember)
     },
     editItem (item) {
@@ -169,10 +171,6 @@ export default {
         ...form
       })
       this.updateProject()
-      // this.updateProject([{
-      //   user_id: form.user_id,
-      //   role: form.role
-      // }])
     }
   }
 }

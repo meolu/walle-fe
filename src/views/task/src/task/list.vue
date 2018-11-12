@@ -27,6 +27,12 @@ import COLUMNS from './columns'
 import {getTasks, deleteTask, auditTask, rejectTask} from '@/services/task.service'
 export default {
   name: 'tasks',
+  props: {
+    space: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       enableCreate: false,
@@ -58,10 +64,10 @@ export default {
       this.callServe()
     },
     addTask () {
-      this.$router.push(`/task/create`)
+      this.$router.push(`/${this.space}/task/create`)
     },
     edit (row) {
-      this.$router.push(`/task/edit/${row.id}`)
+      this.$router.push(`/${this.space}/task/edit/${row.id}`)
     },
     closePopover () {
       document.body.click()
@@ -124,7 +130,7 @@ export default {
     },
     deploy (row) {
       // 上线
-      this.$router.push(`/task/deploy/${row.id}`)
+      this.$router.push(`/${this.space}/task/deploy/${row.id}`)
     },
     async deleteTask (row) {
       await deleteTask(row.id)
