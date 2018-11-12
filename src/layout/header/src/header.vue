@@ -7,7 +7,7 @@
     <div class="tool">
       <i class="btn-collapse wl-icon-expend" @click="onCollapse"></i>
       <div class="user">
-        <el-dropdown v-if="space" class="user-info" @command="toggleSpace" trigger="click">
+        <el-dropdown v-if="isSpace" class="user-info" @command="toggleSpace" trigger="click">
           <span>
             {{space.current.name}}
             <i class="el-icon-arrow-down el-icon--right"></i>
@@ -56,7 +56,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['space', 'user'])
+    ...mapGetters(['space', 'user']),
+    isSpace () {
+      return this.space && this.space.available
+    }
   },
   methods: {
     ...mapActions({
