@@ -8,7 +8,13 @@
                 </el-form-item>
                 <el-form-item prop="password" :rules="rules.password">
                     <input type="password" class="wl-login__pwd" autocomplete="new-password"/>
-                    <el-input v-model="form.password" auto-complete="off" type="password" placeholder="请输入密码" prefix-icon="wl-icon-password"></el-input>
+                    <el-input
+                        v-model="form.password"
+                        auto-complete="off"
+                        type="password"
+                        placeholder="请输入密码"
+                        prefix-icon="wl-icon-password"
+                        @keypress.native="keypress"></el-input>
                 </el-form-item>
                 <el-form-item>
                      <el-button type="primary" @click="login">登陆</el-button>
@@ -51,6 +57,11 @@ export default {
     async sendData () {
       await login(this.form)
       this.$router.push('/')
+    },
+    keypress (e) {
+      if (e.code === 'Enter') {
+        this.login()
+      }
     }
   }
 }

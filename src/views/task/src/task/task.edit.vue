@@ -116,9 +116,10 @@ export default {
       const {data} = await getProject(projectId || this.task.project_id)
       this.project = data
       if (!this.isNew) {
-        this.form.servers = this.project.servers_info.filter(item => {
-          return this.task.servers.split(',').indexOf(item.id.toString()) > -1
-        })
+        // this.form.servers = this.project.servers_info.filter(item => {
+        //   return this.task.servers.split(',').indexOf(item.id.toString()) > -1
+        // })
+        this.form.servers = this.task.servers_info
       } else {
         this.form.servers = [].concat(this.project.servers_info)
       }

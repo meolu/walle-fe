@@ -10,13 +10,13 @@
         <template slot="title"><i class="wl-sidebar-icon" v-if="item.icon" :class="[item.icon]"></i>
         <span slot="title">{{ item.title }}</span>
         </template>
-        <el-menu-item  v-for="(child, cIndex) in item.sub_menu"
-          :index="child.url || 'child' + index + '-' + cIndex"
+        <el-menu-item v-for="(child, cIndex) in item.sub_menu"
+          :index="child.url"
           :key="'wlCMenu' + index + '-' + cIndex">
             <span slot="title">{{ child.title }}</span>
         </el-menu-item>
       </el-submenu>
-      <el-menu-item v-else :index="item.url || 'm' + index">
+      <el-menu-item v-else :index="item.url">
         <i class="wl-sidebar-icon" v-if="item.icon" :class="[item.icon]"></i>
         <span slot="title">{{ item.title }}</span>
       </el-menu-item>
@@ -26,7 +26,6 @@
 <script>
 // import menu from '@/data/menu.json'
 import {mapGetters} from 'vuex'
-import {defaultRouteNoSpace} from '@/config/global.config'
 export default {
   name: 'wl-sidebar',
   props: {
@@ -38,11 +37,11 @@ export default {
   data () {
     return {
       menus: [],
-      selected: 'm0'
+      selected: ''
     }
   },
   computed: {
-    ...mapGetters(['menu', 'space'])
+    ...mapGetters(['menu', 'spaceName'])
   },
   methods: {
     select (index) {
@@ -53,8 +52,7 @@ export default {
     initSelected (to) {
       let {meta, path} = to
       if (meta && meta.isMenu) {
-        let menu = defaultRouteNoSpace.indexOf(meta.menu) > -1 ? meta.menu : `/${this.space.current.name}${meta.menu}`
-        this.selected = meta.menu ? menu : path
+        this.selected = meta.menu ? `/${this.spaceName}${meta.menu}` : path
       }
     }
   },
@@ -67,7 +65,7 @@ export default {
       immediate: true,
       handler (val) {
         this.menus = val
-        if (this.space) this.initSelected(this.$route)
+        if (this.spaceName) this.initSelected(this.$route)
       }
     }
   }
