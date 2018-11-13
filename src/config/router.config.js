@@ -10,7 +10,7 @@ export default function RouterConfig(router, {getters,dispatch}) { // eslint-dis
       if (!getters.user) {
         await dispatch('FETCH_USER_INFO')
       }
-      let space = getters.space.current.name
+      let space = getters.spaceName
       if (space !== params.space) {
         next('/')
       }

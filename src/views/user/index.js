@@ -6,9 +6,9 @@ const List = () => import('./src/list/list.vue')
 
 export default function (router) {
   router.push({
-    path: '/user/index',
+    path: '/:space/user/index',
     name: 'userList',
-    meta: {isMenu: true},
+    meta: {isMenu: true, menu: '/user/index'},
     component: List
   }
   // {

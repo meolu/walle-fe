@@ -58,7 +58,7 @@ export default {
   computed: {
     ...mapGetters(['space', 'user']),
     isSpace () {
-      return this.space && this.space.available
+      return this.space && this.space.available && this.space.current
     }
   },
   methods: {
@@ -80,6 +80,7 @@ export default {
       this.$emit('toggle', this.isCollapse)
     },
     async toggleSpace (space) {
+      if (this.space.current.id === space.id) return
       await switchSpace(space.id)
       this.$router.push('/')
       this.getUserInfo()
