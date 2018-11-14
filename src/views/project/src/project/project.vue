@@ -61,13 +61,13 @@ export default {
       this.callServe()
     },
     addProject () {
-      this.$router.push(`/${this.space.current.name}/project/create`)
+      this.$router.push(`/${this.spaceName}/project/create`)
     },
     edit (row) {
-      this.$router.push(`/${this.space.current.name}/project/edit/${row.id}`)
+      this.$router.push(`/${this.spaceName}/project/edit/${row.id}`)
     },
     editmembers (row) {
-      this.$router.push(`/${this.space.current.name}/project/members/${row.id}`)
+      this.$router.push(`/${this.spaceName}/project/members/${row.id}`)
     },
     renderEditTool (row) {
       if (row.enable_update) {
