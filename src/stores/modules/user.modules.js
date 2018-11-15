@@ -24,7 +24,7 @@ const getters = {
 }
 
 const mutations = {
-  SET_USER_INFO (state, {user, space, menu}) {
+  SET_USER_INFO (state, {user, space, menu} = {}) {
     state.user = user
     state.space = space
     state.menu = menu

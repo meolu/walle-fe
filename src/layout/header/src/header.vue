@@ -37,7 +37,7 @@
   </header>
 </template>
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions, mapMutations} from 'vuex'
 import SelfDialog from './self.dialog.vue'
 import {defaultIcon} from '@/config/global.config'
 import {logout} from '@/services/user.service'
@@ -65,11 +65,15 @@ export default {
     ...mapActions({
       getUserInfo: 'FETCH_USER_INFO'
     }),
+    ...mapMutations({
+      setUserInfo: 'SET_USER_INFO'
+    }),
     command (command) {
       this[command] && this[command]()
     },
     async logout () {
       await logout()
+      this.setUserInfo()
       this.$router.replace('/login')
     },
     self () {
