@@ -6,7 +6,6 @@
                 placeholder="请输入内容"
                 size="small"
                 class="search"
-                @keyup.enter.native="search"
                 v-model="value">
                 <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
               </el-input>
@@ -39,6 +38,11 @@ export default {
       columns: COLUMNS.call(this),
       currentEditServer: null,
       addServerDialogVisible: false
+    }
+  },
+  watch: {
+    value () {
+      this.search()
     }
   },
   methods: {

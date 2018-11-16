@@ -8,7 +8,7 @@
             <div class="wl-project-member__add-body">
                 <el-form ref="form" :model="form" label-width="80px" size="small" :rules="rules">
                     <el-form-item label="成员名称" prop="username" :error="error.username">
-                        <select-user @select="handleFilterSelect" :members="members" :value="form.username"></select-user>
+                        <select-user ref="selectUser" @select="handleFilterSelect" :members="members" :value="form.username"></select-user>
                     </el-form-item>
                     <el-form-item label="成员角色" prop="role_id">
                         <el-select size="small" v-model="form.role_id" placeholder="请分配角色" :style="{width: '400px'}">
@@ -80,7 +80,7 @@ export default {
       },
       rules: {
         role_id: [
-          { required: true, message: '请选择角色' }
+          { required: true, message: '请选择角色', trigger: 'blur' }
         ]
       },
       error: {
@@ -130,10 +130,6 @@ export default {
             role: this.form.role_id
           }]
           this.updateProject(newMember)
-          this.form = {
-            username: '',
-            role_id: ''
-          }
         } else {
           return false
         }
@@ -146,6 +142,10 @@ export default {
     },
     async updateProject (newMember = []) {
       await updateProjectMembers(this.id, this.requestForm(newMember))
+      this.form = {
+        username: '',
+        role_id: ''
+      }
       this.getProject()
     },
     async getRoles () {

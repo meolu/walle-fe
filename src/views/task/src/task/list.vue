@@ -6,7 +6,6 @@
                 <el-input
                 placeholder="请输入上线单名称"
                 size="small"
-                @keyup.enter.native="search"
                 v-model="value">
                   <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
                 </el-input>
@@ -47,6 +46,11 @@ export default {
           name: '上线单'
         }
       ]
+    }
+  },
+  watch: {
+    value () {
+      this.search()
     }
   },
   methods: {

@@ -31,14 +31,15 @@ export default {
   data () {
     return {
       keyword: '',
-      existMembers: []
+      existMembers: [],
+      noExist: false
     }
   },
   async created () {
     if (!this.user) {
       await this.getUserInfo()
-      this.getExistMembers()
     }
+    this.getExistMembers()
   },
   watch: {
     value: {
@@ -59,16 +60,24 @@ export default {
       getUserInfo: 'FETCH_USER_INFO'
     }),
     handleSelect (args) {
-      this.$emit('select', args)
+      if (!this.noExist) this.$emit('select', args)
     },
     async getExistMembers () {
       let {data: {members}} = await getSpace(this.space.current.id)
       this.existMembers = members
     },
     querySearchAsync (queryString, cb) {
-      cb(this.existMembers.filter(user => {
+      let mems = this.existMembers.filter(user => {
         return this.userIds.indexOf(user.id) === -1
-      }))
+      })
+      if (mems.length > 0) {
+        this.noExist = false
+        cb(mems)
+      } else {
+        const noExist = [{username: '没有可添加的用户了'}]
+        this.noExist = true
+        cb(noExist)
+      }
     },
     resultlight (value, qry) {
       if (!value) {
@@ -92,6 +101,11 @@ export default {
   .el-autocomplete {
     width: 400px;
   }
+
+  .el-input__suffix-inner {
+    margin-right: 5px;
+  }
+
   @include e(input) {
     .highlight {
         color: $primary;
