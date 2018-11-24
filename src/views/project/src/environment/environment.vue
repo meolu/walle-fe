@@ -70,7 +70,7 @@ export default {
       }
     },
     delete (row) {
-      this.$confirm('确定删除该环境吗?', '提示', {
+      this.$confirm('确定删除该环境吗? 删除后下属的项目及任务将不可见。', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

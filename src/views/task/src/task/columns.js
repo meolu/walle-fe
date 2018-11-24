@@ -31,11 +31,9 @@ export default function () {
       }
     },
     {
+      prop: 'environment_name',
       label: '环境',
-      width: 120,
-      render (h, scope) {
-        return (scope.row.project_info && scope.row.project_info.environment_id) || ''
-      }
+      width: 120
     },
     {
       prop: 'updated_at',

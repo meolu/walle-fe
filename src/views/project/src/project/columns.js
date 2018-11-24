@@ -19,6 +19,11 @@ export default function () {
       }
     },
     {
+      prop: 'environment_name',
+      label: '环境',
+      width: 180
+    },
+    {
       prop: 'version',
       label: '版本',
       width: 180
