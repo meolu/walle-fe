@@ -5,7 +5,7 @@
       v-model="keyword"
       popper-class="wl-search__input"
       :fetch-suggestions="querySearchAsync"
-      placeholder="请输入用户名"
+      :placeholder="placeholder"
       @select="handleSelect">
       <template slot-scope="{ item }">
         <span v-html="resultlight(item.username, keyword)"></span>
@@ -25,7 +25,11 @@ export default {
       default: () => []
     },
     // 搜索用户列表，如果传space_id则空间下搜索，否则全局搜索
-    spaceId: String
+    spaceId: String,
+    placeholder: {
+      type: String,
+      default: '请输入用户名'
+    }
   },
   data () {
     return {
