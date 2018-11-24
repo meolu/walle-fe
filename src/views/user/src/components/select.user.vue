@@ -23,7 +23,9 @@ export default {
     groupUserList: {
       type: Array,
       default: () => []
-    }
+    },
+    // 搜索用户列表，如果传space_id则空间下搜索，否则全局搜索
+    spaceId: String
   },
   data () {
     return {
@@ -42,7 +44,8 @@ export default {
     },
     async querySearchAsync (queryString, cb) {
       let {data: {list}} = await getUsers({
-        kw: queryString
+        kw: queryString,
+        space_id: this.spaceId
       })
       cb(list.filter(user => {
         return this.userIds.indexOf(user.id) === -1

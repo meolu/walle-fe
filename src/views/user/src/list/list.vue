@@ -2,13 +2,14 @@
     <div class="wl-user-list">
             <el-form :inline="true" @submit.native.prevent>
               <el-form-item>
-                <el-input
+                <!-- <el-input
                 placeholder="请输入内容"
                 size="small"
                 class="search"
                 v-model="value">
                 <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-              </el-input>
+              </el-input> -->
+              <select-user @select="handleFilterSelect"></select-user>
               </el-form-item>
               <el-form-item v-if="enableCreate">
                 <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">添加</el-button>
@@ -25,11 +26,13 @@
 <script>
 import COLUMNS from './columns'
 import addUserDialog from './add.user.dialog.vue'
-import {getUsers, deleteUser, blockUser, activeUser} from '@/services/user.service'
+import {getUsers, deleteUser, blockUser, activeUser, addUser} from '@/services/user.service'
+import SelectUser from '../components/select.user.vue'
 export default {
   name: 'user-list',
   components: {
-    addUserDialog
+    addUserDialog,
+    SelectUser
   },
   data () {
     return {
@@ -58,6 +61,17 @@ export default {
     },
     search () {
       this.callServe()
+    },
+    // 搜索出来的用户要添加进空间
+    async handleFilterSelect ({email, username}) {
+      await addUser({
+        email: email,
+        username: username
+      })
+      this.$message({
+        type: 'success',
+        message: '添加成功!'
+      })
     },
     addUser () {
       this.addUserDialogVisible = true

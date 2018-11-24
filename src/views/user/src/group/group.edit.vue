@@ -24,7 +24,7 @@
 
 <script>
 import UserList from './user.list.vue'
-import SelectUser from './select.user.vue'
+import SelectUser from '../components/select.user.vue'
 import {getGroup, addGroup, updateGroup} from '@/services/group.service'
 export default {
   components: {UserList, SelectUser},
