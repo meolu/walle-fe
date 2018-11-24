@@ -15,6 +15,7 @@ import wlBody from './body'
 import wlHeader from './header'
 import wlSidebar from './sidebar'
 import wlContent from './content'
+import {mapGetters} from 'vuex'
 import user from '@/mixins/user.mixins'
 
 export default {
@@ -25,6 +26,9 @@ export default {
     return {
       isCollapse: false
     }
+  },
+  computed: {
+    ...mapGetters(['user', 'space', 'spaceName'])
   },
   methods: {
     toggle (isCollapse) {
