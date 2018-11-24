@@ -17,6 +17,7 @@
     </div>
 </template>
 <script>
+import io from 'socket.io-client'
 import DeployLog from './log.vue'
 import {getTask} from '@/services/task.service'
 const STAGE = {
@@ -62,6 +63,9 @@ export default {
   destroyed () {
     this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
+  mounted () {
+    this.initWebSocket()
+  },
   methods: {
     async getTask () {
       const {data} = await getTask(this.taskId)
@@ -69,21 +73,54 @@ export default {
     },
     start () {
       this.isStart = true
-      this.initWebSocket()
+      // this.initWebSocket()
+      this.websock.emit('deploy', {'task': this.taskId})
     },
     initWebSocket () { // 初始化weosocket
-      const wsuri = `ws://${location.host}/websocket/console`
-      this.websock = new WebSocket(wsuri)
-      this.websock.onmessage = this.websocketonmessage
-      this.websock.onopen = this.websocketonopen
-      this.websock.onerror = this.websocketonerror
-      this.reConnectCount--
+      const wsuri = `http://${location.host}/walle`
+      console.log(wsuri)
+      this.websock = io.connect(wsuri)
+      this.websock.on('connect', (data) => {
+        this.websock.emit('open', {'task': this.taskId})
+      })
+      // 2.返回construct, 初始化页面信息
+      this.websock.on('construct', function (data) {
+        console.log('construct', data)
+        this.websock.emit('logs', {'task': 12})
+      })
+
+      // 3.发送deploy命令之后, 将会收到console
+      this.websock.on('console', function (data) {
+        console.log('console', data)
+      })
+
+      this.websock.on('close', function (data) {
+        this.websock.close()
+      })
+      // this.websock.on('connect', this.websocketonopen)
+      // this.websock.on('construct', function (data) {
+      //   console.log(data)
+      //   this.websock.emit('logs', {'task': this.taskId})
+      // })
+      // this.websock.on('console', function (data) {
+      //   console.log(data)
+      // })
+      // this.websock.on('close', function (data) {
+      //   this.websock.close()
+      // })
+      // this.websock.emit('deploy', {'task': this.taskId})
+
+      // this.websock.onmessage = this.websocketonmessage
+      // this.websock.onopen = this.websocketonopen
+      // this.websock.onerror = this.websocketonerror
+      // this.reConnectCount--
       // this.websock.onclose = this.websocketclose
     },
     websocketonopen () { // 连接建立之后执行send方法发送数据
       this.loading && this.loading.close()
-      let actions = {'text': this.taskId}
-      this.websocketsend(JSON.stringify(actions))
+      let actions = {'task': this.taskId}
+      this.websock.emit('open', actions)
+      // this.websocketsend(JSON.stringify(actions))
     },
     websocketonerror () { // 连接建立失败重连
       if (!this.loading) {

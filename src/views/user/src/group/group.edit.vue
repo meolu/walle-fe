@@ -12,7 +12,7 @@
         </el-form>
         <div class="wl-group-edit__list">
             <div class="wl-group-edit__placeholder" v-if="groupUserList.length===0">请添加用户</div>
-            <user-list v-else v-model="groupUserList" ></user-list>
+            <user-list v-else :value="groupUserList" @input="input"></user-list>
         </div>
         <el-form :inline="true" class="submit-form">
             <el-form-item>
@@ -59,6 +59,9 @@ export default {
     }
   },
   methods: {
+    input (args) {
+      this.groupUserList = args
+    },
     async getGroupInfo () {
       let {data:{group_name, members}} = await getGroup(this.id) // eslint-disable-line
       this.name = group_name // eslint-disable-line
