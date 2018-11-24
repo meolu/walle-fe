@@ -73,77 +73,52 @@ export default {
     },
     start () {
       this.isStart = true
-      // this.initWebSocket()
       this.websock.emit('deploy', {'task': this.taskId})
     },
     initWebSocket () { // 初始化weosocket
       const wsuri = `http://${location.host}/walle`
       console.log(wsuri)
       this.websock = io.connect(wsuri)
-      this.websock.on('connect', (data) => {
-        this.websock.emit('open', {'task': this.taskId})
-      })
+      this.websock.on('connect', this.websocketonopen)
       // 2.返回construct, 初始化页面信息
-      this.websock.on('construct', function (data) {
+      this.websock.on('construct', (data) => {
         console.log('construct', data)
-        this.websock.emit('logs', {'task': 12})
+        this.websock.emit('logs', {'task': this.taskId})
       })
-
       // 3.发送deploy命令之后, 将会收到console
-      this.websock.on('console', function (data) {
-        console.log('console', data)
-      })
-
+      this.websock.on('console', this.websocketonconsole)
       this.websock.on('close', function (data) {
         this.websock.close()
       })
-      // this.websock.on('connect', this.websocketonopen)
-      // this.websock.on('construct', function (data) {
-      //   console.log(data)
-      //   this.websock.emit('logs', {'task': this.taskId})
-      // })
-      // this.websock.on('console', function (data) {
-      //   console.log(data)
-      // })
-      // this.websock.on('close', function (data) {
-      //   this.websock.close()
-      // })
-      // this.websock.emit('deploy', {'task': this.taskId})
-
-      // this.websock.onmessage = this.websocketonmessage
-      // this.websock.onopen = this.websocketonopen
-      // this.websock.onerror = this.websocketonerror
+      this.websock.on('error', this.websocketonerror)
       // this.reConnectCount--
-      // this.websock.onclose = this.websocketclose
     },
     websocketonopen () { // 连接建立之后执行send方法发送数据
       this.loading && this.loading.close()
       let actions = {'task': this.taskId}
       this.websock.emit('open', actions)
-      // this.websocketsend(JSON.stringify(actions))
     },
-    websocketonerror () { // 连接建立失败重连
-      if (!this.loading) {
-        this.loading = this.$loading({
-          lock: true,
-          text: 'Loading',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        })
-      }
-      if (this.reConnectCount > 0) {
-        this.initWebSocket()
-      }
+    websocketonerror () { // 连接建立失败取消loading
+      this.loading && this.loading.close()
+      // if (!this.loading) {
+      //   this.loading = this.$loading({
+      //     lock: true,
+      //     text: 'Loading',
+      //     spinner: 'el-icon-loading',
+      //     background: 'rgba(0, 0, 0, 0.7)'
+      //   })
+      // }
+      // if (this.reConnectCount > 0) {
+      //   this.initWebSocket()
+      // }
     },
-    websocketonmessage (e) { // 数据接收
-      const redata = JSON.parse(e.data)
-      this.record.push(redata)
-      if (redata && redata.stage) {
-        this.activeStep = STAGE[redata.stage]
+    websocketonconsole ({data}) { // 接收log
+      // const redata = JSON.parse(e.data)
+      console.log('console', data)
+      this.record.push(data)
+      if (data && data.stage) {
+        this.activeStep = STAGE[data.stage]
       }
-    },
-    websocketsend (Data) { // 数据发送
-      this.websock.send(Data)
     }
   }
 }
