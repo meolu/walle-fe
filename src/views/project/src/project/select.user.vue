@@ -17,7 +17,8 @@
    </div>
 </template>
 <script>
-import {getSpace} from '@/services/space.service'
+// import {getSpace} from '@/services/space.service'
+import {getUsers} from '@/services/user.service'
 import {mapGetters, mapActions} from 'vuex'
 
 export default {
@@ -63,8 +64,11 @@ export default {
       if (!this.noExist) this.$emit('select', args)
     },
     async getExistMembers () {
-      let {data: {members}} = await getSpace(this.space.current.id)
-      this.existMembers = members
+      // let {data: {members}} = await getSpace(this.space.current.id)
+      let {data: {list}} = await getUsers({
+        space_id: this.spaceId
+      })
+      this.existMembers = list
     },
     querySearchAsync (queryString, cb) {
       let mems = this.existMembers.filter(user => {
