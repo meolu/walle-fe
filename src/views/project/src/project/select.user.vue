@@ -17,9 +17,8 @@
    </div>
 </template>
 <script>
-// import {getSpace} from '@/services/space.service'
-import {getUsers} from '@/services/user.service'
-import {mapGetters, mapActions} from 'vuex'
+import {getSpace} from '@/services/space.service'
+// import {mapGetters, mapActions} from 'vuex'
 
 export default {
   props: {
@@ -27,7 +26,8 @@ export default {
       type: Array,
       default: () => []
     },
-    value: String
+    value: String,
+    spaceId: [String, Number]
   },
   data () {
     return {
@@ -37,9 +37,9 @@ export default {
     }
   },
   async created () {
-    if (!this.user) {
-      await this.getUserInfo()
-    }
+    // if (!this.user) {
+    //   await this.getUserInfo()
+    // }
     this.getExistMembers()
   },
   watch: {
@@ -48,27 +48,29 @@ export default {
       handler (val) {
         this.keyword = val
       }
+    },
+    spaceId (val) {
+      if (val) {
+        this.getExistMembers()
+      }
     }
   },
   computed: {
-    ...mapGetters(['space', 'user']),
+    // ...mapGetters(['space', 'user']),
     userIds () {
       return this.members.map(user => user.id)
     }
   },
   methods: {
-    ...mapActions({
-      getUserInfo: 'FETCH_USER_INFO'
-    }),
+    // ...mapActions({
+    //   getUserInfo: 'FETCH_USER_INFO'
+    // }),
     handleSelect (args) {
       if (!this.noExist) this.$emit('select', args)
     },
     async getExistMembers () {
-      // let {data: {members}} = await getSpace(this.space.current.id)
-      let {data: {list}} = await getUsers({
-        space_id: this.spaceId
-      })
-      this.existMembers = list
+      let {data: {members}} = await getSpace(this.spaceId)
+      this.existMembers = members
     },
     querySearchAsync (queryString, cb) {
       let mems = this.existMembers.filter(user => {
