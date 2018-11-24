@@ -24,6 +24,7 @@
 <script>
 import COLUMNS from './columns'
 import {getProjects, deleteProject} from '@/services/project.service'
+import {mapGetters} from 'vuex'
 import userMixins from '@/mixins/user.mixins'
 
 export default {
@@ -49,6 +50,9 @@ export default {
     value () {
       this.search()
     }
+  },
+  computed: {
+    ...mapGetters(['user', 'space', 'spaceName'])
   },
   methods: {
     async callServe (table = this.$refs.table) {

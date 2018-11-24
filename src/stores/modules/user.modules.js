@@ -15,6 +15,12 @@ const getters = {
   menu ({menu}) {
     return menu
   },
+  spaceId ({space, user}) {
+    if (space && space.current) {
+      return space.current.id
+    }
+    return null
+  },
   spaceName ({space, user}) {
     if (user) {
       return space && space.current && space.current.name ? space.current.name : 'admin'

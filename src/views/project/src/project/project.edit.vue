@@ -121,6 +121,8 @@ import { codemirror } from 'vue-codemirror-lite'
 import {getEnvironments} from '@/services/environment.service'
 import {getServers} from '@/services/server.service'
 import {getProject, addProject, updateProject} from '@/services/project.service'
+import {mapGetters} from 'vuex'
+import userMixins from '@/mixins/user.mixins'
 require('codemirror/mode/shell/shell')
 export default {
   props: {
@@ -130,6 +132,7 @@ export default {
       required: true
     }
   },
+  mixins: [userMixins],
   components: {
     codemirror
   },
@@ -193,6 +196,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['spaceId']),
     isNew () {
       return !this.id
     }
@@ -253,7 +257,8 @@ export default {
       return {
         ...this.form,
         server_ids: this.target_servers.join(','),
-        enable_audit: this.form.enable_audit ? 1 : 0
+        enable_audit: this.form.enable_audit ? 1 : 0,
+        space_id: this.spaceId
       }
     },
     submitForm () {
