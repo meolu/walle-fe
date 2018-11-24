@@ -24,12 +24,16 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import COLUMNS from './columns'
 import addUserDialog from './add.user.dialog.vue'
-import {getUsers, deleteUser, blockUser, activeUser, addUser} from '@/services/user.service'
+import {updateSpace, getSpace} from '@/services/space.service'
+import {getUsers, deleteUser, blockUser, activeUser} from '@/services/user.service'
 import SelectUser from '../components/select.user.vue'
+import UserMixins from '@/mixins/user.mixins'
 export default {
   name: 'user-list',
+  mixins: [UserMixins],
   components: {
     addUserDialog,
     SelectUser
@@ -40,13 +44,21 @@ export default {
       value: '',
       columns: COLUMNS.call(this),
       currentEditUser: null,
-      addUserDialogVisible: false
+      addUserDialogVisible: false,
+      spaceAllData: null
     }
   },
   watch: {
     value () {
       this.search()
     }
+  },
+  computed: {
+    ...mapGetters(['spaceId'])
+  },
+  async created () {
+    const {data} = await getSpace(this.spaceId)
+    this.spaceAllData = data
   },
   methods: {
     async callServe (table = this.$refs.table) {
@@ -62,12 +74,18 @@ export default {
     search () {
       this.callServe()
     },
+    async getAllMembers () {
+      const {data} = await getSpace(this.spaceId)
+      this.spaceAllData = data
+    },
     // 搜索出来的用户要添加进空间
-    async handleFilterSelect ({email, username}) {
-      await addUser({
-        email: email,
-        username: username
+    async handleFilterSelect (user) {
+      await updateSpace(this.spaceId, {
+        ...this.spaceAllData,
+        members: [].concat(this.spaceAllData.members, [user])
       })
+      this.getAllMembers()
+      this.callServe()
       this.$message({
         type: 'success',
         message: '添加成功!'

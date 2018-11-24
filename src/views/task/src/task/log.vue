@@ -3,7 +3,7 @@
         <div class="wl-task-log__body">
             <pre>
                 <template v-for="(item,i) in value">
-                    <div class="wl-task-log__line" :key="i+'command'">
+                    <div class="wl-task-log__line" :key="i+'command'" v-if="getLogCommand(item)">
                         <a></a>
                         <span class="command">$ {{getLogCommand(item)}}</span>
                     </div>
@@ -35,7 +35,7 @@ export default {
     },
     getLogCommand (item) {
       if (isObject(item)) {
-        return item.cmd || item.output || ''
+        return item.cmd || ''
       } else {
         return item
       }

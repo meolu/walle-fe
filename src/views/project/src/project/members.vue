@@ -8,7 +8,7 @@
             <div class="wl-project-member__add-body">
                 <el-form ref="form" :model="form" label-width="80px" size="small" :rules="rules">
                     <el-form-item label="成员名称" prop="username" :error="error.username">
-                        <select-user ref="selectUser" @select="handleFilterSelect" :members="members" :value="form.username"></select-user>
+                        <select-user ref="selectUser" @select="handleFilterSelect" :members="members" :value="form.username" :spaceId="spaceId"></select-user>
                     </el-form-item>
                     <el-form-item label="成员角色" prop="role_id">
                         <el-select size="small" v-model="form.role_id" placeholder="请分配角色" :style="{width: '400px'}">
@@ -100,6 +100,9 @@ export default {
   computed: {
     isNew () {
       return this.id === undefined
+    },
+    spaceId () {
+      return this.project ? this.project.space_id : ''
     }
   },
   watch: {
