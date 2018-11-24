@@ -9,7 +9,7 @@
                 v-model="value">
                 <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
               </el-input> -->
-              <select-user @select="handleFilterSelect"></select-user>
+              <select-user @select="handleFilterSelect" placeholder="搜索添加用户"></select-user>
               </el-form-item>
               <el-form-item v-if="enableCreate">
                 <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">添加</el-button>
@@ -181,6 +181,14 @@ export default {
      i {
        font-size: 12px;
      }
+   }
+
+   .wl-search .el-input {
+     margin-top: 2px;
+   }
+
+   .wl-search .el-input__suffix-inner {
+     top: 0;
    }
 }
 </style>

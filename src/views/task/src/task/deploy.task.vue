@@ -60,7 +60,6 @@ export default {
     this.getTask()
   },
   destroyed () {
-    console.log('destroyed')
     this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
   mounted () {
@@ -88,9 +87,6 @@ export default {
       })
       // 3.发送deploy命令之后, 将会收到console
       this.websock.on('console', this.websocketonconsole)
-      this.websock.on('close', (data) => {
-        console.log('close')
-      })
       this.websock.on('error', this.websocketonerror)
     },
     websocketonopen () { // 连接建立之后执行send方法发送数据
