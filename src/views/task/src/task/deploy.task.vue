@@ -60,6 +60,7 @@ export default {
     this.getTask()
   },
   destroyed () {
+    console.log('destroyed')
     this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
   mounted () {
@@ -102,6 +103,9 @@ export default {
     },
     websocketonconsole ({data}) { // 接收log
       console.log('console', data)
+      if (data && data.sequence && data.sequence >= 1) {
+        this.isStart = true
+      }
       this.record.push(data)
       if (data && data.stage) {
         this.activeStep = STAGE[data.stage]
