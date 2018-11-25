@@ -81,13 +81,18 @@ export default {
       })
       this.websock.on('connect', this.websocketonopen)
       // 2.返回construct, 初始化页面信息
-      this.websock.on('construct', (data) => {
-        console.log('construct', data)
-        this.websock.emit('logs', {'task': this.taskId})
-      })
+      this.websock.on('construct', this.construct)
       // 3.发送deploy命令之后, 将会收到console
       this.websock.on('console', this.websocketonconsole)
       this.websock.on('error', this.websocketonerror)
+    },
+    construct ({data}) {
+      console.log('construct', data)
+      // 正在部署或已完成部署
+      if (parseInt(data.status) > 2 && parseInt(data.status) < 6) {
+        this.isStart = true
+      }
+      this.websock.emit('logs', {'task': this.taskId})
     },
     websocketonopen () { // 连接建立之后执行send方法发送数据
       this.loading && this.loading.close()
@@ -99,9 +104,6 @@ export default {
     },
     websocketonconsole ({data}) { // 接收log
       console.log('console', data)
-      if (data && data.sequence && data.sequence >= 1) {
-        this.isStart = true
-      }
       this.record.push(data)
       if (data && data.stage) {
         this.activeStep = STAGE[data.stage]
