@@ -2,14 +2,15 @@
     <div class="wl-user-list">
             <el-form :inline="true" @submit.native.prevent>
               <el-form-item>
-                <!-- <el-input
+                <el-input
+                v-if="isSuper"
                 placeholder="请输入内容"
                 size="small"
                 class="search"
                 v-model="value">
                 <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-              </el-input> -->
-              <select-user @select="handleFilterSelect" placeholder="搜索添加用户"></select-user>
+              </el-input>
+              <select-user v-if="!isSuper" @select="handleFilterSelect" placeholder="搜索添加用户"></select-user>
               </el-form-item>
               <el-form-item v-if="enableCreate">
                 <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">添加</el-button>
@@ -27,7 +28,7 @@
 import {mapGetters} from 'vuex'
 import COLUMNS from './columns'
 import addUserDialog from './add.user.dialog.vue'
-import {updateSpace, getSpace} from '@/services/space.service'
+import {updateSpace, getSpace, getSpaceMembers} from '@/services/space.service'
 import {getUsers, deleteUser, blockUser, activeUser} from '@/services/user.service'
 import SelectUser from '../components/select.user.vue'
 import UserMixins from '@/mixins/user.mixins'
@@ -54,20 +55,28 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['spaceId'])
+    ...mapGetters(['spaceId', 'isSuper'])
   },
   async created () {
-    const {data} = await getSpace(this.spaceId)
-    this.spaceAllData = data
+    if (this.spaceId) {
+      const {data} = await getSpace(this.spaceId)
+      this.spaceAllData = data
+    }
   },
   methods: {
     async callServe (table = this.$refs.table) {
-      let {data: {list, count, enable_create}} = await getUsers({ // eslint-disable-line
-        size: table.page.size,
-        page: table.page.currentPage,
-        kw: this.value
-      })
-      this.enableCreate = enable_create // eslint-disable-line
+      let {data: {list, count, enable_create}} = this.isSuper // eslint-disable-line
+        ? await getUsers({
+          size: table.page.size,
+          page: table.page.currentPage,
+          kw: this.value
+        })
+        : await getSpaceMembers(this.spaceId, {
+          size: table.page.size,
+          page: table.page.currentPage,
+          kw: this.value
+        })
+        this.enableCreate = enable_create // eslint-disable-line
       table.page.total = count
       table.list = list
     },
@@ -80,16 +89,20 @@ export default {
     },
     // 搜索出来的用户要添加进空间
     async handleFilterSelect (user) {
-      await updateSpace(this.spaceId, {
-        ...this.spaceAllData,
-        members: [].concat(this.spaceAllData.members, [user])
-      })
-      this.getAllMembers()
-      this.callServe()
-      this.$message({
-        type: 'success',
-        message: '添加成功!'
-      })
+      if (!this.isSuper) {
+        await updateSpace(this.spaceId, {
+          ...this.spaceAllData,
+          members: [].concat(this.spaceAllData.members, [user])
+        })
+        this.getAllMembers()
+        this.callServe()
+        this.$message({
+          type: 'success',
+          message: '添加成功!'
+        })
+      } else {
+        this.value = user.username
+      }
     },
     addUser () {
       this.addUserDialogVisible = true

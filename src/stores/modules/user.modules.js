@@ -21,6 +21,12 @@ const getters = {
     }
     return null
   },
+  isSuper ({space, user}) {
+    if (user) {
+      return !(space && space.current && space.current.id)
+    }
+    return false
+  },
   spaceName ({space, user}) {
     if (user) {
       return space && space.current && space.current.name ? space.current.name : 'admin'

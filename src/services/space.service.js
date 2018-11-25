@@ -84,3 +84,17 @@ export function deleteSpace (id, params = {}) {
 export function switchSpace (id, params = {}) {
   return put(`space/${id}/switch`, params)
 }
+
+/**
+ *
+ * 获取空间下的成员列表
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function getSpaceMembers (id, params = {}) {
+  return get(`space/${id}/members`, params, {
+    isRemoveField: true,
+    target: '.wl-table'
+  })
+}
