@@ -92,7 +92,7 @@ export default {
       if (!this.isSuper) {
         await updateSpace(this.spaceId, {
           ...this.spaceAllData,
-          members: [].concat(this.spaceAllData.members, [user])
+          members: JSON.stringify([].concat(this.spaceAllData.members, [user]))
         })
         this.getAllMembers()
         this.callServe()
