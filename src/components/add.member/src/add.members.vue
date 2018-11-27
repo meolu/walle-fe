@@ -56,11 +56,15 @@ export default {
       }
       this.$refs.form.validate((valid) => {
         if (valid && isvalid) {
-          let newMember = [{
+          let newMember = {
             user_id: this.form.user_id,
             role: this.form.role_id
-          }]
+          }
           this.$emit('add', newMember)
+          this.form = {
+            username: '',
+            role_id: ''
+          }
         } else {
           return false
         }
