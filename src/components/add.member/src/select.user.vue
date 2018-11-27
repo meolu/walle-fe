@@ -1,11 +1,12 @@
 <template>
-   <div class="wl-project-search">
+   <div class="wl-search">
     <el-autocomplete
       size="small"
       v-model="keyword"
-      popper-class="wl-project-search__input"
+      popper-class="wl-search__input"
       :fetch-suggestions="querySearchAsync"
-      placeholder="请输入用户名"
+      :placeholder="placeholder"
+      :style="{width: '400px'}"
       @select="handleSelect">
       <template slot-scope="{ item }">
         <span v-html="resultlight(item.username, keyword)"></span>
@@ -17,25 +18,20 @@
    </div>
 </template>
 <script>
-import {getSpace} from '@/services/space.service'
+import {getUsers} from '@/services/user.service'
 export default {
   props: {
-    members: {
+    groupUserList: {
       type: Array,
       default: () => []
     },
+    // 搜索用户列表，如果传space_id则空间下搜索，否则全局搜索
+    spaceId: String,
     value: String,
-    spaceId: [String, Number]
-  },
-  data () {
-    return {
-      keyword: '',
-      existMembers: [],
-      noExist: false
+    placeholder: {
+      type: String,
+      default: '请输入用户名'
     }
-  },
-  async created () {
-    this.getExistMembers()
   },
   watch: {
     value: {
@@ -43,38 +39,30 @@ export default {
       handler (val) {
         this.keyword = val
       }
-    },
-    spaceId (val) {
-      if (val) {
-        this.getExistMembers()
-      }
+    }
+  },
+  data () {
+    return {
+      keyword: ''
     }
   },
   computed: {
     userIds () {
-      return this.members.map(user => user.id)
+      return this.groupUserList.map(user => user.id)
     }
   },
   methods: {
     handleSelect (args) {
-      if (!this.noExist) this.$emit('select', args)
+      this.$emit('select', args)
     },
-    async getExistMembers () {
-      let {data: {members}} = await getSpace(this.spaceId)
-      this.existMembers = members
-    },
-    querySearchAsync (queryString, cb) {
-      let mems = this.existMembers.filter(user => {
-        return this.userIds.indexOf(user.id) === -1
+    async querySearchAsync (queryString, cb) {
+      let {data: {list}} = await getUsers({
+        kw: queryString,
+        space_id: this.spaceId
       })
-      if (mems.length > 0) {
-        this.noExist = false
-        cb(mems)
-      } else {
-        const noExist = [{username: '没有可添加的用户了'}]
-        this.noExist = true
-        cb(noExist)
-      }
+      cb(list.filter(user => {
+        return this.userIds.indexOf(user.id) === -1
+      }))
     },
     resultlight (value, qry) {
       if (!value) {
@@ -94,19 +82,17 @@ export default {
 <style lang="scss">
 @import 'scss';
 
-@include b(project-search) {
-  .el-autocomplete {
-    width: 400px;
-  }
-
-  .el-input__suffix-inner {
-    margin-right: 5px;
-  }
-
+@include b(search) {
   @include e(input) {
     .highlight {
         color: $primary;
     }
+  }
+
+  .el-input__suffix-inner {
+    position: absolute;
+    top: 9px;
+    left: -14px;
   }
 }
 </style>
