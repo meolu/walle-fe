@@ -3,7 +3,7 @@
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
         <div class="wl-task-deploy__header" v-if="task">
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
-           <el-button type="success" size="small" @click="start" :disabled="isStart&&canRun">开始</el-button>
+           <el-button type="success" size="small" @click="start" :disabled="isStart&&noRun">开始</el-button>
         </div>
         <el-steps :active="activeStep" finish-status="finish" v-if="isStart">
           <el-step title="prev_deploy"></el-step>
@@ -54,7 +54,7 @@ export default {
       loading: null,
       task: null,
       isStart: false,
-      canRun: false // 是否可以点击开始上线
+      noRun: false // 是否可以点击开始上线
     }
   },
   created () {
@@ -73,7 +73,7 @@ export default {
     },
     start () {
       this.isStart = true
-      this.canRun = true
+      this.noRun = true
       this.record = []
       this.websock.emit('deploy', {'task': this.taskId})
     },
@@ -95,11 +95,19 @@ export default {
       // 上线中，开始按钮不可点击，log显示
       if (parseInt(data.status) === 3) {
         this.isStart = true
-        this.canRun = true
+        this.noRun = true
       } else if (parseInt(data.status) === 4 || parseInt(data.status) === 5) {
         // 4上线完成，5上线失败，开始按钮可点击，log显示
-        this.canRun = false
+        this.noRun = false
         this.isStart = true
+      } else if (parseInt(data.status) === 1) {
+        // 审核通过，log不显示，按钮可点击
+        this.noRun = false
+        this.isStart = false
+      } else {
+        // 审核不通过，log不显示，按钮不可点击
+        this.noRun = true
+        this.isStart = false
       }
       this.websock.emit('logs', {'task': this.taskId})
     },
