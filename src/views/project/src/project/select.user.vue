@@ -60,8 +60,10 @@ export default {
       if (!this.noExist) this.$emit('select', args)
     },
     async getExistMembers () {
-      let {data: {members}} = await getSpace(this.spaceId)
-      this.existMembers = members
+      if (this.spaceId) {
+        let {data: {members}} = await getSpace(this.spaceId)
+        this.existMembers = members
+      }
     },
     querySearchAsync (queryString, cb) {
       let mems = this.existMembers.filter(user => {
