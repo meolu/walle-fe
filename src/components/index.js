@@ -4,12 +4,14 @@ import Table from './table'
 import Breadcrumb from './breadcrumb'
 import Split from './split'
 import FullScreen from './fullscreen'
+import AddMember from './add.member'
 
 const components = [
   Table,
   Breadcrumb,
   Split,
-  FullScreen
+  FullScreen,
+  AddMember
 ]
 
 const ua = navigator.userAgent

@@ -5,7 +5,7 @@
                 <template v-for="(item,i) in value">
                     <div class="wl-task-log__line" :key="i+'command'" v-if="getLogCommand(item)">
                         <a></a>
-                        <span class="command">$ {{getLogCommand(item)}}</span>
+                        <span class="command">{{`[${item.user}@${item.host}]$ ${getLogCommand(item)}`}}</span>
                     </div>
                     <div class="wl-task-log__line" :key="i+'log'" v-if="getLogContext(item)">
                         <a></a>

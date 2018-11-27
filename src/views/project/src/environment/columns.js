@@ -19,6 +19,11 @@ export default function () {
       }
     },
     {
+      label: '空间',
+      width: 250,
+      prop: 'space_name'
+    },
+    {
       label: '操作',
       minWidth: 200,
       render (h, scope, methods) {

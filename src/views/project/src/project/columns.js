@@ -24,6 +24,11 @@ export default function () {
       width: 180
     },
     {
+      label: '空间',
+      width: 180,
+      prop: 'space_name'
+    },
+    {
       prop: 'version',
       label: '版本',
       width: 180

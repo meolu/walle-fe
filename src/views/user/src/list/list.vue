@@ -1,21 +1,23 @@
 <template>
     <div class="wl-user-list">
-            <el-form :inline="true" @submit.native.prevent>
-              <el-form-item>
-                <el-input
-                v-if="isSuper"
-                placeholder="请输入内容"
-                size="small"
-                class="search"
-                v-model="value">
-                <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-              </el-input>
-              <select-user v-if="!isSuper" @select="handleFilterSelect" placeholder="搜索添加用户"></select-user>
-              </el-form-item>
-              <el-form-item v-if="enableCreate">
-                <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">添加</el-button>
-              </el-form-item>
+            <el-form v-if="isSuper" :inline="true" @submit.native.prevent>
+                <el-form-item>
+                    <el-input
+                    placeholder="请输入内容"
+                    size="small"
+                    class="search"
+                    v-model="value">
+                    <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+                  </el-input>
+                </el-form-item>
+                <el-form-item v-if="enableCreate">
+                  <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">添加</el-button>
+                </el-form-item>
             </el-form>
+            <div v-if="!isSuper" class="wl-user-list__wrap">
+                <add-member @add="addMember"></add-member>
+                <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">新建</el-button>
+            </div>
         <wl-table
             ref="table"
             :columns="columns"
@@ -30,14 +32,12 @@ import COLUMNS from './columns'
 import addUserDialog from './add.user.dialog.vue'
 import {updateSpace, getSpace, getSpaceMembers} from '@/services/space.service'
 import {getUsers, deleteUser, blockUser, activeUser} from '@/services/user.service'
-import SelectUser from '../components/select.user.vue'
 import UserMixins from '@/mixins/user.mixins'
 export default {
   name: 'user-list',
   mixins: [UserMixins],
   components: {
-    addUserDialog,
-    SelectUser
+    addUserDialog
   },
   data () {
     return {
@@ -87,22 +87,17 @@ export default {
       const {data} = await getSpace(this.spaceId)
       this.spaceAllData = data
     },
-    // 搜索出来的用户要添加进空间
-    async handleFilterSelect (user) {
-      if (!this.isSuper) {
-        await updateSpace(this.spaceId, {
-          ...this.spaceAllData,
-          members: JSON.stringify([].concat(this.spaceAllData.members, [user]))
-        })
-        this.getAllMembers()
-        this.callServe()
-        this.$message({
-          type: 'success',
-          message: '添加成功!'
-        })
-      } else {
-        this.value = user.username
-      }
+    async addMember (user) {
+      await updateSpace(this.spaceId, {
+        ...this.spaceAllData,
+        members: JSON.stringify([].concat(this.spaceAllData.members, user))
+      })
+      this.getAllMembers()
+      this.callServe()
+      this.$message({
+        type: 'success',
+        message: '添加成功!'
+      })
     },
     addUser () {
       this.addUserDialogVisible = true
@@ -195,6 +190,11 @@ export default {
    background: #fff;
    min-height: calc(100% - 40px);
    padding: 10px;
+
+   @include e(wrap) {
+     text-align: right;
+     margin-bottom: 10px;
+   }
 
    .search {
      width: 300px;
