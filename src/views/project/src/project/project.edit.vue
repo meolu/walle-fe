@@ -109,7 +109,7 @@
         </el-form>
         <el-form ref="form6" :model="form" size="small" :inline="true">
           <el-form-item>
-            <el-checkbox v-model="form.enable_audit">上线单是否开启审核</el-checkbox>
+            <el-checkbox v-model="form.task_audit">上线单是否开启审核</el-checkbox>
           </el-form-item>
         </el-form>
         <el-button type="primary" @click="submitForm">提交</el-button>
@@ -222,7 +222,7 @@ export default {
         post_release: '',
         notice_type: '',
         notice_hook: '',
-        enable_audit: '',
+        task_audit: '',
         status: 1
       }
     },
@@ -232,7 +232,7 @@ export default {
       this.form = {
         ...this.initForm(),
         ...data,
-        enable_audit: !!data.enable_audit
+        task_audit: !!data.task_audit
       }
     },
     async getEnvironments () {
@@ -257,7 +257,7 @@ export default {
       return {
         ...this.form,
         server_ids: this.target_servers.join(','),
-        enable_audit: this.form.enable_audit ? 1 : 0,
+        task_audit: this.form.task_audit ? 1 : 0,
         space_id: this.spaceId
       }
     },
@@ -286,7 +286,7 @@ export default {
         type: 'success',
         message: this.isNew ? '添加成功' : '修改成功'
       })
-      this.$router.push('/project/index')
+      this.$router.push(`/${this.space}/project/index`)
     }
   }
 }

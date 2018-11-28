@@ -18,7 +18,7 @@
                 </el-form-item>
                 <el-form-item  v-if="project&&project.repo_mode==='branch'" label="选取版本">
                     <el-select v-model="form.commit_id" placeholder="选取版本">
-                        <el-option v-for="item in commits" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        <el-option v-for="item in commits" :key="item.id" :label="item.message" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="选取服务器">
@@ -209,7 +209,7 @@ export default {
     'form.branch': {
       async handler (val) {
         const {data: {branches}} = await getCommits({
-          project_id: this.project.id,
+          project_id: this.project.id || this.task.project_id,
           branch: val
         })
         this.commits = branches
