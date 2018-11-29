@@ -6,8 +6,14 @@ import component from './components'
 import RouterConfig from './config/router.config'
 import store from './stores'
 import router from './router'
+import track from './track'
 
 Vue.config.productionTip = false
+
+if (process.env.NODE_ENV === 'production') {
+// 百度统计
+  Vue.use(track, { router })
+}
 
 Vue.use(component)
 

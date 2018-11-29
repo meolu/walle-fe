@@ -28,6 +28,7 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="self"><i class="wl-icon-user"></i> &nbsp;&nbsp;个人中心</el-dropdown-item>
+            <el-dropdown-item command="help"><i class="wl-icon-help"></i> &nbsp;&nbsp;帮助</el-dropdown-item>
             <el-dropdown-item divided command="logout"><i class="wl-icon-exit"></i> &nbsp;&nbsp;退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -88,6 +89,9 @@ export default {
       await switchSpace(space.id)
       this.$router.push('/')
       this.getUserInfo()
+    },
+    help () {
+      window.open('http://walle-web.io', '_blank')
     }
   }
 }

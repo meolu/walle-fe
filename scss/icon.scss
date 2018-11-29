@@ -1,11 +1,11 @@
 /* stylelint-disable */
 @font-face {
   font-family: 'iconfont';  /* project id 819129 */
-  src: url('//at.alicdn.com/t/font_819129_winr8ru53z.eot');
-  src: url('//at.alicdn.com/t/font_819129_winr8ru53z.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_819129_winr8ru53z.woff') format('woff'),
-  url('//at.alicdn.com/t/font_819129_winr8ru53z.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_819129_winr8ru53z.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_819129_2slnk6a0keq.eot');
+  src: url('//at.alicdn.com/t/font_819129_2slnk6a0keq.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_819129_2slnk6a0keq.woff') format('woff'),
+  url('//at.alicdn.com/t/font_819129_2slnk6a0keq.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_819129_2slnk6a0keq.svg#iconfont') format('svg');
 }
   
   %wl-icon {
@@ -75,6 +75,9 @@
 
     // 密码
     &-password::before { content: "\e608"; }
+
+    // 帮助
+    &-help::before { content: "\e60e"; }
 
   }
   
