@@ -74,6 +74,7 @@ export default {
     height: 100%;
     width: 100%;
     background: url('~assets/img/login-bg.jpg');
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
