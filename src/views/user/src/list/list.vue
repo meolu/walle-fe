@@ -11,7 +11,7 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item v-if="enableCreate">
-                  <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">添加</el-button>
+                  <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">新建</el-button>
                 </el-form-item>
             </el-form>
             <div v-if="!isSuper" class="wl-user-list__wrap">
@@ -23,6 +23,7 @@
             :columns="columns"
             @callServe="callServe"></wl-table>
         <add-user-dialog :visible.sync="addUserDialogVisible" :user="currentEditUser" @confirm="confirm" @close="close"/>
+        <edit-user-dialog :visible.sync="editUserDialogVisible" :spaceId="spaceId" :user="currentEditUser" @confirm="confirm" @close="close"></edit-user-dialog>
     </div>
 </template>
 
@@ -30,6 +31,7 @@
 import {mapGetters} from 'vuex'
 import COLUMNS from './columns'
 import addUserDialog from './add.user.dialog.vue'
+import editUserDialog from './edit.user.dialog.vue'
 import {updateSpace, getSpace, getSpaceMembers} from '@/services/space.service'
 import {getUsers, deleteUser, blockUser, activeUser} from '@/services/user.service'
 import UserMixins from '@/mixins/user.mixins'
@@ -37,7 +39,8 @@ export default {
   name: 'user-list',
   mixins: [UserMixins],
   components: {
-    addUserDialog
+    addUserDialog,
+    editUserDialog
   },
   data () {
     return {
@@ -46,6 +49,7 @@ export default {
       columns: COLUMNS.call(this),
       currentEditUser: null,
       addUserDialogVisible: false,
+      editUserDialogVisible: false,
       spaceAllData: null
     }
   },
@@ -103,7 +107,11 @@ export default {
       this.addUserDialogVisible = true
     },
     edit (row) {
-      this.addUserDialogVisible = true
+      if (this.isSuper) {
+        this.addUserDialogVisible = true
+      } else {
+        this.editUserDialogVisible = true
+      }
       this.currentEditUser = {
         ...row
       }

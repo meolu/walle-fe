@@ -54,13 +54,15 @@ export default {
       loading: null,
       task: null,
       isStart: false,
-      noRun: false // 是否可以点击开始上线
+      noRun: false, // 是否可以点击开始上线
+      setInterval: null
     }
   },
   created () {
     this.getTask()
   },
   destroyed () {
+    this.setInterval = null
     this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
   mounted () {
@@ -88,6 +90,7 @@ export default {
       // 3.发送deploy命令之后, 将会收到console
       this.websock.on('console', this.websocketonconsole)
       this.websock.on('error', this.websocketonerror)
+      this.websock.on('pong', this.pong)
     },
     construct ({data}) {
       console.log('construct', data)
@@ -110,11 +113,18 @@ export default {
         this.isStart = false
       }
       this.websock.emit('logs', {'task': this.taskId})
+      this.setInterval = setInterval(() => {
+        const start = (new Date()).getTime()
+        this.websock.emit('ping', {start_time: start})
+      }, 1000)
     },
     websocketonopen () { // 连接建立之后执行send方法发送数据
       this.loading && this.loading.close()
       let actions = {'task': this.taskId}
       this.websock.emit('open', actions)
+    },
+    pong (data) {
+      console.log('pong', data)
     },
     websocketonerror () { // 连接建立失败取消loading
       this.loading && this.loading.close()

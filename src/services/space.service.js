@@ -98,3 +98,22 @@ export function getSpaceMembers (id, params = {}) {
     target: '.wl-table'
   })
 }
+
+/**
+ *
+ * 更新空间下的某个member的角色
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function updateSpaceMember (id, params = {}) {
+  return put(`space/${id}/member`, params, {
+    target: '.wl-table',
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
+}

@@ -1,9 +1,10 @@
 const TASK_STATUS = {
-  0: '待审核',
+  0: '新建提交',
   1: '审核通过',
   2: '审核拒绝',
-  3: '上线完成',
-  4: '上线失败'
+  3: '上线中',
+  4: '上线完成',
+  5: '上线失败'
 }
 export default function () {
   const self = this
