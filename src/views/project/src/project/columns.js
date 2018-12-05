@@ -29,11 +29,6 @@ export default function () {
       prop: 'space_name'
     },
     {
-      prop: 'version',
-      label: '版本',
-      width: 180
-    },
-    {
       label: '操作',
       minWidth: 200,
       render (h, scope, methods) {

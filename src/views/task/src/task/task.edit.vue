@@ -7,19 +7,22 @@
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item v-if="project&&project.repo_mode==='branch'" label="选取分支">
-                    <el-select v-model="form.branch" placeholder="选取分支">
+                    <el-select v-model="form.branch" placeholder="选取分支" v-loading="branchLoading">
                         <el-option v-for="item in branchs" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
+                    <i v-if="!branchLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="getBranches"></i>
                 </el-form-item>
                 <el-form-item v-if="project&&project.repo_mode==='tag'" label="选取Tag">
-                    <el-select v-model="form.tag" placeholder="选取Tag">
+                    <el-select v-model="form.tag" placeholder="选取Tag" v-loading="tagLoading">
                         <el-option v-for="item in tags" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
+                    <i v-if="!tagLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="getTags"></i>
                 </el-form-item>
                 <el-form-item  v-if="project&&project.repo_mode==='branch'" label="选取版本">
-                    <el-select v-model="form.commit_id" placeholder="选取版本">
+                    <el-select v-model="form.commit_id" placeholder="选取版本" v-loading="commitLoading">
                         <el-option v-for="item in commits" :key="item.id" :label="item.message" :value="item.id"></el-option>
                     </el-select>
+                    <i v-if="!commitLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="getCommits"></i>
                 </el-form-item>
                 <el-form-item label="选取服务器">
                     <el-radio-group v-model="form.servers_mode">
@@ -96,7 +99,10 @@ export default {
         name: [
           { required: true, message: '请输入上线单名称', trigger: 'blur' }
         ]
-      }
+      },
+      branchLoading: true,
+      tagLoading: true,
+      commitLoading: true
     }
   },
   computed: {
@@ -127,15 +133,9 @@ export default {
         this.form.servers_mode = this.checkServers()
       }
       if (this.project.repo_mode === 'branch') {
-        const {data: {branches}} = await getBranches({
-          project_id: this.project.id
-        })
-        this.branchs = branches
+        this.getBranches()
       } else {
-        const {data: {tags}} = await getTags({
-          project_id: this.project.id
-        })
-        this.tags = tags
+        this.getTags()
       }
     },
     async getTask () {
@@ -195,6 +195,47 @@ export default {
     },
     deleteServer (tag, index) {
       this.form.servers.splice(index, 1)
+    },
+    async getBranches () {
+      this.branchLoading = true
+      try {
+        const {data: {branches}} = await getBranches({
+          project_id: this.project.id
+        }, {
+          isLoading: false
+        })
+        this.branchLoading = false
+        this.branchs = branches
+      } catch (error) {
+        this.branchLoading = false
+      }
+    },
+    async getCommits () {
+      this.commitLoading = true
+      try {
+        const {data: {branches}} = await getCommits({
+          project_id: this.project.id || this.task.project_id,
+          branch: this.form.branch
+        }, {
+          isLoading: false
+        })
+        this.commitLoading = false
+        this.commits = branches
+      } catch (error) {
+        this.commitLoading = false
+      }
+    },
+    async getTags () {
+      this.tagLoading = true
+      try {
+        const {data: {tags}} = await getTags({
+          project_id: this.project.id
+        })
+        this.tagLoading = false
+        this.tags = tags
+      } catch (error) {
+        this.tagLoading = false
+      }
     }
   },
   watch: {
@@ -207,12 +248,8 @@ export default {
       }
     },
     'form.branch': {
-      async handler (val) {
-        const {data: {branches}} = await getCommits({
-          project_id: this.project.id || this.task.project_id,
-          branch: val
-        })
-        this.commits = branches
+      async handler () {
+        this.getCommits()
       }
     }
   }
@@ -255,6 +292,12 @@ export default {
       right: 5px;
       top: 7px;
     }
+   }
+
+   @include e(refresh) {
+    margin-left: 10px;
+    color: #666;
+    margin-top: 3px;
    }
 }
 </style>
