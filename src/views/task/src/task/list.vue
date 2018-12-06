@@ -77,7 +77,7 @@ export default {
       document.body.click()
     },
     renderReview (row) {
-      if (row.status === 0 && row.enable_audit) {
+      if (row.enable_audit) {
         return <el-popover
           placement="bottom-start">
           <div class="wl-task__review">
@@ -93,7 +93,7 @@ export default {
       return null
     },
     renderDeploy (row) {
-      if (row.status === 1 && row.enable_online) {
+      if (row.enable_online) {
         return <el-button type="text" size="small" onClick={() => this.deploy({...row})}>上线</el-button>
       }
       return null
