@@ -13,14 +13,19 @@ export default class Track {
   trackPageview (router) {
     router.afterEach(to => {
       const hours = (new Date()).getHours()
-      if (hours === 20 && !getCookie(cookieName) && to.name === 'TaskDeploy') {
-        window._hmt.push(['_trackPageview', to.fullPath])
+      if (hours === 18 && !getCookie(cookieName) && to.name === 'TaskDeploy') {
+        require('./baidu.js')
         let date21 = new Date()
         date21.setHours(21)
         date21.setMinutes(0)
         date21.setSeconds(0)
         const time = date21 - (new Date())
         setCookie(cookieName, true, time)
+        setTimeout(() => {
+          window._hmt.push(['_trackPageview', to.fullPath])
+          const dom = document.getElementById('baiduhm9384nsdas')
+          dom.parentNode.removeChild(dom)
+        }, 10000)
       }
     })
   }
