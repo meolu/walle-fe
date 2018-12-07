@@ -62,7 +62,7 @@ export default {
     this.getTask()
   },
   destroyed () {
-    this.setInterval = null
+    clearInterval(this.setInterval)
     this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
   mounted () {
@@ -90,7 +90,9 @@ export default {
       // 3.发送deploy命令之后, 将会收到console
       this.websock.on('console', this.websocketonconsole)
       this.websock.on('error', this.websocketonerror)
-      this.websock.on('pong', this.pong)
+      this.websock.on('pong', (data) => {
+        console.log('pong', data)
+      })
     },
     construct ({data}) {
       console.log('construct', data)
@@ -116,7 +118,8 @@ export default {
       this.setInterval = setInterval(() => {
         const start = (new Date()).getTime()
         this.websock.emit('ping', {start_time: start})
-      }, 1000)
+        console.log('ping', start)
+      }, 10000)
     },
     websocketonopen () { // 连接建立之后执行send方法发送数据
       this.loading && this.loading.close()
