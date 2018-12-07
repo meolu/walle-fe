@@ -11,6 +11,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "ansi_up": "^3.0.0",
     "axios": "^0.18.0",
     "element-ui": "^2.4.6",
     "socket.io-client": "^2.1.1",
