@@ -7,11 +7,9 @@
                         <a></a>
                         <span class="command">{{`[${item.user}@${item.host}]$ ${getLogCommand(item)}`}}</span>
                     </div>
-                    <div class="wl-task-log__line" v-for="(log,j) in transformStrToHtm(getLogContext(item))" :key="i+'log'+j">
-                       <template v-if="log">
+                    <div class="wl-task-log__line" v-for="(log,j) in transformStrToHtm(getLogContext(item))" :key="i+'log'+j" v-if="log">
                         <a></a>
                         <span :class="getLogClass(item)" v-html="log"></span>
-                        </template>
                     </div>
                 </template>
             </pre>
@@ -52,8 +50,8 @@ export default {
       else return 'error'
     },
     getLogContext (item) {
-      if (item.status === 0) return item.success
-      else return item.error
+      if (item.status === 0) return item.success || ''
+      else return item.error || ''
     },
     getLogCommand (item) {
       if (isObject(item)) {
