@@ -1,15 +1,15 @@
 <template>
     <div class="wl-task-log">
-        <div class="wl-task-log__body">
+        <div class="wl-task-log__body" ref="logBody">
             <pre>
                 <template v-for="(item,i) in value">
                     <div class="wl-task-log__line" :key="i+'command'" v-if="getLogCommand(item)">
                         <a></a>
                         <span class="command">{{`[${item.user}@${item.host}]$ ${getLogCommand(item)}`}}</span>
                     </div>
-                    <div class="wl-task-log__line" :key="i+'log'" v-if="getLogContext(item)">
+                    <div class="wl-task-log__line" v-for="(log,j) in transformStrToHtm(getLogContext(item))" :key="i+'log'+j">
                         <a></a>
-                        <span :class="getLogClass(item)">{{getLogContext(item)}}</span>
+                        <span :class="getLogClass(item)" v-html="log"></span>
                     </div>
                 </template>
             </pre>
@@ -19,12 +19,25 @@
 
 <script>
 import {isObject} from '@/utils'
+const AU = require('ansi_up')
+const ansi_up = new AU.default() // eslint-disable-line
+
 export default {
   name: 'deploy-log',
   props: {
     value: Array
   },
+  updated () {
+    let logBody = this.$refs.logBody
+    if (logBody) {
+      let height = logBody.scrollHeight || 0
+      logBody.scrollTo(0, height)
+    }
+  },
   methods: {
+    transformStrToHtm (str) {
+      return ansi_up.ansi_to_html(str).split(/\r?\n/)
+    },
     getLogClass (item) {
       if (item.status === 0) return 'success'
       else return 'error'
