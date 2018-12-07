@@ -1,6 +1,6 @@
 <template>
-    <div class="wl-task-log">
-        <div class="wl-task-log__body" ref="logBody">
+    <div class="wl-task-log" ref="logBody">
+        <div class="wl-task-log__body">
             <pre>
                 <template v-for="(item,i) in value">
                     <div class="wl-task-log__line" :key="i+'command'" v-if="getLogCommand(item)">
