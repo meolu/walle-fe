@@ -8,8 +8,10 @@
                         <span class="command">{{`[${item.user}@${item.host}]$ ${getLogCommand(item)}`}}</span>
                     </div>
                     <div class="wl-task-log__line" v-for="(log,j) in transformStrToHtm(getLogContext(item))" :key="i+'log'+j">
+                       <template v-if="log">
                         <a></a>
                         <span :class="getLogClass(item)" v-html="log"></span>
+                        </template>
                     </div>
                 </template>
             </pre>
@@ -27,11 +29,18 @@ export default {
   props: {
     value: Array
   },
-  updated () {
-    let logBody = this.$refs.logBody
-    if (logBody) {
-      let height = logBody.scrollHeight || 0
-      logBody.scrollTo(0, height)
+  watch: {
+    value: {
+      deep: true,
+      handler () {
+        this.$nextTick(() => {
+          let logBody = this.$refs.logBody
+          if (logBody) {
+            let height = logBody.scrollHeight || 0
+            logBody.scrollTo(0, height)
+          }
+        })
+      }
     }
   },
   methods: {
