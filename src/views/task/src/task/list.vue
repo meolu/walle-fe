@@ -134,7 +134,15 @@ export default {
     },
     deploy (row) {
       // 上线
-      this.$router.push(`/${this.space}/task/deploy/${row.id}`)
+      this.$rrcTrack.trackEvent({
+        category: '任务',
+        action: '上线',
+        optLabel: {
+          taskId: row.id,
+          host: location.host
+        }
+      }, `/${this.space}/task/deploy/${row.id}`)
+      // this.$router.push(`/${this.space}/task/deploy/${row.id}`)
     },
     async deleteTask (row) {
       await deleteTask(row.id)
