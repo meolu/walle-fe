@@ -209,7 +209,7 @@ export default {
         repo_url: '',
         repo_mode: 'branch',
         target_user: '',
-        target_port: '',
+        target_port: 22,
         excludes: '',
         server_ids: '',
         keep_version_num: '',
