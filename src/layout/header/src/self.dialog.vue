@@ -36,7 +36,21 @@
                     </el-form>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="安全设置" name="password">安全设置</el-tab-pane>
+            <el-tab-pane label="安全设置" name="password">
+              <div class="wl-self__info">
+              <el-form ref="passwordForm" :model="passwordForm" label-position="top">
+                  <el-form-item label="重置密码" prop="password1" :rules="rules.password1">
+                      <el-input type="password" v-model="passwordForm.password1"></el-input>
+                  </el-form-item>
+                  <el-form-item label="再输入密码" prop="password2" :rules="rules.password2">
+                      <el-input type="password" v-model="passwordForm.password2"></el-input>
+                  </el-form-item>
+                  <el-form-item>
+                      <el-button size="small" type="primary" @click="savePassword">重置密码</el-button>
+                  </el-form-item>
+              </el-form>
+              </div>
+            </el-tab-pane>
         </el-tabs>
     </el-dialog>
 </template>
@@ -62,6 +76,10 @@ export default {
         email: '',
         avatar: ''
       },
+      passwordForm: {
+        password1: '',
+        password2: ''
+      },
       rules: {
         email: [
           { required: true, message: '请输入邮箱地址', trigger: 'blur' },
@@ -69,6 +87,14 @@ export default {
         ],
         username: [
           { required: true, message: '请输入昵称', trigger: 'blur' }
+        ],
+        password1: [
+          { required: true, message: '请输入新的密码', trigger: 'blur' },
+          { pattern: /(?=\d{0,}[a-zA-Z])(?=[a-zA-Z]{0,}\d)[a-zA-Z0-9]{6,}/, message: '密码强度不足', trigger: 'blur' }
+        ],
+        password2: [
+          { required: true, message: '请再次输入密码', trigger: 'blur' },
+          { validator: this.ValidatePassword, message: '再次输入的密码不一致', trigger: 'blur' }
         ]
       }
     }
@@ -109,6 +135,22 @@ export default {
       this.getUser()
       this.onCancel()
     },
+    savePassword () {
+      this.$refs.passwordForm.validate((valid) => {
+        if (valid) {
+          this.sendData()
+        } else {
+          return false
+        }
+      })
+    },
+    async sendData () {
+      await updateUser(this.user.id, {
+        password: this.passwordForm.password1
+      })
+      // this.getUser()
+      this.onCancel()
+    },
     beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -123,6 +165,13 @@ export default {
     },
     handleAvatarSuccess (res, file) {
       this.info.avatar = res.data.avatar
+    },
+    ValidatePassword  (rule, value, callback) {
+      if (this.passwordForm.password1 !== value) {
+        callback(new Error('再次输入的密码不一致'))
+      } else {
+        callback()
+      }
     }
   }
 }
