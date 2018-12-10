@@ -40,8 +40,8 @@ export default {
           { required: true, message: '请输入服务器名称', trigger: 'blur' }
         ],
         host: [
-          { required: true, message: '请输入服务器ip', trigger: 'blur' },
-          { pattern: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/, message: 'ip地址错误', trigger: 'blur' }
+          { required: true, message: '请输入服务器ip', trigger: 'blur' }
+          // { pattern: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/, message: 'ip地址错误', trigger: 'blur' }
         ]
       }
     }
