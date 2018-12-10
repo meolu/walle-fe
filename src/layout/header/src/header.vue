@@ -34,7 +34,7 @@
         </el-dropdown>
       </div>
     </div>
-    <self-dialog :visible.sync="visible"></self-dialog>
+    <self-dialog :visible.sync="visible" @close="close"></self-dialog>
   </header>
 </template>
 <script>
@@ -92,6 +92,11 @@ export default {
     },
     help () {
       window.open('http://walle-web.io', '_blank')
+    },
+    close (isLogout) {
+      if (isLogout) {
+        this.logout()
+      }
     }
   }
 }
