@@ -148,8 +148,8 @@ export default {
       await updateUser(this.user.id, {
         password: this.passwordForm.password1
       })
-      // this.getUser()
-      this.onCancel()
+      this.$emit('update:visible')
+      this.$emit('close', true)
     },
     beforeAvatarUpload (file) {
       const isJPG = file.type === 'image/jpeg'
