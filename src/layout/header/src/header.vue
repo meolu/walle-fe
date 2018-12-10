@@ -34,7 +34,7 @@
         </el-dropdown>
       </div>
     </div>
-    <self-dialog :visible.sync="visible" @close="close"></self-dialog>
+    <self-dialog :visible.sync="visible"></self-dialog>
   </header>
 </template>
 <script>
