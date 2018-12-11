@@ -4,6 +4,7 @@
         width = "600px"
         :title = "isNew ? '新增空间' : '编辑空间'"
         :visible="visible"
+        :close-on-click-modal="false"
         :before-close="onCancel"
         :append-to-body="true">
         <el-form :model="form" ref="form">

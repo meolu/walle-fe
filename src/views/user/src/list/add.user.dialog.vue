@@ -5,6 +5,7 @@
         :title = "isNew ? '新增用户' : '编辑用户'"
         :visible="visible"
         :before-close="onCancel"
+        :close-on-click-modal="false"
         :append-to-body="true">
         <el-form :model="form" ref="form">
           <el-form-item label="用户名" label-width="120px" prop="username" :rules="rules.username" :error="error.username">
@@ -14,7 +15,7 @@
                 <el-input size="small" v-model="form.email" auto-complete="off" :disabled="!isNew"></el-input>
             </el-form-item>
             <el-form-item label="密码" label-width="120px" prop="password" :rules="isNew ? rules.password : updatePasswordRules" :error="error.password">
-            <el-input size="small" v-model="form.password" auto-complete="off"></el-input>
+            <el-input size="small" type="password" v-model="form.password" auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -40,7 +41,7 @@ export default {
       roles: ROLES,
       error: this.initError(),
       form: this.initForm(0),
-      updatePasswordRules: [{ pattern: /(?=\d{0,}[a-zA-Z])(?=[a-zA-Z]{0,}\d)[a-zA-Z0-9]{6,}/, message: '密码强度不足', trigger: 'blur' }],
+      updatePasswordRules: [{ pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,}$/, message: '至少6个字符，至少1个大写字母，1个小写字母和1个数字', trigger: 'blur' }],
       rules: {
         email: [
           { required: true, message: '请输入邮箱地址', trigger: 'blur' },
@@ -48,7 +49,7 @@ export default {
         ],
         password: [
           { required: true, message: '请设置密码', trigger: 'blur' },
-          { pattern: /(?=\d{0,}[a-zA-Z])(?=[a-zA-Z]{0,}\d)[a-zA-Z0-9]{6,}/, message: '密码强度不足', trigger: 'blur' }
+          { pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,}$/, message: '至少6个字符，至少1个大写字母，1个小写字母和1个数字', trigger: 'blur' }
         ],
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' }
