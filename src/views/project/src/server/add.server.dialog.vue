@@ -4,6 +4,7 @@
         width = "600px"
         :title = "isNew ? '新增服务器' : '编辑服务器'"
         :visible="visible"
+        :close-on-click-modal="false"
         :before-close="onCancel"
         :append-to-body="true">
         <el-form :model="form" ref="form">

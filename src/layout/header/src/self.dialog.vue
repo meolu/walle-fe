@@ -3,6 +3,7 @@
         class="wl-self"
         width = "600px"
         title = "个人设置"
+        :close-on-click-modal="false"
         :visible="visible"
         :before-close="onCancel"
         :append-to-body="true">
@@ -90,7 +91,7 @@ export default {
         ],
         password1: [
           { required: true, message: '请输入新的密码', trigger: 'blur' },
-          { pattern: /(?=\d{0,}[a-zA-Z])(?=[a-zA-Z]{0,}\d)[a-zA-Z0-9]{6,}/, message: '密码强度不足', trigger: 'blur' }
+          { pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,}$/, message: '至少6个字符，至少1个大写字母，1个小写字母和1个数字', trigger: 'blur' }
         ],
         password2: [
           { required: true, message: '请再次输入密码', trigger: 'blur' },

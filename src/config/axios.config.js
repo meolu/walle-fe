@@ -7,7 +7,7 @@ import { isUndefined } from '@/utils'
  * @see https://github.com/mzabriskie/axios
  */
 const service = axios.create({
-  timeout: 20000,
+  timeout: 40000,
   withCredentials: true
 })
 // loading 组
