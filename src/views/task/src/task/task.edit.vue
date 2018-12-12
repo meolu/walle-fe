@@ -301,17 +301,17 @@ export default {
     getWebsocketBranch (data) {
       console.log('branches', data)
       this.branchLoading = false
-      this.branchs = data.branches
+      this.branchs = data.data
     },
     getWebsocketCommit (data) {
       console.log('commits', data)
       this.commitLoading = false
-      this.commits = data.branches
+      this.commits = data.data
     },
     getWebsocketTag (data) {
       console.log('tags', data)
       this.tagLoading = false
-      this.tags = data.tags
+      this.tags = data.data
     }
   }
 }
