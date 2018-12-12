@@ -10,19 +10,19 @@
                     <el-select v-model="form.branch" placeholder="选取分支" v-loading="branchLoading">
                         <el-option v-for="item in branchs" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
-                    <i v-if="!branchLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitBranch"></i>
+                    <i v-if="!branchLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitBranches"></i>
                 </el-form-item>
                 <el-form-item v-if="project&&project.repo_mode==='tag'" label="选取Tag">
                     <el-select v-model="form.tag" placeholder="选取Tag" v-loading="tagLoading">
                         <el-option v-for="item in tags" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
-                    <i v-if="!tagLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitTag"></i>
+                    <i v-if="!tagLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitTags"></i>
                 </el-form-item>
                 <el-form-item  v-if="project&&project.repo_mode==='branch'" label="选取版本">
                     <el-select v-model="form.commit_id" placeholder="选取版本" v-loading="commitLoading">
                         <el-option v-for="item in commits" :key="item.id" :label="item.message" :value="item.id"></el-option>
                     </el-select>
-                    <i v-if="!commitLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitCommit"></i>
+                    <i v-if="!commitLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitCommits"></i>
                 </el-form-item>
                 <el-form-item label="选取服务器">
                     <el-radio-group v-model="form.servers_mode">
@@ -122,7 +122,7 @@ export default {
     },
     'form.branch': {
       async handler () {
-        this.emitCommit()
+        this.emitCommits()
       }
     }
   },
@@ -256,35 +256,32 @@ export default {
         reconnectionAttempts: 2
       })
       this.websock.on('connect', this.websocketonopen)
-      this.websock.on('branch', this.getWebsocketBranch)
-      this.websock.on('commit', this.getWebsocketCommit)
-      this.websock.on('tag', this.getWebsocketTag)
-      this.websock.on('console', (data) => {
-        console.log('console', data)
-      })
+      this.websock.on('branches', this.getWebsocketBranch)
+      this.websock.on('commits', this.getWebsocketCommit)
+      this.websock.on('tags', this.getWebsocketTag)
     },
-    emitBranch () {
-      console.log('emit branch')
+    emitBranches () {
+      console.log('emit branches')
       this.branchLoading = true
-      // this.websock.emit('branch', {project_id: this.project.id})
-      this.websock.emit('branch')
+      // this.websock.emit('branches', {project_id: this.project.id})
+      this.websock.emit('branches')
     },
-    emitTag () {
-      console.log('emit tag')
+    emitTags () {
+      console.log('emit tags')
       this.tagLoading = true
-      // this.websock.emit('tag', {project_id: this.project.id})
-      this.websock.emit('tag')
+      // this.websock.emit('tags', {project_id: this.project.id})
+      this.websock.emit('tags')
     },
-    emitCommit () {
-      console.log('emit commit', {
+    emitCommits () {
+      console.log('emit commits', {
         branch: this.form.branch
       })
       this.commitLoading = true
-      // this.websock.emit('branch', {
+      // this.websock.emit('commits', {
       //   project_id: this.project.id || this.task.project_id,
       //   branch: this.form.branch
       // })
-      this.websock.emit('branch', {
+      this.websock.emit('commits', {
         branch: this.form.branch
       })
     },
@@ -296,23 +293,23 @@ export default {
         project_id: this.project.id || this.task.project_id
       })
       if (this.project.repo_mode === 'branch') {
-        this.emitBranch()
+        this.emitBranches()
       } else {
-        this.emitTag()
+        this.emitTags()
       }
     },
     getWebsocketBranch (data) {
-      console.log('branch', data)
+      console.log('branches', data)
       this.branchLoading = false
       this.branchs = data.branches
     },
     getWebsocketCommit (data) {
-      console.log('commit', data)
+      console.log('commits', data)
       this.commitLoading = false
       this.commits = data.branches
     },
     getWebsocketTag (data) {
-      console.log('tag', data)
+      console.log('tags', data)
       this.tagLoading = false
       this.tags = data.tags
     }
