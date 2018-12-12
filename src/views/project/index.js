@@ -26,6 +26,13 @@ export default function (router) {
     props: true
   },
   {
+    path: '/:space/project/read/:id',
+    name: 'ProjectRead',
+    meta: {isMenu: true, menu: '/project/index'},
+    component: ProjectEdit,
+    props: true
+  },
+  {
     path: '/:space/project/members/:id',
     name: 'ProjectMembers',
     meta: {isMenu: true, menu: '/project/index'},
