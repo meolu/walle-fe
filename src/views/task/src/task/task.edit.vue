@@ -10,19 +10,19 @@
                     <el-select v-model="form.branch" placeholder="选取分支" v-loading="branchLoading">
                         <el-option v-for="item in branchs" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
-                    <i v-if="!branchLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="getBranches"></i>
+                    <i v-if="!branchLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitBranch"></i>
                 </el-form-item>
                 <el-form-item v-if="project&&project.repo_mode==='tag'" label="选取Tag">
                     <el-select v-model="form.tag" placeholder="选取Tag" v-loading="tagLoading">
                         <el-option v-for="item in tags" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
-                    <i v-if="!tagLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="getTags"></i>
+                    <i v-if="!tagLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitTag"></i>
                 </el-form-item>
                 <el-form-item  v-if="project&&project.repo_mode==='branch'" label="选取版本">
                     <el-select v-model="form.commit_id" placeholder="选取版本" v-loading="commitLoading">
                         <el-option v-for="item in commits" :key="item.id" :label="item.message" :value="item.id"></el-option>
                     </el-select>
-                    <i v-if="!commitLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="getCommits"></i>
+                    <i v-if="!commitLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitCommit"></i>
                 </el-form-item>
                 <el-form-item label="选取服务器">
                     <el-radio-group v-model="form.servers_mode">
@@ -53,6 +53,7 @@
 import {getProject} from '@/services/project.service'
 import {getTask, addTask, updateTask} from '@/services/task.service'
 import {getBranches, getTags, getCommits} from '@/services/repo.service'
+import io from 'socket.io-client'
 
 export default {
   props: {
@@ -110,6 +111,24 @@ export default {
       return this.$route.name === 'TaskCreateOfProject' && !this.taskId
     }
   },
+  watch: {
+    'form.servers_mode': {
+      immediate: true,
+      handler (val) {
+        if (val === '全量服务器上线') {
+          this.form.servers = this.project && this.project.servers_info ? [].concat(this.project.servers_info) : []
+        }
+      }
+    },
+    'form.branch': {
+      async handler () {
+        this.emitCommit()
+      }
+    }
+  },
+  destroyed () {
+    this.websock && this.websock.close() // 离开路由之后断开websocket连接
+  },
   methods: {
     checkServers () {
       if (this.project.servers_info.length === this.task.servers_info.length) {
@@ -122,9 +141,6 @@ export default {
       const {data} = await getProject(projectId || this.task.project_id)
       this.project = data
       if (!this.isNew) {
-        // this.form.servers = this.project.servers_info.filter(item => {
-        //   return this.task.servers.split(',').indexOf(item.id.toString()) > -1
-        // })
         this.form.servers = this.task.servers_info
       } else {
         this.form.servers = [].concat(this.project.servers_info)
@@ -132,11 +148,7 @@ export default {
       if (!this.isNew) {
         this.form.servers_mode = this.checkServers()
       }
-      if (this.project.repo_mode === 'branch') {
-        this.getBranches()
-      } else {
-        this.getTags()
-      }
+      this.initWebSocket()
     },
     async getTask () {
       try {
@@ -236,21 +248,69 @@ export default {
       } catch (error) {
         this.tagLoading = false
       }
-    }
-  },
-  watch: {
-    'form.servers_mode': {
-      immediate: true,
-      handler (val) {
-        if (val === '全量服务器上线') {
-          this.form.servers = this.project && this.project.servers_info ? [].concat(this.project.servers_info) : []
-        }
+    },
+    initWebSocket () { // 初始化weosocket
+      const wsuri = `http://${location.host}/walle`
+      this.websock = io.connect(wsuri, {
+        reconnectionAttempts: 2
+      })
+      this.websock.on('connect', this.websocketonopen)
+      this.websock.on('branch', this.getWebsocketBranch)
+      this.websock.on('commit', this.getWebsocketCommit)
+      this.websock.on('tag', this.getWebsocketTag)
+    },
+    emitBranch () {
+      console.log('emit branch')
+      this.branchLoading = true
+      // this.websock.emit('branch', {project_id: this.project.id})
+      this.websock.emit('branch')
+    },
+    emitTag () {
+      console.log('emit tag')
+      this.tagLoading = true
+      // this.websock.emit('tag', {project_id: this.project.id})
+      this.websock.emit('tag')
+    },
+    emitCommit () {
+      console.log('emit commit', {
+        branch: this.form.branch
+      })
+      this.commitLoading = true
+      // this.websock.emit('branch', {
+      //   project_id: this.project.id || this.task.project_id,
+      //   branch: this.form.branch
+      // })
+      this.websock.emit('branch', {
+        branch: this.form.branch
+      })
+    },
+    websocketonopen () { // 连接建立之后执行send方法发送数据
+      this.websock.emit('open', {
+        project_id: this.project.id || this.task.project_id
+      })
+      console.log('emit open', {
+        project_id: this.project.id || this.task.project_id
+      })
+      if (this.project.repo_mode === 'branch') {
+        this.emitBranch()
+      } else {
+        this.emitTag()
       }
     },
-    'form.branch': {
-      async handler () {
-        this.getCommits()
-      }
+    getWebsocketBranch (data) {
+      console.log('branch', data)
+      this.branchLoading = false
+      this.branchs = data.branches
+    },
+    getWebsocketCommit (data) {
+      console.log('commit', data)
+      this.commitLoading = false
+      this.commits = data.branches
+    },
+    getWebsocketTag (data) {
+      console.log('tag', data)
+      this.tagLoading = false
+      this.tags = data.tags
     }
   }
 }

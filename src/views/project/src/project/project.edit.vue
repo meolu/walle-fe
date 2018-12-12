@@ -2,7 +2,7 @@
     <div class="wl-project-edit">
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
         <wl-split title="基本配置"></wl-split>
-        <el-form ref="form1" :model="form" label-position="top" size="small" :inline="true">
+        <el-form ref="form1" :model="form" label-position="top" size="small" :inline="true" :disabled="isRead">
           <el-form-item label="项目名称" prop="name" :rules="rules.name">
             <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
           </el-form-item>
@@ -22,7 +22,7 @@
           </el-form-item>
         </el-form>
         <wl-split title="目标集群"></wl-split>
-        <el-form ref="form2" :model="form" label-position="top" size="small" :inline="true">
+        <el-form ref="form2" :model="form" label-position="top" size="small" :inline="true" :disabled="isRead">
           <el-form-item label="目标集群登录用户" prop="target_user" :rules="rules.target_user">
             <el-input v-model="form.target_user" placeholder="请输入目标集群用户名"></el-input>
           </el-form-item>
@@ -32,6 +32,7 @@
         </el-form>
         <el-transfer
           filterable
+          :class="{'wl-project-edit__isRead': isRead}"
           :titles="['服务器', '目标集群']"
           :filter-method="filterMethod"
           filter-placeholder="请输入服务器名称"
@@ -39,7 +40,7 @@
           v-model="target_servers"
           :data="servers">
         </el-transfer>
-        <el-form ref="form3" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__target">
+        <el-form ref="form3" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__target" :disabled="isRead">
           <el-form-item label="目标集群部署路径" prop="target_root" :rules="rules.target_root">
             <el-input v-model="form.target_root" placeholder="请输入目标集群部署路径"></el-input>
           </el-form-item>
@@ -51,45 +52,45 @@
           </el-form-item>
         </el-form>
         <wl-split title="任务配置"></wl-split>
-        <el-form ref="form4" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__editor">
+        <el-form ref="form4" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__editor" :disabled="isRead">
           <el-form-item>
-            <div slot="label"><span>部署排除文件</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen1')">全屏编辑</span></div>
+            <div slot="label"><span>部署排除文件</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen1')">全屏</span></div>
             <wl-fullscreen ref="fullscreen1">
-              <codemirror v-model="form.excludes" :options="editorOption"></codemirror>
+              <codemirror v-model="form.excludes" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-变量</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen2')">全屏编辑</span></div>
+            <div slot="label"><span>高级任务-变量</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen2')">全屏</span></div>
             <wl-fullscreen ref="fullscreen2">
-            <codemirror v-model="form.task_vars" :options="editorOption"></codemirror>
+            <codemirror v-model="form.task_vars" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-deploy prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen3')">全屏编辑</span></div>
+            <div slot="label"><span>高级任务-deploy prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen3')">全屏</span></div>
             <wl-fullscreen ref="fullscreen3">
-            <codemirror v-model="form.prev_deploy" :options="editorOption"></codemirror>
+            <codemirror v-model="form.prev_deploy" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-deploy post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen4')">全屏编辑</span></div>
+            <div slot="label"><span>高级任务-deploy post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen4')">全屏</span></div>
             <wl-fullscreen ref="fullscreen4">
-            <codemirror v-model="form.post_deploy" :options="editorOption"></codemirror>
+            <codemirror v-model="form.post_deploy" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-release prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen5')">全屏编辑</span></div>
+            <div slot="label"><span>高级任务-release prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen5')">全屏</span></div>
             <wl-fullscreen ref="fullscreen5">
-            <codemirror v-model="form.prev_release" :options="editorOption"></codemirror>
+            <codemirror v-model="form.prev_release" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-release post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen6')">全屏编辑</span></div>
+            <div slot="label"><span>高级任务-release post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen6')">全屏</span></div>
             <wl-fullscreen ref="fullscreen6">
-            <codemirror v-model="form.post_release" :options="editorOption"></codemirror>
+            <codemirror v-model="form.post_release" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
         </el-form>
-        <el-form ref="form5" :model="form" label-position="top" size="small" :inline="true">
+        <el-form ref="form5" :model="form" label-position="top" size="small" :inline="true" :disabled="isRead">
           <el-form-item label="上线通知" prop="notice_type">
             <el-select v-model="form.notice_type" placeholder="请选择上线通知">
               <el-option key="notice_type1" label="短信通知" value="sms"></el-option>
@@ -107,12 +108,12 @@
             <el-input v-model="form.notice_hook" placeholder="请输入手机号，英文分号分隔"></el-input>
           </el-form-item>
         </el-form>
-        <el-form ref="form6" :model="form" size="small" :inline="true">
+        <el-form ref="form6" :model="form" size="small" :inline="true" :disabled="isRead">
           <el-form-item>
             <el-checkbox v-model="form.task_audit">上线单是否开启审核</el-checkbox>
           </el-form-item>
         </el-form>
-        <el-button type="primary" @click="submitForm">提交</el-button>
+        <el-button v-if="!isRead" type="primary" @click="submitForm">提交</el-button>
     </div>
 </template>
 
@@ -143,16 +144,7 @@ export default {
   },
   data () {
     return {
-      breadcrumbData: [
-        {
-          to: `/${this.space}/project/index`,
-          name: '项目'
-        },
-        {
-          to: '',
-          name: this.id ? '编辑' : '创建'
-        }
-      ],
+      isRead: this.checkRead(),
       environments: [],
       loadingEnvironments: true,
       servers: [],
@@ -160,11 +152,6 @@ export default {
       serverProps: {
         key: 'id',
         label: 'name'
-      },
-      editorOption: {
-        mode: 'shell',
-        lineNumbers: true,
-        matchBrackets: true
       },
       form: this.initForm(),
       rules: {
@@ -197,11 +184,42 @@ export default {
   },
   computed: {
     ...mapGetters(['spaceId']),
+    breadcrumbData () {
+      return [
+        {
+          to: `/${this.space}/project/index`,
+          name: '项目'
+        },
+        {
+          to: '',
+          name: this.id ? this.isRead ? '查看' : '编辑' : '创建'
+        }
+      ]
+    },
+    editorOption () {
+      return {
+        mode: 'shell',
+        lineNumbers: true,
+        matchBrackets: true,
+        readOnly: this.isRead ? 'nocursor' : false,
+        lineWrapping: true
+      }
+    },
     isNew () {
       return !this.id
     }
   },
+  watch: {
+    '$route.name': {
+      handler () {
+        this.isRead = this.checkRead()
+      }
+    }
+  },
   methods: {
+    checkRead () {
+      return this.$route.name === 'ProjectRead'
+    },
     initForm () {
       return {
         name: '',
@@ -245,7 +263,12 @@ export default {
     },
     async getServers () {
       let {data: {list}} = await getServers()
-      this.servers = list
+      this.servers = list.map(item => {
+        return {
+          ...item,
+          disabled: this.isRead
+        }
+      })
     },
     filterMethod (query, item) {
       return item.name.indexOf(query) > -1
@@ -383,6 +406,16 @@ export default {
      .el-form-item--small.el-form-item  {
        position: relative;
     }
+   }
+
+   @include e(isRead) {
+     .el-transfer-panel__header .el-checkbox__input {
+       display: none;
+     }
+
+     .CodeMirror {
+       background: #f5f7fa;
+     }
    }
 }
 </style>

@@ -74,8 +74,18 @@ export default {
     edit (row) {
       this.$router.push(`/${this.spaceName}/project/edit/${row.id}`)
     },
+    read (row) {
+      this.$router.push(`/${this.spaceName}/project/read/${row.id}`)
+    },
     editmembers (row) {
       this.$router.push(`/${this.spaceName}/project/members/${row.id}`)
+    },
+    renderReadTool (row) {
+      if (row.enable_update) {
+        return <el-button type="text" icon="el-icon-view" size="small" onClick={() => this.read({...row})}>查看</el-button>
+      } else {
+        return null
+      }
     },
     renderEditTool (row) {
       if (row.enable_update) {

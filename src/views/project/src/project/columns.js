@@ -36,6 +36,7 @@ export default function () {
           <div>
             {self.renderMemberTool(scope.row)}
             {self.renderEditTool(scope.row)}
+            {self.renderReadTool(scope.row)}
             {self.renderDeleteTool(scope.row)}
           </div>
         )
