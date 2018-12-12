@@ -127,6 +127,7 @@ export default {
     }
   },
   destroyed () {
+    console.log('close')
     this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
   methods: {
@@ -258,6 +259,9 @@ export default {
       this.websock.on('branch', this.getWebsocketBranch)
       this.websock.on('commit', this.getWebsocketCommit)
       this.websock.on('tag', this.getWebsocketTag)
+      this.websock.on('console', (data) => {
+        console.log('console', data)
+      })
     },
     emitBranch () {
       console.log('emit branch')
