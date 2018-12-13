@@ -105,11 +105,12 @@ export default {
         this.noRun = true
       } else if (parseInt(data.status) === 4 || parseInt(data.status) === 5) {
         // 4上线完成，5上线失败，开始按钮可点击，log显示
-        this.noRun = false
-        this.isStart = true
         if (parseInt(data.status) === status) {
           this.processStatus = 'error'
+          console.log(this.processStatus)
         }
+        this.noRun = false
+        this.isStart = true
       } else if (parseInt(data.status) === 1) {
         // 审核通过，log不显示，按钮可点击
         this.noRun = false
