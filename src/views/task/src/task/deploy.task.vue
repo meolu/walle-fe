@@ -150,7 +150,7 @@ export default {
         this.deployFail()
       }
     },
-    deployFail ({data}) {
+    deployFail ({data} = {}) {
       // this.$message.error(data.message)
       this.noRun = false
       this.isStart = true
