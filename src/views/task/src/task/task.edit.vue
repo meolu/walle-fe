@@ -301,17 +301,32 @@ export default {
     getWebsocketBranch (data) {
       console.log('branches', data)
       this.branchLoading = false
-      this.branchs = data.data
+      if (data.event === 'branches') {
+        this.branchs = data.data
+      } else if (data.event === 'error') {
+        this.branchs = []
+        this.$message.error(data.data.message)
+      }
     },
     getWebsocketCommit (data) {
       console.log('commits', data)
       this.commitLoading = false
-      this.commits = data.data
+      if (data.event === 'commits') {
+        this.commits = data.data
+      } else if (data.event === 'error') {
+        this.commits = []
+        this.$message.error(data.data.message)
+      }
     },
     getWebsocketTag (data) {
       console.log('tags', data)
       this.tagLoading = false
-      this.tags = data.data
+      if (data.event === 'tags') {
+        this.tags = data.data
+      } else if (data.event === 'error') {
+        this.tags = []
+        this.$message.error(data.data.message)
+      }
     }
   }
 }
