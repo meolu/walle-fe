@@ -167,11 +167,11 @@ export default {
       const msg = data && data.data ? data.data.message : ''
       if (msg) {
         this.$message.error(msg)
-        this.noRun = false
-        this.isStart = true
-        console.log(this.activeStep, this.activeStep - 1)
-        this.stepStatus[this.activeStep - 1] = 'error'
       }
+      this.noRun = false
+      this.isStart = true
+      console.log(this.activeStep, this.activeStep - 1)
+      this.stepStatus[this.activeStep - 1] = 'error'
     }
   }
 }
