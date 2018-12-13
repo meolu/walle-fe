@@ -62,7 +62,7 @@ export default {
   },
   watch: {
     processStatus (val) {
-      if (this.activeStep === 2) {
+      if (this.activeStep === 1) {
         this.step2Status = val
       }
     }
@@ -164,6 +164,7 @@ export default {
         this.$message.error(msg)
         this.noRun = false
         this.isStart = true
+        this.activeStep--
         this.processStatus = 'error'
       }
     }
