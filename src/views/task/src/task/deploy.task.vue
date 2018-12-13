@@ -5,9 +5,9 @@
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
            <el-button type="success" size="small" @click="start" :disabled="isStart&&noRun">开始</el-button>
         </div>
-        <el-steps :active="activeStep" finish-status="finish" :processStatus="processStatus" v-if="isStart">
+        <el-steps :active="activeStep" finish-status="finish" v-if="isStart">
             <el-step title="prev_deploy"></el-step>
-            <el-step title="deploy" :status="step2Status"></el-step>
+            <el-step title="deploy"></el-step>
             <el-step title="post_deploy"></el-step>
             <el-step title="prev_release"></el-step>
             <el-step title="release"></el-step>
@@ -55,16 +55,8 @@ export default {
       task: null,
       isStart: false,
       noRun: false, // 是否可以点击开始上线
-      setInterval: null,
-      processStatus: 'process',
-      step2Status: 'null'
-    }
-  },
-  watch: {
-    processStatus (val) {
-      if (this.activeStep === 1) {
-        this.step2Status = val
-      }
+      setInterval: null
+      // processStatus: 'process'
     }
   },
   created () {
@@ -86,7 +78,7 @@ export default {
       this.isStart = true
       this.noRun = true
       this.activeStep = 0
-      this.processStatus = 'process'
+      // this.processStatus = 'process'
       this.record = []
       this.websock.emit('deploy', {'task': this.taskId})
     },
@@ -115,9 +107,9 @@ export default {
         this.noRun = true
       } else if (parseInt(data.status) === 4 || parseInt(data.status) === 5) {
         // 4上线完成，5上线失败，开始按钮可点击，log显示
-        if (parseInt(data.status) === 5) {
-          this.processStatus = 'error'
-        }
+        // if (parseInt(data.status) === 5) {
+        //   this.processStatus = 'error'
+        // }
         this.noRun = false
         this.isStart = true
       } else if (parseInt(data.status) === 1) {
@@ -164,8 +156,7 @@ export default {
         this.$message.error(msg)
         this.noRun = false
         this.isStart = true
-        this.activeStep--
-        this.processStatus = 'error'
+        // this.processStatus = 'error'
       }
     }
   }
