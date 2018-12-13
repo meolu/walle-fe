@@ -100,13 +100,12 @@ export default {
       console.log('construct', data)
       // 正在部署或已完成部署
       // 上线中，开始按钮不可点击，log显示
-      console.log(data.status)
       if (parseInt(data.status) === 3) {
         this.isStart = true
         this.noRun = true
       } else if (parseInt(data.status) === 4 || parseInt(data.status) === 5) {
         // 4上线完成，5上线失败，开始按钮可点击，log显示
-        if (parseInt(data.status) === status) {
+        if (parseInt(data.status) === 5) {
           this.processStatus = 'error'
           console.log(this.processStatus)
         }
