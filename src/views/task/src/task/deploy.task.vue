@@ -61,14 +61,17 @@ export default {
   },
   watch: {
     activeStep (val) {
+      console.log('val', val)
       if (val === 0) {
         this.stepStatus = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
       } else {
         const index = val - 1
+        console.log('val', index)
         this.stepStatus = this.stepStatus.map((item, i) => {
           if (i < index) {
             return 'finish'
           } else if (i === index) {
+            console.log('val', i)
             return 'process'
           } else {
             return item
