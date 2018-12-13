@@ -52,7 +52,6 @@
 <script>
 import {getProject} from '@/services/project.service'
 import {getTask, addTask, updateTask} from '@/services/task.service'
-import {getBranches, getTags, getCommits} from '@/services/repo.service'
 import io from 'socket.io-client'
 
 export default {
@@ -209,47 +208,6 @@ export default {
     deleteServer (tag, index) {
       this.form.servers.splice(index, 1)
     },
-    async getBranches () {
-      this.branchLoading = true
-      try {
-        const {data: {branches}} = await getBranches({
-          project_id: this.project.id
-        }, {
-          isLoading: false
-        })
-        this.branchLoading = false
-        this.branchs = branches
-      } catch (error) {
-        this.branchLoading = false
-      }
-    },
-    async getCommits () {
-      this.commitLoading = true
-      try {
-        const {data: {branches}} = await getCommits({
-          project_id: this.project.id || this.task.project_id,
-          branch: this.form.branch
-        }, {
-          isLoading: false
-        })
-        this.commitLoading = false
-        this.commits = branches
-      } catch (error) {
-        this.commitLoading = false
-      }
-    },
-    async getTags () {
-      this.tagLoading = true
-      try {
-        const {data: {tags}} = await getTags({
-          project_id: this.project.id
-        })
-        this.tagLoading = false
-        this.tags = tags
-      } catch (error) {
-        this.tagLoading = false
-      }
-    },
     initWebSocket () { // 初始化weosocket
       const wsuri = `http://${location.host}/walle`
       this.websock = io.connect(wsuri, {
@@ -263,27 +221,25 @@ export default {
     emitBranches () {
       console.log('emit branches')
       this.branchLoading = true
-      // this.websock.emit('branches', {project_id: this.project.id})
       this.websock.emit('branches')
     },
     emitTags () {
       console.log('emit tags')
       this.tagLoading = true
-      // this.websock.emit('tags', {project_id: this.project.id})
       this.websock.emit('tags')
     },
     emitCommits () {
       console.log('emit commits', {
         branch: this.form.branch
       })
-      this.commitLoading = true
-      // this.websock.emit('commits', {
-      //   project_id: this.project.id || this.task.project_id,
-      //   branch: this.form.branch
-      // })
-      this.websock.emit('commits', {
-        branch: this.form.branch
-      })
+      if (this.form.branch) {
+        this.commitLoading = true
+        this.websock.emit('commits', {
+          branch: this.form.branch
+        })
+      } else {
+        this.$message.error('请先选择分支')
+      }
     },
     websocketonopen () { // 连接建立之后执行send方法发送数据
       this.websock.emit('open', {

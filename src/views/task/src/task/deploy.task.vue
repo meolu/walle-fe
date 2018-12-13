@@ -5,7 +5,7 @@
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
            <el-button type="success" size="small" @click="start" :disabled="isStart&&noRun">开始</el-button>
         </div>
-        <el-steps :active="activeStep" finish-status="finish" :process-status="processStatus" v-if="isStart">
+        <el-steps :active="activeStep" finish-status="finish" :processStatus="processStatus" v-if="isStart">
           <el-step title="prev_deploy"></el-step>
             <el-step title="deploy"></el-step>
             <el-step title="post_deploy"></el-step>
