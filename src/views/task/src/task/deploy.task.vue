@@ -57,7 +57,14 @@ export default {
       noRun: false, // 是否可以点击开始上线
       setInterval: null,
       processStatus: 'process',
-      step2Status: null
+      step2Status: 'null'
+    }
+  },
+  watch: {
+    processStatus (val) {
+      if (this.activeStep === 2) {
+        this.step2Status = val
+      }
     }
   },
   created () {
@@ -157,11 +164,6 @@ export default {
         this.$message.error(msg)
         this.noRun = false
         this.isStart = true
-        // this.activeStep = 2
-        console.log(this.activeStep)
-        if (this.activeStep === 2) {
-          this.step2Status = 'error'
-        }
         this.processStatus = 'error'
       }
     }
