@@ -20,14 +20,14 @@
 import io from 'socket.io-client'
 import DeployLog from './log.vue'
 import {getTask} from '@/services/task.service'
-const STAGE = {
-  prev_deploy: 1,
-  deploy: 2,
-  post_deploy: 3,
-  prev_release: 4,
-  release: 5,
-  post_release: 6
-}
+// const STAGE = {
+//   prev_deploy: 1,
+//   deploy: 2,
+//   post_deploy: 3,
+//   prev_release: 4,
+//   release: 5,
+//   post_release: 6
+// }
 export default {
   components: {DeployLog},
   props: {
@@ -78,6 +78,7 @@ export default {
           }
         })
       }
+      console.log('stepStatus', this.stepStatus)
     }
   },
   created () {
@@ -159,8 +160,8 @@ export default {
     websocketonconsole ({data}) { // 接收log
       console.log('console', data)
       this.record.push(data)
-      if (data && data.stage) {
-        this.activeStep = STAGE[data.stage]
+      if (data && data.sequence >= 0) {
+        this.activeStep = data.sequence
       }
       if (data.status === 128) {
         this.deployFail()
