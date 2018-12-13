@@ -170,7 +170,6 @@ export default {
       }
       this.noRun = false
       this.isStart = true
-      console.log(this.activeStep, this.activeStep - 1)
       this.stepStatus[this.activeStep - 1] = 'error'
     }
   }
