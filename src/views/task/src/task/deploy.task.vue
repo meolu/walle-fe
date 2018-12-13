@@ -56,8 +56,25 @@ export default {
       isStart: false,
       noRun: false, // 是否可以点击开始上线
       setInterval: null,
-      stepStatus: ['process', 'process', 'process', 'process', 'process', 'process']
-      // processStatus: 'process'
+      stepStatus: ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
+    }
+  },
+  watch: {
+    activeStep (val) {
+      if (val === 0) {
+        this.stepStatus = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
+      } else {
+        const index = val - 1
+        this.stepStatus = this.stepStatus.map((item, i) => {
+          if (i < index) {
+            return 'finish'
+          } else if (i === index) {
+            return 'process'
+          } else {
+            return item
+          }
+        })
+      }
     }
   },
   created () {
@@ -79,8 +96,6 @@ export default {
       this.isStart = true
       this.noRun = true
       this.activeStep = 0
-      this.stepStatus = ['process', 'process', 'process', 'process', 'process', 'process']
-      // this.processStatus = 'process'
       this.record = []
       this.websock.emit('deploy', {'task': this.taskId})
     },
@@ -142,7 +157,6 @@ export default {
       console.log('console', data)
       this.record.push(data)
       if (data && data.stage) {
-        // this.activeStep = data.sequence
         this.activeStep = STAGE[data.stage]
       }
       if (data.status === 128) {
@@ -156,7 +170,6 @@ export default {
         this.noRun = false
         this.isStart = true
         this.stepStatus[this.activeStep - 1] = 'error'
-        // this.processStatus = 'error'
       }
     }
   }
