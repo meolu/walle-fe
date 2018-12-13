@@ -148,6 +148,7 @@ export default {
     },
     deployFail ({data}) {
       this.processStatus = 'error'
+      console.log(this, this.processStatus)
       this.$message.error(data.message)
     }
   }
