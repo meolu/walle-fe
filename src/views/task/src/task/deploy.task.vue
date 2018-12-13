@@ -7,7 +7,7 @@
         </div>
         <el-steps :active="activeStep" finish-status="finish" :processStatus="processStatus" v-if="isStart">
             <el-step title="prev_deploy"></el-step>
-            <el-step title="deploy"></el-step>
+            <el-step title="deploy" :status="step2Status"></el-step>
             <el-step title="post_deploy"></el-step>
             <el-step title="prev_release"></el-step>
             <el-step title="release"></el-step>
@@ -56,7 +56,8 @@ export default {
       isStart: false,
       noRun: false, // 是否可以点击开始上线
       setInterval: null,
-      processStatus: 'process'
+      processStatus: 'process',
+      step2Status: null
     }
   },
   created () {
@@ -158,6 +159,9 @@ export default {
         this.isStart = true
         // this.activeStep = 2
         console.log(this.activeStep)
+        if (this.activeStep === 2) {
+          this.step2Status = 'error'
+        }
         this.processStatus = 'error'
       }
     }
