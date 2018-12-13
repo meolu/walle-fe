@@ -61,24 +61,20 @@ export default {
   },
   watch: {
     activeStep (val) {
-      console.log('val', val)
       if (val === 0) {
         this.stepStatus = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
       } else {
         const index = val - 1
-        console.log('val', index)
         this.stepStatus = this.stepStatus.map((item, i) => {
           if (i < index) {
             return 'finish'
           } else if (i === index) {
-            console.log('val', i)
             return 'process'
           } else {
             return item
           }
         })
       }
-      console.log('stepStatus', this.stepStatus)
     }
   },
   created () {
@@ -173,6 +169,7 @@ export default {
         this.$message.error(msg)
         this.noRun = false
         this.isStart = true
+        console.log(this.activeStep, this.activeStep - 1)
         this.stepStatus[this.activeStep - 1] = 'error'
       }
     }
