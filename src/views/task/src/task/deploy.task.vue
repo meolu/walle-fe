@@ -157,7 +157,8 @@ export default {
       }
       this.noRun = false
       this.isStart = true
-      this.activeStep++
+      this.activeStep--
+      console.log(this.activeStep)
       this.processStatus = 'error'
     }
   }
