@@ -154,13 +154,13 @@ export default {
       const msg = data && data.data ? data.data.message : ''
       if (msg) {
         this.$message.error(msg)
+        console.log('222222', data)
+        this.noRun = false
+        this.isStart = true
+        this.activeStep = 1
+        console.log(this.activeStep)
+        this.processStatus = 'error'
       }
-      console.log('222222', data)
-      this.noRun = false
-      this.isStart = true
-      this.activeStep = 2
-      console.log(this.activeStep)
-      this.processStatus = 'error'
     }
   }
 }
