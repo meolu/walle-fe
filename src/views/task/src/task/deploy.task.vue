@@ -77,6 +77,7 @@ export default {
     start () {
       this.isStart = true
       this.noRun = true
+      this.activeStep = 0
       this.record = []
       this.websock.emit('deploy', {'task': this.taskId})
     },
@@ -107,7 +108,6 @@ export default {
         // 4上线完成，5上线失败，开始按钮可点击，log显示
         if (parseInt(data.status) === 5) {
           this.processStatus = 'error'
-          console.log(this.processStatus)
         }
         this.noRun = false
         this.isStart = true
