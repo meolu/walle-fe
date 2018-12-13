@@ -147,9 +147,10 @@ export default {
       }
     },
     deployFail ({data}) {
-      this.processStatus = 'error'
-      console.log(this, this.processStatus)
       this.$message.error(data.message)
+      this.noRun = false
+      this.isStart = true
+      this.processStatus = 'error'
     }
   }
 }
