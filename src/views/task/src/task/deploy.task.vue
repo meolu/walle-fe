@@ -151,11 +151,14 @@ export default {
       }
     },
     deployFail ({data} = {}) {
-      const msg = data && data.message ? data.message : '上线失败'
-      this.$message.error(msg)
+      const msg = data ? data.message : ''
+      if (msg) {
+        this.$message.error(msg)
+      }
       this.noRun = false
       this.isStart = true
-      this.processStatus = 'success'
+      this.activeStep++
+      this.processStatus = 'error'
     }
   }
 }
