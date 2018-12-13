@@ -155,9 +155,10 @@ export default {
       if (msg) {
         this.$message.error(msg)
       }
+      console.log('222222')
       this.noRun = false
       this.isStart = true
-      this.activeStep--
+      this.activeStep = 3
       console.log(this.activeStep)
       this.processStatus = 'error'
     }
