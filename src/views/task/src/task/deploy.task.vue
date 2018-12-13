@@ -6,12 +6,12 @@
            <el-button type="success" size="small" @click="start" :disabled="isStart&&noRun">开始</el-button>
         </div>
         <el-steps :active="activeStep" finish-status="finish" v-if="isStart">
-            <el-step title="prev_deploy"></el-step>
-            <el-step title="deploy"></el-step>
-            <el-step title="post_deploy"></el-step>
-            <el-step title="prev_release"></el-step>
-            <el-step title="release"></el-step>
-            <el-step title="post_release"></el-step>
+            <el-step title="prev_deploy" :status="stepStatus[0]"></el-step>
+            <el-step title="deploy" :status="stepStatus[1]"></el-step>
+            <el-step title="post_deploy" :status="stepStatus[2]"></el-step>
+            <el-step title="prev_release" :status="stepStatus[3]"></el-step>
+            <el-step title="release" :status="stepStatus[4]"></el-step>
+            <el-step title="post_release" :status="stepStatus[5]"></el-step>
         </el-steps>
         <deploy-log :value="record" v-if="isStart"></deploy-log>
     </div>
@@ -55,7 +55,8 @@ export default {
       task: null,
       isStart: false,
       noRun: false, // 是否可以点击开始上线
-      setInterval: null
+      setInterval: null,
+      stepStatus: ['process', 'process', 'process', 'process', 'process', 'process']
       // processStatus: 'process'
     }
   },
@@ -78,6 +79,7 @@ export default {
       this.isStart = true
       this.noRun = true
       this.activeStep = 0
+      this.stepStatus = ['process', 'process', 'process', 'process', 'process', 'process']
       // this.processStatus = 'process'
       this.record = []
       this.websock.emit('deploy', {'task': this.taskId})
@@ -107,9 +109,6 @@ export default {
         this.noRun = true
       } else if (parseInt(data.status) === 4 || parseInt(data.status) === 5) {
         // 4上线完成，5上线失败，开始按钮可点击，log显示
-        // if (parseInt(data.status) === 5) {
-        //   this.processStatus = 'error'
-        // }
         this.noRun = false
         this.isStart = true
       } else if (parseInt(data.status) === 1) {
@@ -156,6 +155,7 @@ export default {
         this.$message.error(msg)
         this.noRun = false
         this.isStart = true
+        this.stepStatus[this.activeStep - 1] = 'error'
         // this.processStatus = 'error'
       }
     }
