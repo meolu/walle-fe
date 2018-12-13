@@ -78,6 +78,7 @@ export default {
       this.isStart = true
       this.noRun = true
       this.activeStep = 0
+      this.processStatus = 'process'
       this.record = []
       this.websock.emit('deploy', {'task': this.taskId})
     },
