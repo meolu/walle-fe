@@ -107,6 +107,9 @@ export default {
         // 4上线完成，5上线失败，开始按钮可点击，log显示
         this.noRun = false
         this.isStart = true
+        if (parseInt(data.status) === status) {
+          this.processStatus = 'error'
+        }
       } else if (parseInt(data.status) === 1) {
         // 审核通过，log不显示，按钮可点击
         this.noRun = false

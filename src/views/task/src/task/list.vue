@@ -134,15 +134,18 @@ export default {
     },
     deploy (row) {
       // 上线
-      this.$rrcTrack.trackEvent({
-        category: '任务',
-        action: '上线',
-        optLabel: {
-          taskId: row.id,
-          host: location.host
-        }
-      }, `/${this.space}/task/deploy/${row.id}`)
-      // this.$router.push(`/${this.space}/task/deploy/${row.id}`)
+      if (process.env.NODE_ENV === 'production') {
+        this.$rrcTrack.trackEvent({
+          category: '任务',
+          action: '上线',
+          optLabel: {
+            taskId: row.id,
+            host: location.host
+          }
+        }, `/${this.space}/task/deploy/${row.id}`)
+      } else {
+        this.$router.push(`/${this.space}/task/deploy/${row.id}`)
+      }
     },
     async deleteTask (row) {
       await deleteTask(row.id)
