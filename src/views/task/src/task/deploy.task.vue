@@ -6,12 +6,12 @@
            <el-button type="success" size="small" @click="start" :disabled="isStart&&noRun">开始</el-button>
         </div>
         <el-steps :active="activeStep" finish-status="finish" v-if="isStart">
-          <el-step title="prev_deploy"></el-step>
-            <el-step title="deploy"></el-step>
-            <el-step title="post_deploy"></el-step>
-            <el-step title="prev_release"></el-step>
-            <el-step title="release"></el-step>
-            <el-step title="post_release"></el-step>
+            <el-step title="prev_deploy" :status="stepStatus[0]"></el-step>
+            <el-step title="deploy" :status="stepStatus[1]"></el-step>
+            <el-step title="post_deploy" :status="stepStatus[2]"></el-step>
+            <el-step title="prev_release" :status="stepStatus[3]"></el-step>
+            <el-step title="release" :status="stepStatus[4]"></el-step>
+            <el-step title="post_release" :status="stepStatus[5]"></el-step>
         </el-steps>
         <deploy-log :value="record" v-if="isStart"></deploy-log>
     </div>
@@ -20,14 +20,14 @@
 import io from 'socket.io-client'
 import DeployLog from './log.vue'
 import {getTask} from '@/services/task.service'
-const STAGE = {
-  prev_deploy: 1,
-  deploy: 2,
-  post_deploy: 3,
-  prev_release: 4,
-  release: 5,
-  post_release: 6
-}
+// const STAGE = {
+//   prev_deploy: 1,
+//   deploy: 2,
+//   post_deploy: 3,
+//   prev_release: 4,
+//   release: 5,
+//   post_release: 6
+// }
 export default {
   components: {DeployLog},
   props: {
@@ -55,7 +55,26 @@ export default {
       task: null,
       isStart: false,
       noRun: false, // 是否可以点击开始上线
-      setInterval: null
+      setInterval: null,
+      stepStatus: ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
+    }
+  },
+  watch: {
+    activeStep (val) {
+      if (val === 0) {
+        this.stepStatus = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
+      } else {
+        const index = val - 1
+        this.stepStatus = this.stepStatus.map((item, i) => {
+          if (i < index) {
+            return 'finish'
+          } else if (i === index) {
+            return 'process'
+          } else {
+            return item
+          }
+        })
+      }
     }
   },
   created () {
@@ -76,6 +95,7 @@ export default {
     start () {
       this.isStart = true
       this.noRun = true
+      this.activeStep = 0
       this.record = []
       this.websock.emit('deploy', {'task': this.taskId})
     },
@@ -89,6 +109,7 @@ export default {
       this.websock.on('construct', this.construct)
       // 3.发送deploy命令之后, 将会收到console
       this.websock.on('console', this.websocketonconsole)
+      this.websock.on('fail', this.deployFail)
       this.websock.on('error', this.websocketonerror)
       this.websock.on('pong', (data) => {
         console.log('pong', data)
@@ -135,9 +156,21 @@ export default {
     websocketonconsole ({data}) { // 接收log
       console.log('console', data)
       this.record.push(data)
-      if (data && data.stage) {
-        this.activeStep = STAGE[data.stage]
+      if (data && data.sequence >= 0) {
+        this.activeStep = data.sequence
       }
+      if (data.status === 128) {
+        this.deployFail()
+      }
+    },
+    deployFail (data) {
+      const msg = data && data.data ? data.data.message : ''
+      if (msg) {
+        this.$message.error(msg)
+      }
+      this.noRun = false
+      this.isStart = true
+      this.stepStatus[this.activeStep - 1] = 'error'
     }
   }
 }
