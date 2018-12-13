@@ -6,7 +6,7 @@
            <el-button type="success" size="small" @click="start" :disabled="isStart&&noRun">开始</el-button>
         </div>
         <el-steps :active="activeStep" finish-status="finish" :processStatus="processStatus" v-if="isStart">
-          <el-step title="prev_deploy"></el-step>
+            <el-step title="prev_deploy"></el-step>
             <el-step title="deploy"></el-step>
             <el-step title="post_deploy"></el-step>
             <el-step title="prev_release"></el-step>
@@ -154,10 +154,9 @@ export default {
       const msg = data && data.data ? data.data.message : ''
       if (msg) {
         this.$message.error(msg)
-        console.log('222222', data)
         this.noRun = false
         this.isStart = true
-        this.activeStep = 1
+        // this.activeStep = 2
         console.log(this.activeStep)
         this.processStatus = 'error'
       }
