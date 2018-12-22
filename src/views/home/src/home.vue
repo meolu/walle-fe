@@ -1,6 +1,6 @@
 <template>
     <div class="wl-home">
-        <h2>更快，更优，更 Cool !<br>欢迎使用 WALLE</h2>
+        <h2>更快，更优，更 Cool !<br>欢迎使用 walle 2.0</h2>
     </div>
 </template>
 <style lang="scss">
