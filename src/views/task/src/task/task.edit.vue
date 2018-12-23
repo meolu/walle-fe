@@ -7,19 +7,19 @@
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item v-if="project&&project.repo_mode==='branch'" label="选取分支">
-                    <el-select v-model="form.branch" placeholder="选取分支" v-loading="branchLoading">
+                    <el-select v-model="form.branch" placeholder="选取分支" allow-create filterable v-loading="branchLoading">
                         <el-option v-for="item in branchs" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
                     <i v-if="!branchLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitBranches"></i>
                 </el-form-item>
                 <el-form-item v-if="project&&project.repo_mode==='tag'" label="选取Tag">
-                    <el-select v-model="form.tag" placeholder="选取Tag" v-loading="tagLoading">
+                    <el-select v-model="form.tag" placeholder="选取Tag" allow-create filterable v-loading="tagLoading">
                         <el-option v-for="item in tags" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
                     <i v-if="!tagLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitTags"></i>
                 </el-form-item>
                 <el-form-item  v-if="project&&project.repo_mode==='branch'" label="选取版本">
-                    <el-select v-model="form.commit_id" placeholder="先选取分支再选取版本" v-loading="commitLoading">
+                    <el-select v-model="form.commit_id" placeholder="先选取分支再选取版本" allow-create filterable v-loading="commitLoading">
                         <el-option v-for="item in commits" :key="item.id" :label="item.message" :value="item.id"></el-option>
                     </el-select>
                     <i v-if="!commitLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitCommits"></i>
@@ -251,13 +251,13 @@ export default {
       this.websock.emit('open', {
         project_id: this.project.id || this.task.project_id
       })
-      if (this.project.repo_mode === 'branch') {
-        if (!this.form.branch) {
-          this.emitBranches()
-        }
-      } else {
-        this.emitTags()
-      }
+      // if (this.project.repo_mode === 'branch') {
+      //   if (!this.form.branch) {
+      //     this.emitBranches()
+      //   }
+      // } else {
+      //   this.emitTags()
+      // }
     },
     getWebsocketBranch (data) {
       this.branchLoading = false
