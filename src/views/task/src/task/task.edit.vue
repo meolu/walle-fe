@@ -154,7 +154,6 @@ export default {
         this.form.servers_mode = this.checkServers()
       }
       const projectBranch = getCookie(`projectID_${this.project.id}`)
-      console.log(projectBranch, this.form.branch)
       if (projectBranch && !this.form.branch) {
         this.form.branch = projectBranch
       }
