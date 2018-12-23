@@ -13,7 +13,7 @@ export default function () {
     {
       prop: 'status',
       label: '状态',
-      width: 180,
+      width: 140,
       render (h, scope) {
         return STATUS[scope.row.status]
       }
@@ -21,11 +21,11 @@ export default function () {
     {
       prop: 'environment_name',
       label: '环境',
-      width: 180
+      width: 150
     },
     {
       label: '空间',
-      width: 180,
+      width: 150,
       prop: 'space_name'
     },
     {
