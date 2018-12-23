@@ -158,19 +158,14 @@ export default {
       console.log('console', data)
       const log = data.data
       this.record.push(log)
-      if (log && log.sequence >= 0) {
+      if (log && log.sequence > 0) {
         this.activeStep = log.sequence
       }
-      // if (data.event === 'fail') {
-      //   this.deployFail()
-      // } else if (data.event === 'finish') {
-      //   this.deploySuccess()
-      // }
     },
     deployFail (data) {
       console.log('fail', data)
       const msg = data && data.data ? data.data.message : ''
-      if (msg) {
+      if (msg && (this.task.status === '4' || this.task.status === '5')) {
         this.$message.error(msg)
       }
       this.noRun = false
@@ -181,7 +176,7 @@ export default {
     deploySuccess (data) {
       console.log('sucess', data)
       const msg = data && data.data ? data.data.message : ''
-      if (msg) {
+      if (msg && (this.task.status === '4' || this.task.status === '5')) {
         this.$message.success(msg)
       }
       this.noRun = false

@@ -122,8 +122,10 @@ export default {
     },
     'form.branch': {
       async handler (val) {
-        setCookie(`projectID${this.project.id}`, val)
-        this.emitCommits()
+        if (val) {
+          setCookie(`projectID_${this.project.id}`, val)
+          this.emitCommits()
+        }
       }
     }
   },
@@ -150,7 +152,8 @@ export default {
       if (!this.isNew) {
         this.form.servers_mode = this.checkServers()
       }
-      const projectBranch = getCookie(`projectID${this.project.id}`)
+      console.log('project.id', this.project.id)
+      const projectBranch = getCookie(`projectID_${this.project.id}`)
       if (projectBranch) {
         this.form.branch = projectBranch
       }
