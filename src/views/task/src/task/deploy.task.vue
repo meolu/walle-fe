@@ -5,7 +5,7 @@
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
            <el-button type="success" size="small" @click="start" :disabled="isStart&&noRun">开始</el-button>
         </div>
-        <el-steps :active="activeStep" finish-status="finish" v-if="isStart">
+        <el-steps :active="activeStep" finish-status="success" v-if="isStart">
             <el-step title="prev_deploy" :status="stepStatus[0]"></el-step>
             <el-step title="deploy" :status="stepStatus[1]"></el-step>
             <el-step title="post_deploy" :status="stepStatus[2]"></el-step>
@@ -110,6 +110,7 @@ export default {
       // 3.发送deploy命令之后, 将会收到console
       this.websock.on('console', this.websocketonconsole)
       this.websock.on('fail', this.deployFail)
+      this.websock.on('success', this.deploySuccess)
       this.websock.on('error', this.websocketonerror)
       this.websock.on('pong', (data) => {
         console.log('pong', data)
@@ -153,24 +154,38 @@ export default {
     websocketonerror () { // 连接建立失败取消loading
       this.loading && this.loading.close()
     },
-    websocketonconsole ({data}) { // 接收log
+    websocketonconsole (data) { // 接收log
       console.log('console', data)
-      this.record.push(data)
-      if (data && data.sequence >= 0) {
-        this.activeStep = data.sequence
-      }
-      if (data.status === 128) {
-        this.deployFail()
+      const log = data.data
+      this.record.push(log)
+      if (log && log.sequence > 0) {
+        this.activeStep = log.sequence
       }
     },
     deployFail (data) {
-      const msg = data && data.data ? data.data.message : ''
-      if (msg) {
-        this.$message.error(msg)
+      console.log('fail', data)
+      if (this.isStart) {
+        const msg = data && data.data ? data.data.message : ''
+        if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
+          this.$message.error(msg)
+        }
+        this.noRun = false
+        this.isStart = true
+        const step = this.activeStep === 0 ? 0 : this.activeStep - 1
+        this.$set(this.stepStatus, step, 'error')
       }
-      this.noRun = false
-      this.isStart = true
-      this.stepStatus[this.activeStep - 1] = 'error'
+    },
+    deploySuccess (data) {
+      console.log('sucess', data)
+      if (this.isStart) {
+        const msg = data && data.data ? data.data.message : ''
+        if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
+          this.$message.success(msg)
+        }
+        this.noRun = false
+        this.isStart = true
+        this.activeStep = 7
+      }
     }
   }
 }

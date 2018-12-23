@@ -7,13 +7,13 @@
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item v-if="project&&project.repo_mode==='branch'" label="选取分支">
-                    <el-select v-model="form.branch" placeholder="选取分支" v-loading="branchLoading">
+                    <el-select v-model="form.branch" placeholder="选取分支" allow-create filterable v-loading="branchLoading">
                         <el-option v-for="item in branchs" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
                     <i v-if="!branchLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitBranches"></i>
                 </el-form-item>
                 <el-form-item v-if="project&&project.repo_mode==='tag'" label="选取Tag">
-                    <el-select v-model="form.tag" placeholder="选取Tag" v-loading="tagLoading">
+                    <el-select v-model="form.tag" placeholder="选取Tag" allow-create filterable v-loading="tagLoading">
                         <el-option v-for="item in tags" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
                     <i v-if="!tagLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitTags"></i>
@@ -52,6 +52,7 @@
 <script>
 import {getProject} from '@/services/project.service'
 import {getTask, addTask, updateTask} from '@/services/task.service'
+import {setCookie, getCookie} from '@/utils/cookies'
 import io from 'socket.io-client'
 
 export default {
@@ -100,9 +101,11 @@ export default {
           { required: true, message: '请输入上线单名称', trigger: 'blur' }
         ]
       },
-      branchLoading: true,
+      branchLoading: false,
       tagLoading: true,
-      commitLoading: false
+      commitLoading: false,
+      isRequestCommit: false,
+      websocketOpen: false
     }
   },
   computed: {
@@ -120,13 +123,23 @@ export default {
       }
     },
     'form.branch': {
-      async handler () {
-        this.emitCommits()
+      async handler (val) {
+        if (val) {
+          setCookie(`projectID_${this.task.project_id || this.project.id}`, val, null, '/')
+          this.emitCommits()
+        }
+      }
+    },
+    websocketOpen (val) {
+      if (val && this.isRequestCommit) {
+        this.isRequestCommit = false
+        this.websock.emit('commits', {
+          branch: this.form.branch
+        })
       }
     }
   },
   destroyed () {
-    console.log('close')
     this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
   methods: {
@@ -147,6 +160,10 @@ export default {
       }
       if (!this.isNew) {
         this.form.servers_mode = this.checkServers()
+      }
+      const projectBranch = getCookie(`projectID_${this.project.id}`)
+      if (projectBranch && !this.form.branch) {
+        this.form.branch = projectBranch
       }
       this.initWebSocket()
     },
@@ -219,24 +236,23 @@ export default {
       this.websock.on('tags', this.getWebsocketTag)
     },
     emitBranches () {
-      console.log('emit branches')
       this.branchLoading = true
       this.websock.emit('branches')
     },
     emitTags () {
-      console.log('emit tags')
       this.tagLoading = true
       this.websock.emit('tags')
     },
     emitCommits () {
-      console.log('emit commits', {
-        branch: this.form.branch
-      })
       if (this.form.branch) {
-        this.commitLoading = true
-        this.websock.emit('commits', {
-          branch: this.form.branch
-        })
+        if (this.websock) {
+          this.commitLoading = true
+          this.websock.emit('commits', {
+            branch: this.form.branch
+          })
+        } else {
+          this.isRequestCommit = true
+        }
       } else {
         this.$message.error('请先选择分支')
       }
@@ -245,17 +261,16 @@ export default {
       this.websock.emit('open', {
         project_id: this.project.id || this.task.project_id
       })
-      console.log('emit open', {
-        project_id: this.project.id || this.task.project_id
-      })
       if (this.project.repo_mode === 'branch') {
-        this.emitBranches()
+        this.websocketOpen = true
+        // if (!this.form.branch) {
+        //   this.emitBranches()
+        // }
       } else {
         this.emitTags()
       }
     },
     getWebsocketBranch (data) {
-      console.log('branches', data)
       this.branchLoading = false
       if (data.event === 'branches') {
         this.branchs = data.data
@@ -265,7 +280,6 @@ export default {
       }
     },
     getWebsocketCommit (data) {
-      console.log('commits', data)
       this.commitLoading = false
       if (data.event === 'commits') {
         this.commits = data.data
@@ -275,7 +289,6 @@ export default {
       }
     },
     getWebsocketTag (data) {
-      console.log('tags', data)
       this.tagLoading = false
       if (data.event === 'tags') {
         this.tags = data.data

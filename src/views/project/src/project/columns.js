@@ -30,13 +30,15 @@ export default function () {
     },
     {
       label: '操作',
-      minWidth: 200,
+      minWidth: 220,
       render (h, scope, methods) {
         return (
           <div>
             {self.renderMemberTool(scope.row)}
             {self.renderEditTool(scope.row)}
+            {self.renderCopyTool(scope.row)}
             {self.renderReadTool(scope.row)}
+            {self.renderTestTool(scope.row)}
             {self.renderDeleteTool(scope.row)}
           </div>
         )

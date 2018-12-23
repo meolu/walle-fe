@@ -47,6 +47,24 @@ export function addProject (params = {}) {
 
 /**
  *
+ * 复制项目
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function copyProject (id, params = {}) {
+  return post(`project/${id}/copy`, params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
+}
+
+/**
+ *
  * 更新项目
  * @export
  * @param {any} [params={}]

@@ -3,6 +3,7 @@ const ProjectEdit = () => import('./src/project/project.edit.vue')
 const Server = () => import('./src/server/server.vue')
 const Environment = () => import('./src/environment/environment.vue')
 const ProjectMembers = () => import('./src/project/members.vue')
+const ProjectDetection = () => import('./src/project/detection.vue')
 
 export default function (router) {
   router.push({
@@ -37,6 +38,13 @@ export default function (router) {
     name: 'ProjectMembers',
     meta: {isMenu: true, menu: '/project/index'},
     component: ProjectMembers,
+    props: true
+  },
+  {
+    path: '/:space/project/detection/:id',
+    name: 'ProjectDetection',
+    meta: {isMenu: true, menu: '/project/index'},
+    component: ProjectDetection,
     props: true
   },
   {

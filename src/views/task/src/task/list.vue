@@ -94,7 +94,7 @@ export default {
     },
     renderDeploy (row) {
       if (row.enable_online) {
-        return <el-button type="text" size="small" onClick={() => this.deploy({...row})}>上线</el-button>
+        return <el-button type="text" size="small" onClick={() => this.deploy({...row})}>{row.status >= 3 ? '查看' : '上线'}</el-button>
       }
       return null
     },
