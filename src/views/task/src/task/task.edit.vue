@@ -123,8 +123,8 @@ export default {
     'form.branch': {
       async handler (val) {
         if (val) {
-          console.log(this, this.task.project_id, this.project)
-          setCookie(`projectID_${this.task.project_id}`, val)
+          console.log('projectID_', this.task.project_id, this.project.id)
+          setCookie(`projectID_${this.task.project_id || this.project.id}`, val)
           this.emitCommits()
         }
       }
