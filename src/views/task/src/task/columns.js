@@ -27,7 +27,7 @@ export default function () {
     {
       prop: 'commit_id',
       label: '版本',
-      width: 180
+      width: 120
     },
     {
       prop: 'environment_name',
@@ -49,7 +49,7 @@ export default function () {
     },
     {
       label: '操作',
-      minWidth: 180,
+      minWidth: 200,
       render (h, scope, methods) {
         return (
           <div>

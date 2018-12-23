@@ -15,7 +15,7 @@
     overflow: auto;
 
     @include e(main) {
-        min-width: 900px;
+        min-width: 1200px;
         height: 100%;
         overflow: auto;
     }
