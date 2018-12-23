@@ -42,13 +42,13 @@
         </el-transfer>
         <el-form ref="form3" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__target" :disabled="isRead">
           <el-form-item label="目标集群部署路径" prop="target_root" :rules="rules.target_root">
-            <el-input v-model="form.target_root" placeholder="请输入目标集群部署路径"></el-input>
+            <el-input v-model="form.target_root" placeholder="一般为webroot，不能为已存在目录"></el-input>
           </el-form-item>
           <el-form-item label="目标集群部署仓库" prop="target_releases" :rules="rules.target_releases">
-            <el-input v-model="form.target_releases" placeholder="请输入目标集群部署仓库"></el-input>
+            <el-input v-model="form.target_releases" placeholder="仓库存储每次发布的版本"></el-input>
           </el-form-item>
           <el-form-item label="目标集群部署仓库版本保留数" prop="keep_version_num">
-            <el-input v-model="form.keep_version_num" placeholder="请输入目标集群部署仓库版本保留数"></el-input>
+            <el-input v-model="form.keep_version_num" placeholder="版本保留数是为了做历史版本回滚"></el-input>
           </el-form-item>
         </el-form>
         <wl-split title="任务配置"></wl-split>
@@ -171,10 +171,10 @@ export default {
           { required: true, message: '请输入目标集群登录端口', trigger: 'blur' }
         ],
         target_root: [
-          { required: true, message: '请输入目标集群部署路径', trigger: 'blur' }
+          { required: true, message: '一般为webroot，不能为已存在目录', trigger: 'blur' }
         ],
         target_releases: [
-          { required: true, message: '请输入目标集群部署仓库', trigger: 'blur' }
+          { required: true, message: '仓库存储每次发布的版本', trigger: 'blur' }
         ],
         notice_hook: [
           { required: true, message: '请输入内容', trigger: 'blur' }
