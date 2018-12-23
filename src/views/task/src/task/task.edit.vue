@@ -124,7 +124,7 @@ export default {
       async handler (val) {
         if (val) {
           console.log('projectID_', this.task.project_id, this.project.id)
-          setCookie(`projectID_${this.task.project_id || this.project.id}`, val)
+          setCookie(`projectID_${this.task.project_id || this.project.id}`, val, null, '/')
           this.emitCommits()
         }
       }
