@@ -184,7 +184,7 @@ export default {
         }
         this.noRun = false
         this.isStart = true
-        this.activeStep++
+        this.activeStep = 7
       }
     }
   }
