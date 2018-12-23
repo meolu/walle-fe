@@ -123,8 +123,8 @@ export default {
     'form.branch': {
       async handler (val) {
         if (val) {
-          console.log('form.branch', this.project.id, this.task.project_id, this.project)
-          setCookie(`projectID_${this.project.id}`, val)
+          console.log(this, this.task.project_id, this.project)
+          setCookie(`projectID_${this.task.project_id}`, val)
           this.emitCommits()
         }
       }
@@ -154,7 +154,8 @@ export default {
         this.form.servers_mode = this.checkServers()
       }
       const projectBranch = getCookie(`projectID_${this.project.id}`)
-      if (projectBranch) {
+      console.log(projectBranch, this.form.branch)
+      if (projectBranch && !this.form.branch) {
         this.form.branch = projectBranch
       }
       this.initWebSocket()
