@@ -66,25 +66,25 @@
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-deploy prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen3')">全屏</span></div>
+            <div slot="label"><span>高级任务-Deploy前置任务</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen3')">全屏</span></div>
             <wl-fullscreen ref="fullscreen3">
             <codemirror v-model="form.prev_deploy" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-deploy post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen4')">全屏</span></div>
+            <div slot="label"><span>高级任务-Deploy后置任务</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen4')">全屏</span></div>
             <wl-fullscreen ref="fullscreen4">
             <codemirror v-model="form.post_deploy" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-release prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen5')">全屏</span></div>
+            <div slot="label"><span>高级任务-Release前置任务</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen5')">全屏</span></div>
             <wl-fullscreen ref="fullscreen5">
             <codemirror v-model="form.prev_release" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-release post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen6')">全屏</span></div>
+            <div slot="label"><span>高级任务-Release后置任务</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen6')">全屏</span></div>
             <wl-fullscreen ref="fullscreen6">
             <codemirror v-model="form.post_release" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
