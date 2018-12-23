@@ -1,36 +1,17 @@
 <template>
     <div class="wl-detaction">
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
-        <div class="wl-detaction__title">检测报告：项目</div>
-        <div class="wl-detaction__content">
-            <h1>标题</h1>
-            <div class="wl-detaction__item"><span>原因：</span><p>宿主机没有权限</p></div>
-            <div class="wl-detaction__item"><span>解决建议：</span><p>百度谷歌，总有一款适合你</p></div>
-        </div>
-        <div class="wl-detaction__content">
-            <h1>标题</h1>
-            <div class="wl-detaction__item"><span>原因：</span><p>宿主机没有权限</p></div>
-            <div class="wl-detaction__item"><span>解决建议：</span><p>百度谷歌，总有一款适合你</p></div>
-        </div>
-        <div class="wl-detaction__content">
-            <h1>标题</h1>
-            <div class="wl-detaction__item"><span>原因：</span><p>宿主机没有权限</p></div>
-            <div class="wl-detaction__item"><span>解决建议：</span><p>百度谷歌，总有一款适合你</p></div>
-        </div>
-        <div class="wl-detaction__content">
-            <h1>标题</h1>
-            <div class="wl-detaction__item"><span>原因：</span><p>宿主机没有权限</p></div>
-            <div class="wl-detaction__item"><span>解决建议：</span><p>百度谷歌，总有一款适合你</p></div>
-        </div>
-        <div class="wl-detaction__content">
-            <h1>标题</h1>
-            <div class="wl-detaction__item"><span>原因：</span><p>宿主机没有权限</p></div>
-            <div class="wl-detaction__item"><span>解决建议：</span><p>百度谷歌，总有一款适合你</p></div>
+        <div class="wl-detaction__title" v-if="project">检测报告：{{project.name}}</div>
+        <div class="wl-detaction__content" v-for="(item,i) in data" :key="i+'detaction'">
+            <h1>{{item.title}}</h1>
+            <div class="wl-detaction__item"><span>原因：</span><p>{{item.why}}</p></div>
+            <div class="wl-detaction__item"><span>解决建议：</span><p>{{item.how}}</p></div>
         </div>
     </div>
 </template>
 
 <script>
+import {detectProject, getProject} from '@/services/project.service'
 export default {
   props: {
     id: {
@@ -53,7 +34,23 @@ export default {
           to: '',
           name: '检测报告'
         }
-      ]
+      ],
+      data: [],
+      project: null
+    }
+  },
+  created () {
+    this.getProject()
+    this.getDetactions()
+  },
+  methods: {
+    async getDetactions () {
+      const {data} = await detectProject(this.id)
+      this.data = data
+    },
+    async getProject () {
+      const {data} = await getProject(this.id)
+      this.project = data
     }
   }
 }
