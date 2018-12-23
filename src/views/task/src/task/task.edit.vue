@@ -103,7 +103,9 @@ export default {
       },
       branchLoading: false,
       tagLoading: true,
-      commitLoading: false
+      commitLoading: false,
+      isRequestCommit: false,
+      websocketOpen: false
     }
   },
   computed: {
@@ -127,6 +129,14 @@ export default {
           setCookie(`projectID_${this.task.project_id || this.project.id}`, val, null, '/')
           this.emitCommits()
         }
+      }
+    },
+    websocketOpen (val) {
+      if (val && this.isRequestCommit) {
+        this.isRequestCommit = false
+        this.websock.emit('commits', {
+          branch: this.form.branch
+        })
       }
     }
   },
@@ -242,6 +252,8 @@ export default {
           this.websock.emit('commits', {
             branch: this.form.branch
           })
+        } else {
+          this.isRequestCommit = true
         }
       } else {
         this.$message.error('请先选择分支')
@@ -251,13 +263,14 @@ export default {
       this.websock.emit('open', {
         project_id: this.project.id || this.task.project_id
       })
-      // if (this.project.repo_mode === 'branch') {
-      //   if (!this.form.branch) {
-      //     this.emitBranches()
-      //   }
-      // } else {
-      //   this.emitTags()
-      // }
+      if (this.project.repo_mode === 'branch') {
+        this.websocketOpen = true
+        // if (!this.form.branch) {
+        //   this.emitBranches()
+        // }
+      } else {
+        this.emitTags()
+      }
     },
     getWebsocketBranch (data) {
       this.branchLoading = false
