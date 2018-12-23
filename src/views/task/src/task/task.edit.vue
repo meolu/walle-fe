@@ -234,10 +234,12 @@ export default {
     },
     emitCommits () {
       if (this.form.branch) {
-        this.commitLoading = true
-        this.websock.emit('commits', {
-          branch: this.form.branch
-        })
+        if (this.websock) {
+          this.commitLoading = true
+          this.websock.emit('commits', {
+            branch: this.form.branch
+          })
+        }
       } else {
         this.$message.error('请先选择分支')
       }
