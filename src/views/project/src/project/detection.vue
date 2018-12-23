@@ -2,6 +2,10 @@
     <div class="wl-detaction">
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
         <div class="wl-detaction__title" v-if="project">检测报告：{{project.name}}</div>
+        <div class="wl-detaction__success" v-if="data.length===0">
+            <i class="el-icon-success"></i>
+            <span>恭喜，检测通过</span>
+        </div>
         <div class="wl-detaction__content" v-for="(item,i) in data" :key="i+'detaction'">
             <h1>{{item.title}}</h1>
             <div class="wl-detaction__item"><span>原因：</span><p>{{item.why}}</p></div>
@@ -73,6 +77,15 @@ export default {
        line-height: 30px;
        font-size: 16px;
        color: #1890ff;
+   }
+
+   @include e(success) {
+       margin: 100px auto;
+       color: #67c23a;
+
+       i,span {
+           font-size: 20px;
+       }
    }
 
    @include e(content) {
