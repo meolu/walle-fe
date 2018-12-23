@@ -172,7 +172,7 @@ export default {
         this.noRun = false
         this.isStart = true
         const step = this.activeStep === 0 ? 0 : this.activeStep - 1
-        this.stepStatus[step] = 'error'
+        this.$set(this.stepStatus, step, 'error')
         console.log(this.stepStatus, step)
       }
     },
