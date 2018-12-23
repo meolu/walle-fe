@@ -19,7 +19,7 @@
                     <i v-if="!tagLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitTags"></i>
                 </el-form-item>
                 <el-form-item  v-if="project&&project.repo_mode==='branch'" label="选取版本">
-                    <el-select v-model="form.commit_id" placeholder="先选取分支再选取版本" allow-create filterable v-loading="commitLoading">
+                    <el-select v-model="form.commit_id" placeholder="先选取分支再选取版本" v-loading="commitLoading">
                         <el-option v-for="item in commits" :key="item.id" :label="item.message" :value="item.id"></el-option>
                     </el-select>
                     <i v-if="!commitLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitCommits"></i>
