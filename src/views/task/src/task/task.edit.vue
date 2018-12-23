@@ -101,7 +101,7 @@ export default {
           { required: true, message: '请输入上线单名称', trigger: 'blur' }
         ]
       },
-      branchLoading: true,
+      branchLoading: false,
       tagLoading: true,
       commitLoading: false
     }
@@ -123,7 +123,7 @@ export default {
     'form.branch': {
       async handler (val) {
         if (val) {
-          console.log('form.branch', val)
+          console.log('form.branch', this.project.id, this.task.project_id, this.project)
           setCookie(`projectID_${this.project.id}`, val)
           this.emitCommits()
         }
@@ -153,7 +153,6 @@ export default {
       if (!this.isNew) {
         this.form.servers_mode = this.checkServers()
       }
-      console.log('project.id', this.project.id, `projectID_${this.project.id}`)
       const projectBranch = getCookie(`projectID_${this.project.id}`)
       if (projectBranch) {
         this.form.branch = projectBranch
@@ -253,7 +252,6 @@ export default {
         project_id: this.project.id || this.task.project_id
       })
       if (this.project.repo_mode === 'branch') {
-        console.log(!this.form.branch, this.form.branch)
         if (!this.form.branch) {
           this.emitBranches()
         }
