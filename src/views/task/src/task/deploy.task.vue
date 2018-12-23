@@ -110,6 +110,7 @@ export default {
       // 3.发送deploy命令之后, 将会收到console
       this.websock.on('console', this.websocketonconsole)
       this.websock.on('fail', this.deployFail)
+      this.websock.on('success', this.deploySuccess)
       this.websock.on('error', this.websocketonerror)
       this.websock.on('pong', (data) => {
         console.log('pong', data)
@@ -153,15 +154,18 @@ export default {
     websocketonerror () { // 连接建立失败取消loading
       this.loading && this.loading.close()
     },
-    websocketonconsole ({data}) { // 接收log
+    websocketonconsole (data) { // 接收log
       console.log('console', data)
-      this.record.push(data)
-      if (data && data.sequence >= 0) {
-        this.activeStep = data.sequence
+      const log = data.data
+      this.record.push(log)
+      if (log && log.sequence >= 0) {
+        this.activeStep = log.sequence
       }
-      if (data.status === 128) {
-        this.deployFail()
-      }
+      // if (data.event === 'fail') {
+      //   this.deployFail()
+      // } else if (data.event === 'finish') {
+      //   this.deploySuccess()
+      // }
     },
     deployFail (data) {
       const msg = data && data.data ? data.data.message : ''
@@ -171,6 +175,15 @@ export default {
       this.noRun = false
       this.isStart = true
       this.stepStatus[this.activeStep - 1] = 'error'
+    },
+    deploySuccess (data) {
+      const msg = data && data.data ? data.data.message : ''
+      if (msg) {
+        this.$message.success(msg)
+      }
+      this.noRun = false
+      this.isStart = true
+      this.activeStep++
     }
   }
 }

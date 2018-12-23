@@ -52,6 +52,7 @@
 <script>
 import {getProject} from '@/services/project.service'
 import {getTask, addTask, updateTask} from '@/services/task.service'
+import {setCookie, getCookie} from '@/utils/cookies'
 import io from 'socket.io-client'
 
 export default {
@@ -120,7 +121,8 @@ export default {
       }
     },
     'form.branch': {
-      async handler () {
+      async handler (val) {
+        setCookie(`projectID${this.project.id}`)
         this.emitCommits()
       }
     }
@@ -147,6 +149,10 @@ export default {
       }
       if (!this.isNew) {
         this.form.servers_mode = this.checkServers()
+      }
+      const projectBranch = getCookie(`projectID${this.project.id}`)
+      if (projectBranch) {
+        this.form.branch = projectBranch
       }
       this.initWebSocket()
     },
@@ -219,19 +225,14 @@ export default {
       this.websock.on('tags', this.getWebsocketTag)
     },
     emitBranches () {
-      console.log('emit branches')
       this.branchLoading = true
       this.websock.emit('branches')
     },
     emitTags () {
-      console.log('emit tags')
       this.tagLoading = true
       this.websock.emit('tags')
     },
     emitCommits () {
-      console.log('emit commits', {
-        branch: this.form.branch
-      })
       if (this.form.branch) {
         this.commitLoading = true
         this.websock.emit('commits', {
@@ -245,17 +246,15 @@ export default {
       this.websock.emit('open', {
         project_id: this.project.id || this.task.project_id
       })
-      console.log('emit open', {
-        project_id: this.project.id || this.task.project_id
-      })
       if (this.project.repo_mode === 'branch') {
-        this.emitBranches()
+        if (!this.form.branch) {
+          this.emitBranches()
+        }
       } else {
         this.emitTags()
       }
     },
     getWebsocketBranch (data) {
-      console.log('branches', data)
       this.branchLoading = false
       if (data.event === 'branches') {
         this.branchs = data.data
@@ -265,7 +264,6 @@ export default {
       }
     },
     getWebsocketCommit (data) {
-      console.log('commits', data)
       this.commitLoading = false
       if (data.event === 'commits') {
         this.commits = data.data
@@ -275,7 +273,6 @@ export default {
       }
     },
     getWebsocketTag (data) {
-      console.log('tags', data)
       this.tagLoading = false
       if (data.event === 'tags') {
         this.tags = data.data

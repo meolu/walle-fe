@@ -23,7 +23,7 @@
 
 <script>
 import COLUMNS from './columns'
-import {getProjects, deleteProject} from '@/services/project.service'
+import {getProjects, deleteProject, copyProject} from '@/services/project.service'
 import {mapGetters} from 'vuex'
 import userMixins from '@/mixins/user.mixins'
 
@@ -81,7 +81,7 @@ export default {
       this.$router.push(`/${this.spaceName}/project/members/${row.id}`)
     },
     renderReadTool (row) {
-      if (row.enable_update) {
+      if (row.enable_view) {
         return <el-button type="text" icon="el-icon-view" size="small" onClick={() => this.read({...row})}>查看</el-button>
       } else {
         return null
@@ -90,6 +90,13 @@ export default {
     renderEditTool (row) {
       if (row.enable_update) {
         return <el-button type="text" icon="el-icon-edit" size="small" onClick={() => this.edit({...row})}>编辑</el-button>
+      } else {
+        return null
+      }
+    },
+    renderCopyTool (row) {
+      if (row.enable_update) {
+        return <el-button type="text" icon="wl-icon-copy" size="small" onClick={() => this.copy({...row})}>复制</el-button>
       } else {
         return null
       }
@@ -109,6 +116,27 @@ export default {
       } else {
         return null
       }
+    },
+
+    renderTestTool (row) {
+      if (row.enable_update) {
+        return <el-button type="text" icon="wl-icon-test" size="small" onClick={() => this.test({...row})}>检测</el-button>
+      } else {
+        return null
+      }
+    },
+
+    test (row) {
+      this.$router.push(`/${this.spaceName}/project/detection/${row.id}`)
+    },
+
+    async copy (row) {
+      await copyProject(row.id)
+      this.callServe()
+      this.$message({
+        type: 'success',
+        message: '复制成功!'
+      })
     },
 
     async deleteRole (row) {

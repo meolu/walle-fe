@@ -1,11 +1,11 @@
 /* stylelint-disable */
 @font-face {
   font-family: 'iconfont';  /* project id 819129 */
-  src: url('//at.alicdn.com/t/font_819129_rbg7sdtklu.eot');
-  src: url('//at.alicdn.com/t/font_819129_rbg7sdtklu.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_819129_rbg7sdtklu.woff') format('woff'),
-  url('//at.alicdn.com/t/font_819129_rbg7sdtklu.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_819129_rbg7sdtklu.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_819129_8edla4cf3uj.eot');
+  src: url('//at.alicdn.com/t/font_819129_8edla4cf3uj.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_819129_8edla4cf3uj.woff') format('woff'),
+  url('//at.alicdn.com/t/font_819129_8edla4cf3uj.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_819129_8edla4cf3uj.svg#iconfont') format('svg');
 }
   
   %wl-icon {
@@ -84,6 +84,12 @@
 
     // 查看
     &-read::before { content: "\e66b"; }
+
+    // 复制
+    &-copy::before { content: "\e706"; }
+    
+    // 检测
+    &-test::before { content: "\e64f"; }
 
   }
   
