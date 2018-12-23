@@ -15,11 +15,6 @@ export default function RouterConfig(router, {getters,dispatch}) { // eslint-dis
         next('/')
       }
     }
-    if (/^http/.test(path)) {
-      let url = path.split('http')[1]
-      window.location.href = `http${url}`
-    } else {
-      next()
-    }
+    next()
   })
 }

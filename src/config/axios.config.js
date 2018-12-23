@@ -52,7 +52,7 @@ service.interceptors.response.use(
     }
     if (code !== 0) {
       if (code === 1000) {
-        window.location.href = `${window.location}login`
+        window.location.href = `/login`
       } else {
         // 是否自动提示消息
         if (config.isAutoMsg) {
