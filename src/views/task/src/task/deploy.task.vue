@@ -166,7 +166,7 @@ export default {
       console.log('fail', data)
       if (this.isStart) {
         const msg = data && data.data ? data.data.message : ''
-        if (msg && (this.task.status === '4' || this.task.status === '5')) {
+        if (msg && (this.task.status !== '4' && this.task.status !== '5')) {
           this.$message.error(msg)
         }
         this.noRun = false
@@ -179,7 +179,7 @@ export default {
       console.log('sucess', data)
       if (this.isStart) {
         const msg = data && data.data ? data.data.message : ''
-        if (msg && (this.task.status === '4' || this.task.status === '5')) {
+        if (msg && (this.task.status !== '4' && this.task.status !== '5')) {
           this.$message.success(msg)
         }
         this.noRun = false

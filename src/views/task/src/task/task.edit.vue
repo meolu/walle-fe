@@ -125,7 +125,6 @@ export default {
     'form.branch': {
       async handler (val) {
         if (val) {
-          console.log('projectID_', this.task.project_id, this.project.id)
           setCookie(`projectID_${this.task.project_id || this.project.id}`, val, null, '/')
           this.emitCommits()
         }
@@ -141,7 +140,6 @@ export default {
     }
   },
   destroyed () {
-    console.log('close')
     this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
   methods: {
