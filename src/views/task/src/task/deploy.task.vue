@@ -168,15 +168,18 @@ export default {
       // }
     },
     deployFail (data) {
+      console.log('fail', data)
       const msg = data && data.data ? data.data.message : ''
       if (msg) {
         this.$message.error(msg)
       }
       this.noRun = false
       this.isStart = true
-      this.stepStatus[this.activeStep - 1] = 'error'
+      const step = this.activeStep === 0 ? 0 : this.activeStep - 1
+      this.stepStatus[step] = 'error'
     },
     deploySuccess (data) {
+      console.log('sucess', data)
       const msg = data && data.data ? data.data.message : ''
       if (msg) {
         this.$message.success(msg)

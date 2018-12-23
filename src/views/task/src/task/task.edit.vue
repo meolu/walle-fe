@@ -122,7 +122,7 @@ export default {
     },
     'form.branch': {
       async handler (val) {
-        setCookie(`projectID${this.project.id}`)
+        setCookie(`projectID${this.project.id}`, val)
         this.emitCommits()
       }
     }
