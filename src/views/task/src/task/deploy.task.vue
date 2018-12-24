@@ -6,12 +6,12 @@
            <el-button type="success" size="small" @click="start" :disabled="isStart&&noRun">开始</el-button>
         </div>
         <el-steps :active="activeStep" finish-status="success" v-if="isStart">
-            <el-step title="prev_deploy" :status="stepStatus[0]"></el-step>
-            <el-step title="deploy" :status="stepStatus[1]"></el-step>
-            <el-step title="post_deploy" :status="stepStatus[2]"></el-step>
-            <el-step title="prev_release" :status="stepStatus[3]"></el-step>
-            <el-step title="release" :status="stepStatus[4]"></el-step>
-            <el-step title="post_release" :status="stepStatus[5]"></el-step>
+            <el-step title="Deploy前置任务" :status="stepStatus[0]"></el-step>
+            <el-step title="Deploy" :status="stepStatus[1]"></el-step>
+            <el-step title="Deploy后置任务" :status="stepStatus[2]"></el-step>
+            <el-step title="Release前置任务" :status="stepStatus[3]"></el-step>
+            <el-step title="Release" :status="stepStatus[4]"></el-step>
+            <el-step title="Release后置任务" :status="stepStatus[5]"></el-step>
         </el-steps>
         <deploy-log :value="record" v-if="isStart"></deploy-log>
     </div>

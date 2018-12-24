@@ -2,7 +2,7 @@
     <div class="wl-detaction">
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
         <div class="wl-detaction__title" v-if="project">检测报告：{{project.name}}</div>
-        <div class="wl-detaction__success" v-if="data.length===0">
+        <div class="wl-detaction__success" v-if="data&&data.length===0">
             <i class="el-icon-success"></i>
             <span>恭喜，检测通过</span>
         </div>
@@ -39,7 +39,7 @@ export default {
           name: '检测报告'
         }
       ],
-      data: [],
+      data: null,
       project: null
     }
   },
