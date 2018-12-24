@@ -54,37 +54,37 @@
         <wl-split title="任务配置"></wl-split>
         <el-form ref="form4" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__editor" :disabled="isRead">
           <el-form-item>
-            <div slot="label"><span>部署排除文件</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen1')">全屏</span></div>
+            <div slot="label" class="wl-project-edit__code-label"><span>部署排除文件</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen1')">全屏</span></div>
             <wl-fullscreen ref="fullscreen1">
               <codemirror v-model="form.excludes" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-变量</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen2')">全屏</span></div>
+            <div slot="label" class="wl-project-edit__code-label"><span>高级任务-变量</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen2')">全屏</span></div>
             <wl-fullscreen ref="fullscreen2">
             <codemirror v-model="form.task_vars" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-deploy prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen3')">全屏</span></div>
+            <div slot="label" class="wl-project-edit__code-label"><span>高级任务-deploy prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen3')">全屏</span></div>
             <wl-fullscreen ref="fullscreen3">
             <codemirror v-model="form.prev_deploy" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-deploy post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen4')">全屏</span></div>
+            <div slot="label" class="wl-project-edit__code-label"><span>高级任务-deploy post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen4')">全屏</span></div>
             <wl-fullscreen ref="fullscreen4">
             <codemirror v-model="form.post_deploy" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-release prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen5')">全屏</span></div>
+            <div slot="label" class="wl-project-edit__code-label"><span>高级任务-release prev</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen5')">全屏</span></div>
             <wl-fullscreen ref="fullscreen5">
             <codemirror v-model="form.prev_release" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label"><span>高级任务-release post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen6')">全屏</span></div>
+            <div slot="label" class="wl-project-edit__code-label"><span>高级任务-release post</span><span class="fullscreen" @click="()=>fullscreenOpen('fullscreen6')">全屏</span></div>
             <wl-fullscreen ref="fullscreen6">
             <codemirror v-model="form.post_release" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
@@ -415,6 +415,12 @@ export default {
 
      .CodeMirror {
        background: #f5f7fa;
+     }
+   }
+
+   @include e(code-label) {
+     span {
+       font-size: 14px;
      }
    }
 }
