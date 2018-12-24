@@ -14,6 +14,12 @@
           <el-form-item label="host" label-width="120px" prop="host" :rules="rules.host" :error="error.host">
             <el-input size="small" v-model="form.host" auto-complete="off"></el-input>
           </el-form-item>
+          <el-form-item label="ssh user" label-width="120px" prop="user" :rules="rules.user" :error="error.user">
+            <el-input size="small" v-model="form.user" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="ssh port" label-width="120px" prop="port" :rules="rules.port" :error="error.port">
+            <el-input size="small" v-model="form.port" auto-complete="off"></el-input>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button size="small" type="primary" @click="onOk">确定</el-button>
@@ -23,7 +29,7 @@
 </template>
 
 <script>
-import {addServer, updateServer} from '@/services/server.service'
+import {addServer, updateServer, getServer} from '@/services/server.service'
 export default {
   props: {
     visible: {
@@ -43,17 +49,28 @@ export default {
         host: [
           { required: true, message: '请输入服务器ip', trigger: 'blur' }
           // { pattern: /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/, message: 'ip地址错误', trigger: 'blur' }
+        ],
+        user: [
+          { required: true, message: '请输入user', trigger: 'blur' }
+        ],
+        port: [
+          { required: true, message: '请输入port', trigger: 'blur' }
         ]
       }
     }
   },
   watch: {
-    visible (val) {
+    async visible (val) {
       if (val) {
         if (this.server) {
-          let {host, name} = this.server
-          this.form.name = name
-          this.form.host = host
+          const {data: {host, name, port, user}} = await getServer(this.server.id)
+          // let {host, name, port, user} = this.server
+          this.form = {
+            port: port || 22,
+            user: user,
+            name: name,
+            host: host
+          }
         } else {
           this.form = this.initForm()
         }
@@ -85,13 +102,17 @@ export default {
     initForm () {
       return {
         name: '',
-        host: ''
+        host: '',
+        port: 22,
+        user: ''
       }
     },
     initError () {
       return {
         name: '',
-        host: ''
+        host: '',
+        port: '',
+        user: ''
       }
     },
     async sendData () {
