@@ -22,14 +22,14 @@
           </el-form-item>
         </el-form>
         <wl-split title="目标集群"></wl-split>
-        <el-form ref="form2" :model="form" label-position="top" size="small" :inline="true" :disabled="isRead">
+        <!-- <el-form ref="form2" :model="form" label-position="top" size="small" :inline="true" :disabled="isRead">
           <el-form-item label="目标集群登录用户" prop="target_user" :rules="rules.target_user">
             <el-input v-model="form.target_user" placeholder="请输入目标集群用户名"></el-input>
           </el-form-item>
           <el-form-item label="目标集群登录端口" prop="target_port" :rules="rules.target_port">
             <el-input v-model="form.target_port" placeholder="请输入目标集群登录端口"></el-input>
           </el-form-item>
-        </el-form>
+        </el-form> -->
         <el-transfer
           filterable
           :class="{'wl-project-edit__isRead': isRead}"
@@ -93,7 +93,7 @@
         <el-form ref="form5" :model="form" label-position="top" size="small" :inline="true" :disabled="isRead">
           <el-form-item label="上线通知" prop="notice_type">
             <el-select v-model="form.notice_type" placeholder="请选择上线通知">
-              <el-option key="notice_type1" label="短信通知" value="sms"></el-option>
+              <el-option key="notice_type1" label="无" value=""></el-option>
               <el-option key="notice_type2" label="钉钉通知" value="dingding"></el-option>
               <el-option key="notice_type3" label="邮箱通知" value="email"></el-option>
             </el-select>
@@ -103,9 +103,6 @@
           </el-form-item>
           <el-form-item v-if="form.notice_type && form.notice_type==='email'" label="邮箱地址" prop="notice_hook" :rules="rules.notice_hook">
             <el-input v-model="form.notice_hook" placeholder="请输入邮箱地址，英文分号分隔"></el-input>
-          </el-form-item>
-          <el-form-item v-if="form.notice_type && form.notice_type==='sms'" label="手机号" prop="notice_hook" :rules="rules.notice_hook">
-            <el-input v-model="form.notice_hook" placeholder="请输入手机号，英文分号分隔"></el-input>
           </el-form-item>
         </el-form>
         <el-form ref="form6" :model="form" size="small" :inline="true" :disabled="isRead">
@@ -164,12 +161,12 @@ export default {
         environment_id: [
           { required: true, message: '请选择环境', trigger: 'blur' }
         ],
-        target_user: [
-          { required: true, message: '请输入目标集群用户', trigger: 'blur' }
-        ],
-        target_port: [
-          { required: true, message: '请输入目标集群登录端口', trigger: 'blur' }
-        ],
+        // target_user: [
+        //   { required: true, message: '请输入目标集群用户', trigger: 'blur' }
+        // ],
+        // target_port: [
+        //   { required: true, message: '请输入目标集群登录端口', trigger: 'blur' }
+        // ],
         target_root: [
           { required: true, message: '一般为webroot，不能为已存在目录', trigger: 'blur' }
         ],
@@ -226,8 +223,8 @@ export default {
         environment_id: '',
         repo_url: '',
         repo_mode: 'branch',
-        target_user: '',
-        target_port: 22,
+        // target_user: '',
+        // target_port: 22,
         excludes: '',
         server_ids: '',
         keep_version_num: '',
@@ -289,13 +286,13 @@ export default {
       const callback = (valid) => {
         if (valid) {
           count++
-          if (count === 4) this.submit()
+          if (count === 3) this.submit()
         } else {
           return false
         }
       }
       this.$refs.form1.validate(callback)
-      this.$refs.form2.validate(callback)
+      // this.$refs.form2.validate(callback)
       this.$refs.form3.validate(callback)
       this.$refs.form5.validate(callback)
     },
