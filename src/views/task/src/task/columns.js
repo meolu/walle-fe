@@ -20,7 +20,7 @@ export default function () {
       width: 140
     },
     {
-      prop: 'name',
+      prop: 'user_name',
       label: '用户名',
       width: 100
     },

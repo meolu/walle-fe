@@ -274,6 +274,9 @@ export default {
       this.branchLoading = false
       if (data.event === 'branches') {
         this.branchs = data.data
+        if (this.branchs && this.branchs.length > 0 && !this.form.branch) {
+          this.form.branch = this.branchs[0]
+        }
       } else if (data.event === 'error') {
         this.branchs = []
         this.$message.error(data.data.message)
@@ -283,6 +286,9 @@ export default {
       this.commitLoading = false
       if (data.event === 'commits') {
         this.commits = data.data
+        if (this.commits && this.commits.length > 0 && !this.form.commit_id) {
+          this.form.commit_id = this.commits[0].id
+        }
       } else if (data.event === 'error') {
         this.commits = []
         this.$message.error(data.data.message)
@@ -292,6 +298,9 @@ export default {
       this.tagLoading = false
       if (data.event === 'tags') {
         this.tags = data.data
+        if (this.tags && this.tags.length > 0 && !this.form.tag) {
+          this.form.tag = this.tags[0]
+        }
       } else if (data.event === 'error') {
         this.tags = []
         this.$message.error(data.data.message)
