@@ -182,7 +182,7 @@ export default {
         if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
           this.$message.success(msg)
         }
-        this.noRun = false
+        this.noRun = true
         this.isStart = true
         this.activeStep = 7
       }
