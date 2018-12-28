@@ -3,7 +3,7 @@
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
         <div class="wl-task-deploy__header" v-if="task">
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
-           <el-button type="success" size="small" @click="start" :disabled="isStart&&noRun">开始</el-button>
+           <el-button type="success" size="small" @click="start" :disabled="noRun">开始</el-button>
         </div>
         <el-steps :active="activeStep" finish-status="success" v-if="isStart">
             <el-step title="Deploy前置任务" :status="stepStatus[0]"></el-step>
