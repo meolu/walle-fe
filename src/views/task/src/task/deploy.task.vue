@@ -119,12 +119,12 @@ export default {
     construct ({data}) {
       console.log('construct', data)
       // 正在部署或已完成部署
-      // 上线中，开始按钮不可点击，log显示
-      if (parseInt(data.status) === 3) {
+      // 上线中，4上线完成，开始按钮不可点击，log显示
+      if (parseInt(data.status) === 3 || parseInt(data.status) === 4) {
         this.isStart = true
         this.noRun = true
-      } else if (parseInt(data.status) === 4 || parseInt(data.status) === 5) {
-        // 4上线完成，5上线失败，开始按钮可点击，log显示
+      } else if (parseInt(data.status) === 5) {
+        // 5上线失败，开始按钮可点击，log显示
         this.noRun = false
         this.isStart = true
       } else if (parseInt(data.status) === 1) {
