@@ -3,7 +3,7 @@
         <wl-breadcrumb :data="breadcrumbData"></wl-breadcrumb>
         <div class="wl-task-deploy__header" v-if="task">
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
-           <el-button type="success" size="small" @click="start" :disabled="isStart&&noRun">开始</el-button>
+           <el-button type="success" size="small" @click="start" :disabled="noRun">开始</el-button>
         </div>
         <el-steps :active="activeStep" finish-status="success" v-if="isStart">
             <el-step title="Deploy前置任务" :status="stepStatus[0]"></el-step>
@@ -119,12 +119,12 @@ export default {
     construct ({data}) {
       console.log('construct', data)
       // 正在部署或已完成部署
-      // 上线中，开始按钮不可点击，log显示
-      if (parseInt(data.status) === 3) {
+      // 上线中，4上线完成，开始按钮不可点击，log显示
+      if (parseInt(data.status) === 3 || parseInt(data.status) === 4) {
         this.isStart = true
         this.noRun = true
-      } else if (parseInt(data.status) === 4 || parseInt(data.status) === 5) {
-        // 4上线完成，5上线失败，开始按钮可点击，log显示
+      } else if (parseInt(data.status) === 5) {
+        // 5上线失败，开始按钮可点击，log显示
         this.noRun = false
         this.isStart = true
       } else if (parseInt(data.status) === 1) {
@@ -182,7 +182,7 @@ export default {
         if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
           this.$message.success(msg)
         }
-        this.noRun = false
+        this.noRun = true
         this.isStart = true
         this.activeStep = 7
       }

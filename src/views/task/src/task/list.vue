@@ -94,7 +94,9 @@ export default {
     },
     renderDeploy (row) {
       if (row.enable_online) {
-        return <el-button type="text" size="small" onClick={() => this.deploy({...row})}>{row.status >= 3 ? '查看' : '上线'}</el-button>
+        return <el-button type="text" size="small" onClick={() => this.deploy({...row})}>上线</el-button>
+      } else if (row.enable_view) {
+        return <el-button type="text" size="small" onClick={() => this.deploy({...row}, true)}>查看</el-button>
       }
       return null
     },
@@ -132,9 +134,9 @@ export default {
         message: '审核通过!'
       })
     },
-    deploy (row) {
+    deploy (row, isView) {
       // 上线
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV === 'production' && !isView) {
         this.$rrcTrack.trackEvent({
           category: '任务',
           action: '上线',
