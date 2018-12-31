@@ -5,7 +5,7 @@
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
            <el-button type="success" size="small" @click="start" :disabled="noRun">开始</el-button>
         </div>
-        <wl-steps v-for="(server, i) in servers" :key="server.host">
+        <wl-steps v-for="(server, i) in servers" :key="server.host" v-if="isStart">
             <wl-step title="Deploy前置任务" :status="status[server.host][0]" :showTitle="i===0" :hidden="i!==0"></wl-step>
             <wl-step title="Deploy" :status="status[server.host][1]" :showTitle="i===0" :hidden="i!==0"></wl-step>
             <wl-step title="Deploy后置任务" :status="status[server.host][2]" :showTitle="i===0" :hidden="i!==0">
@@ -222,10 +222,8 @@ export default {
    margin: 20px;
    box-sizing: border-box;
    background: #fff;
-  //  height: calc(100% - 40px);
+   height: calc(100% - 40px);
    padding: 10px;
-  //  display: flex;
-  //  flex-direction: column;
 
    .wl-steps {
      min-height: 80px;
