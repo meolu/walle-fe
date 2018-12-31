@@ -5,13 +5,17 @@ import Breadcrumb from './breadcrumb'
 import Split from './split'
 import FullScreen from './fullscreen'
 import AddMember from './add.member'
+import WlSteps from './steps'
+import WlStep from './step'
 
 const components = [
   Table,
   Breadcrumb,
   Split,
   FullScreen,
-  AddMember
+  AddMember,
+  WlSteps,
+  WlStep
 ]
 
 const ua = navigator.userAgent

@@ -5,14 +5,16 @@
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
            <el-button type="success" size="small" @click="start" :disabled="noRun">开始</el-button>
         </div>
-        <el-steps :active="activeStep" finish-status="success" v-if="isStart">
-            <el-step title="Deploy前置任务" :status="stepStatus[0]"></el-step>
-            <el-step title="Deploy" :status="stepStatus[1]"></el-step>
-            <el-step title="Deploy后置任务" :status="stepStatus[2]"></el-step>
-            <el-step title="Release前置任务" :status="stepStatus[3]"></el-step>
-            <el-step title="Release" :status="stepStatus[4]"></el-step>
-            <el-step title="Release后置任务" :status="stepStatus[5]"></el-step>
-        </el-steps>
+        <wl-steps v-for="(server, i) in servers" :key="server.host" :active="active[server]">
+            <wl-step title="Deploy前置任务" :status="status[server.host][0]" :showTitle="i===0" :hidden="i!==0"></wl-step>
+            <wl-step title="Deploy" :status="status[server.host][1]" :showTitle="i===0" :hidden="i!==0"></wl-step>
+            <wl-step title="Deploy后置任务" :status="status[server.host][2]" :showTitle="i===0" :hidden="i!==0">
+              <div class="wl-task-deploy__host">{{server.host}}</div>
+            </wl-step>
+            <wl-step title="Release前置任务" :status="status[server.host][3]" :showTitle="i===0"></wl-step>
+            <wl-step title="Release" :status="status[server.host][4]" :showTitle="i===0"></wl-step>
+            <wl-step title="Release后置任务" :status="status[server.host][5]" :showTitle="i===0"></wl-step>
+        </wl-steps>
         <deploy-log :value="record" v-if="isStart"></deploy-log>
     </div>
 </template>
@@ -20,14 +22,6 @@
 import io from 'socket.io-client'
 import DeployLog from './log.vue'
 import {getTask} from '@/services/task.service'
-// const STAGE = {
-//   prev_deploy: 1,
-//   deploy: 2,
-//   post_deploy: 3,
-//   prev_release: 4,
-//   release: 5,
-//   post_release: 6
-// }
 export default {
   components: {DeployLog},
   props: {
@@ -56,29 +50,56 @@ export default {
       isStart: false,
       noRun: false, // 是否可以点击开始上线
       setInterval: null,
-      stepStatus: ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
+      stepStatus: ['wait', 'wait', 'wait', 'wait', 'wait', 'wait'],
+      servers: [],
+      // servers: [{name: 'dev-lizhijie', host: '172.20.95.43'}, {name: 'desdfe', host: '172.20.95.13'}, {name: 'desdfklhijie', host: '172.20.0.43'}],
+      status: {},
+      active: {}
     }
   },
   watch: {
-    activeStep (val) {
-      if (val === 0) {
-        this.stepStatus = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
-      } else {
-        const index = val - 1
-        this.stepStatus = this.stepStatus.map((item, i) => {
-          if (i < index) {
-            return 'finish'
-          } else if (i === index) {
-            return 'process'
+    // activeStep (val) {
+    //   if (val === 0) {
+    //     this.stepStatus = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
+    //   } else {
+    //     const index = val - 1
+    //     this.stepStatus = this.stepStatus.map((item, i) => {
+    //       if (i < index) {
+    //         return 'finish'
+    //       } else if (i === index) {
+    //         return 'process'
+    //       } else {
+    //         return item
+    //       }
+    //     })
+    //   }
+    // },
+    active: {
+      deep: true,
+      handler () {
+        for (let key in this.active) {
+          let val = this.active[key]
+          if (val === 0) {
+            this.status[key] = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
           } else {
-            return item
+            const index = val - 1
+            this.status[key] = this.status[key].map((item, i) => {
+              if (i < index) {
+                return 'finish'
+              } else if (i === index) {
+                return 'process'
+              } else {
+                return item
+              }
+            })
           }
-        })
+        }
       }
     }
   },
   created () {
     this.getTask()
+    // this.processData(this.servers)
   },
   destroyed () {
     clearInterval(this.setInterval)
@@ -95,9 +116,19 @@ export default {
     start () {
       this.isStart = true
       this.noRun = true
-      this.activeStep = 0
+      // this.activeStep = 0
+      for (let key in this.active) {
+        this.active[key] = 0
+      }
       this.record = []
       this.websock.emit('deploy', {'task': this.taskId})
+    },
+    processData (servers) {
+      this.servers = servers
+      servers.map(item => {
+        this.active[item.host] = 0
+        this.status[item.host] = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
+      })
     },
     initWebSocket () { // 初始化weosocket
       const wsuri = `http://${location.host}/walle`
@@ -118,6 +149,7 @@ export default {
     },
     construct ({data}) {
       console.log('construct', data)
+      this.processData(data.servers_info)
       // 正在部署或已完成部署
       // 上线中，4上线完成，开始按钮不可点击，log显示
       if (parseInt(data.status) === 3 || parseInt(data.status) === 4) {
@@ -159,7 +191,8 @@ export default {
       const log = data.data
       this.record.push(log)
       if (log && log.sequence > 0) {
-        this.activeStep = log.sequence
+        this.active[log.host] = log.sequence
+        // this.activeStep = log.sequence
       }
     },
     deployFail (data) {
@@ -171,8 +204,8 @@ export default {
         }
         this.noRun = false
         this.isStart = true
-        const step = this.activeStep === 0 ? 0 : this.activeStep - 1
-        this.$set(this.stepStatus, step, 'error')
+        // const step = this.activeStep === 0 ? 0 : this.activeStep - 1
+        // this.$set(this.stepStatus, step, 'error')
       }
     },
     deploySuccess (data) {
@@ -184,7 +217,10 @@ export default {
         }
         this.noRun = true
         this.isStart = true
-        this.activeStep = 7
+        // this.activeStep = 7
+        for (let key in this.active) {
+          this.active[key] = 7
+        }
       }
     }
   }
@@ -203,7 +239,7 @@ export default {
    display: flex;
    flex-direction: column;
 
-   .el-steps {
+   .wl-steps {
      min-height: 80px;
    }
 
@@ -220,6 +256,13 @@ export default {
        margin-right: 10px;
        font-size: 16px;
      }
+   }
+
+   .wl-task-deploy__host {
+      position: absolute;
+      bottom: 7px;
+      right: 5px;
+      color: #666;
    }
 }
 </style>
