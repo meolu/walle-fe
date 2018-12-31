@@ -80,10 +80,10 @@ export default {
         for (let key in this.active) {
           let val = this.active[key]
           if (val === 0) {
-            this.status[key] = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
+            this.$set(this.status, key, ['wait', 'wait', 'wait', 'wait', 'wait', 'wait'])
           } else {
             const index = val - 1
-            this.status[key] = this.status[key].map((item, i) => {
+            this.$set(this.status, key, this.status[key].map((item, i) => {
               if (i < index) {
                 return 'finish'
               } else if (i === index) {
@@ -91,9 +91,10 @@ export default {
               } else {
                 return item
               }
-            })
+            }))
           }
         }
+        console.log(this.active, this.status)
       }
     }
   },
@@ -191,7 +192,7 @@ export default {
       const log = data.data
       this.record.push(log)
       if (log && log.sequence > 0) {
-        this.active[log.host] = log.sequence
+        this.$set(this.active, log.host, log.sequence)
         // this.activeStep = log.sequence
       }
     },
@@ -219,7 +220,7 @@ export default {
         this.isStart = true
         // this.activeStep = 7
         for (let key in this.active) {
-          this.active[key] = 7
+          this.$set(this.active, key, 7)
         }
       }
     }
@@ -234,10 +235,10 @@ export default {
    margin: 20px;
    box-sizing: border-box;
    background: #fff;
-   height: calc(100% - 40px);
+  //  height: calc(100% - 40px);
    padding: 10px;
-   display: flex;
-   flex-direction: column;
+  //  display: flex;
+  //  flex-direction: column;
 
    .wl-steps {
      min-height: 80px;

@@ -68,8 +68,9 @@ export default {
 @import 'scss';
 
 @include b(task-log) {
-    flex-grow: 1;
-    overflow: auto;
+    // flex-grow: 1;
+    // overflow: auto;
+    margin-top: 10px;
 
    @include e(body) {
       position: relative;
@@ -87,7 +88,7 @@ export default {
         background-color: #222;
         counter-reset: line-numbering;
         margin-top: 0;
-        margin-bottom: -45px;
+        // margin-bottom: -45px;
       }
    }
 
