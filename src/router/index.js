@@ -8,6 +8,7 @@ import User from '@/views/user'
 import Project from '@/views/project'
 import Task from '@/views/task'
 import Space from '@/views/space'
+import Myself from '@/views/myself'
 
 Vue.use(Router)
 
@@ -26,6 +27,7 @@ const redirectRoute = {
 }
 
 Login(routes)
+Myself(routes)
 Home(rootRouter.children)
 User(rootRouter.children)
 Project(rootRouter.children)
