@@ -78,9 +78,9 @@ export default {
     active: {
       deep: true,
       handler () {
+        console.log('active', this.active, this.status)
         for (let key in this.active) {
           let val = this.active[key]
-          console.log(val, this.status[key])
           if (val === 0) {
             this.$set(this.status, key, ['wait', 'wait', 'wait', 'wait', 'wait', 'wait'])
           } else {
@@ -96,7 +96,6 @@ export default {
             }))
           }
         }
-        console.log(this.active, this.status)
       }
     }
   },
@@ -196,8 +195,9 @@ export default {
       this.record.push(log)
       let isHas = this.status[log.host]
       if (log && log.sequence > 0) {
-        console.log(this.currentHost, log.host)
-        this.$set(this.active, isHas ? log.host : this.currentHost, log.sequence)
+        let host = isHas ? log.host : this.currentHost
+        this.active[host] = log.sequence
+        console.log(this.active)
         // this.activeStep = log.sequence
       }
       this.currentHost = isHas ? log.host : this.currentHost
