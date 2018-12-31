@@ -5,7 +5,7 @@
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
            <el-button type="success" size="small" @click="start" :disabled="noRun">开始</el-button>
         </div>
-        <wl-steps v-for="(server, i) in servers" :key="server.host" v-if="isStart">
+        <!-- <wl-steps v-for="(server, i) in servers" :key="server.host" v-if="isStart">
             <wl-step title="Deploy前置任务" :status="status[server.host][0]" :showTitle="i===0" :hidden="i!==0"></wl-step>
             <wl-step title="Deploy" :status="status[server.host][1]" :showTitle="i===0" :hidden="i!==0"></wl-step>
             <wl-step title="Deploy后置任务" :status="status[server.host][2]" :showTitle="i===0" :hidden="i!==0">
@@ -14,7 +14,8 @@
             <wl-step title="Release前置任务" :status="status[server.host][3]" :showTitle="i===0"></wl-step>
             <wl-step title="Release" :status="status[server.host][4]" :showTitle="i===0"></wl-step>
             <wl-step title="Release后置任务" :status="status[server.host][5]" :showTitle="i===0"></wl-step>
-        </wl-steps>
+        </wl-steps> -->
+        <wl-tree v-if="status&&isStart" :servers="servers" :status="status" :width="width"></wl-tree>
         <deploy-log :value="record" v-if="isStart"></deploy-log>
     </div>
 </template>
@@ -22,8 +23,9 @@
 import io from 'socket.io-client'
 import DeployLog from './log.vue'
 import {getTask} from '@/services/task.service'
+import WlTree from './tree.vue'
 export default {
-  components: {DeployLog},
+  components: {DeployLog, WlTree},
   props: {
     taskId: [String, Number],
     space: {
@@ -55,14 +57,14 @@ export default {
       // servers: [{name: 'dev-lizhijie', host: '172.20.95.43'}, {name: 'desdfe', host: '172.20.95.13'}, {name: 'desdfklhijie', host: '172.20.0.43'}],
       status: {},
       active: {},
-      currentHost: ''
+      currentHost: '',
+      width: 1000
     }
   },
   watch: {
     active: {
       deep: true,
       handler () {
-        console.log('active', this.active, this.status)
         for (let key in this.active) {
           let val = this.active[key]
           if (val === 0) {
@@ -86,12 +88,16 @@ export default {
   created () {
     this.getTask()
     // this.processData(this.servers)
+    // setTimeout(() => {
+    //   this.active['172.20.95.43'] = 4
+    // }, 2000)
   },
   destroyed () {
     clearInterval(this.setInterval)
     this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
   mounted () {
+    this.width = this.$el.offsetWidth - 20
     this.initWebSocket()
   },
   methods: {
@@ -112,9 +118,7 @@ export default {
       this.servers = servers
       this.currentHost = servers[0].host
       servers.map(item => {
-        // this.active[item.host] = 0
         this.$set(this.active, item.host, 0)
-        // this.status[item.host] = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
       })
     },
     initWebSocket () { // 初始化weosocket
