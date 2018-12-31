@@ -27,7 +27,7 @@
 
 <script>
 const ITEM_HEIGHT = 34
-const TITLE_HEIGHT = 50
+const TITLE_HEIGHT = 40
 const NODE_R = 12
 export default {
   name: 'wl-tree',
@@ -82,9 +82,7 @@ export default {
     },
     nodes () {
       if (!this.data) return []
-      let dd = this.process([this.data])
-      console.log(dd)
-      return dd
+      return this.process([this.data])
     }
   },
   methods: {
