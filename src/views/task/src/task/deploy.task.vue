@@ -193,7 +193,7 @@ export default {
       console.log('console', data)
       const log = data.data
       this.record.push(log)
-      if (log && log.sequence > 0) {
+      if (log && log.sequence > 0 && this.status[log.host]) {
         this.$set(this.active, log.host, log.sequence)
         // this.activeStep = log.sequence
       }
