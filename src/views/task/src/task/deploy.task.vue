@@ -128,12 +128,11 @@ export default {
     },
     processData (servers) {
       this.servers = servers
-      this.currentHost = servers.host
+      this.currentHost = servers[0].host
       servers.map(item => {
         this.active[item.host] = 0
         this.status[item.host] = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
       })
-      console.log(this.active, this.status)
     },
     initWebSocket () { // 初始化weosocket
       const wsuri = `http://${location.host}/walle`
