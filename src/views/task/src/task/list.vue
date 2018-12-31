@@ -23,7 +23,7 @@
 
 <script>
 import COLUMNS from './columns'
-import {getTasks, deleteTask, auditTask, rejectTask} from '@/services/task.service'
+import {getTasks, deleteTask, auditTask, rejectTask, rollbackTask} from '@/services/task.service'
 export default {
   name: 'tasks',
   props: {
@@ -171,6 +171,35 @@ export default {
         })
       })
     },
+    renderRollbackTool (row) {
+      if (row.enable_rollback) {
+        return <el-button type="text" class="rollback" icon="wl-icon-rollback" size="small" onClick={() => this.rollback({...row})}>回滚</el-button>
+      } else {
+        return null
+      }
+    },
+    rollback (row) {
+      this.$confirm('确定回滚吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.rollbackTask(row)
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消回滚'
+        })
+      })
+    },
+    async rollbackTask (row) {
+      await rollbackTask(row.id)
+      this.callServe()
+      this.$message({
+        type: 'success',
+        message: '回滚成功!'
+      })
+    },
     getClass (row) {
       if (row.status !== 0 && row.status !== 1) {
         return 'empty'
@@ -196,6 +225,12 @@ export default {
 
    .user-delete {
      color: #f56c6c;
+   }
+
+   .rollback {
+     i {
+       font-size: 12px;
+     }
    }
 
    .el-table thead th {
