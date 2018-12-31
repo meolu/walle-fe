@@ -51,12 +51,11 @@ export default {
       noRun: false, // 是否可以点击开始上线
       setInterval: null,
       stepStatus: ['wait', 'wait', 'wait', 'wait', 'wait', 'wait'],
-      // servers: [],
-      servers: [{name: 'dev-lizhijie', host: '172.20.95.43'}, {name: 'desdfe', host: '172.20.95.13'}, {name: 'desdfklhijie', host: '172.20.0.43'}],
+      servers: [],
+      // servers: [{name: 'dev-lizhijie', host: '172.20.95.43'}, {name: 'desdfe', host: '172.20.95.13'}, {name: 'desdfklhijie', host: '172.20.0.43'}],
       status: {},
       active: {},
-      currentHost: '',
-      mainLine: ''
+      currentHost: ''
     }
   },
   watch: {
@@ -103,7 +102,7 @@ export default {
   },
   created () {
     this.getTask()
-    this.processData(this.servers)
+    // this.processData(this.servers)
   },
   destroyed () {
     clearInterval(this.setInterval)
@@ -129,7 +128,7 @@ export default {
     },
     processData (servers) {
       this.servers = servers
-      this.mainLine = servers.host
+      this.currentHost = servers.host
       servers.map(item => {
         this.active[item.host] = 0
         this.status[item.host] = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
