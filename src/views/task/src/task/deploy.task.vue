@@ -5,7 +5,7 @@
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
            <el-button type="success" size="small" @click="start" :disabled="noRun">开始</el-button>
         </div>
-        <wl-steps v-for="(server, i) in servers" :key="server.host" :active="active[server]">
+        <wl-steps v-for="(server, i) in servers" :key="server.host">
             <wl-step title="Deploy前置任务" :status="status[server.host][0]" :showTitle="i===0" :hidden="i!==0"></wl-step>
             <wl-step title="Deploy" :status="status[server.host][1]" :showTitle="i===0" :hidden="i!==0"></wl-step>
             <wl-step title="Deploy后置任务" :status="status[server.host][2]" :showTitle="i===0" :hidden="i!==0">
@@ -51,10 +51,12 @@ export default {
       noRun: false, // 是否可以点击开始上线
       setInterval: null,
       stepStatus: ['wait', 'wait', 'wait', 'wait', 'wait', 'wait'],
-      servers: [],
-      // servers: [{name: 'dev-lizhijie', host: '172.20.95.43'}, {name: 'desdfe', host: '172.20.95.13'}, {name: 'desdfklhijie', host: '172.20.0.43'}],
+      // servers: [],
+      servers: [{name: 'dev-lizhijie', host: '172.20.95.43'}, {name: 'desdfe', host: '172.20.95.13'}, {name: 'desdfklhijie', host: '172.20.0.43'}],
       status: {},
-      active: {}
+      active: {},
+      currentHost: '',
+      mainLine: ''
     }
   },
   watch: {
@@ -101,7 +103,7 @@ export default {
   },
   created () {
     this.getTask()
-    // this.processData(this.servers)
+    this.processData(this.servers)
   },
   destroyed () {
     clearInterval(this.setInterval)
@@ -127,6 +129,7 @@ export default {
     },
     processData (servers) {
       this.servers = servers
+      this.mainLine = servers.host
       servers.map(item => {
         this.active[item.host] = 0
         this.status[item.host] = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
@@ -193,10 +196,13 @@ export default {
       console.log('console', data)
       const log = data.data
       this.record.push(log)
-      if (log && log.sequence > 0 && this.status[log.host]) {
-        this.$set(this.active, log.host, log.sequence)
+      let isHas = this.status[log.host]
+      if (log && log.sequence > 0) {
+        console.log(this.currentHost, log.host)
+        this.$set(this.active, isHas ? log.host : this.currentHost, log.sequence)
         // this.activeStep = log.sequence
       }
+      this.currentHost = isHas ? log.host : this.currentHost
     },
     deployFail (data) {
       console.log('fail', data)
