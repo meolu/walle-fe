@@ -129,8 +129,9 @@ export default {
       this.servers = servers
       this.currentHost = servers[0].host
       servers.map(item => {
-        this.active[item.host] = 0
-        this.status[item.host] = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
+        // this.active[item.host] = 0
+        this.$set(this.active, item.host, 0)
+        // this.status[item.host] = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
       })
     },
     initWebSocket () { // 初始化weosocket
