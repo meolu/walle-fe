@@ -79,6 +79,7 @@ export default {
       handler () {
         for (let key in this.active) {
           let val = this.active[key]
+          console.log(val, this.status[key])
           if (val === 0) {
             this.$set(this.status, key, ['wait', 'wait', 'wait', 'wait', 'wait', 'wait'])
           } else {
@@ -130,6 +131,7 @@ export default {
         this.active[item.host] = 0
         this.status[item.host] = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
       })
+      console.log(this.active, this.status)
     },
     initWebSocket () { // 初始化weosocket
       const wsuri = `http://${location.host}/walle`
