@@ -196,7 +196,8 @@ export default {
       let isHas = this.status[log.host]
       if (log && log.sequence > 0) {
         let host = isHas ? log.host : this.currentHost
-        this.active[host] = log.sequence
+        // this.active[host] = log.sequence
+        this.$set(this.active, host, log.sequence)
         console.log(this.active)
         // this.activeStep = log.sequence
       }
