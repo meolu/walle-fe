@@ -59,22 +59,6 @@ export default {
     }
   },
   watch: {
-    // activeStep (val) {
-    //   if (val === 0) {
-    //     this.stepStatus = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
-    //   } else {
-    //     const index = val - 1
-    //     this.stepStatus = this.stepStatus.map((item, i) => {
-    //       if (i < index) {
-    //         return 'finish'
-    //       } else if (i === index) {
-    //         return 'process'
-    //       } else {
-    //         return item
-    //       }
-    //     })
-    //   }
-    // },
     active: {
       deep: true,
       handler () {
@@ -118,7 +102,6 @@ export default {
     start () {
       this.isStart = true
       this.noRun = true
-      // this.activeStep = 0
       for (let key in this.active) {
         this.active[key] = 0
       }
@@ -197,10 +180,7 @@ export default {
       let isHas = this.status[log.host]
       if (log && log.sequence > 0) {
         let host = isHas ? log.host : this.currentHost
-        // this.active[host] = log.sequence
         this.$set(this.active, host, log.sequence)
-        console.log(this.active)
-        // this.activeStep = log.sequence
       }
       this.currentHost = isHas ? log.host : this.currentHost
     },
@@ -213,8 +193,8 @@ export default {
         }
         this.noRun = false
         this.isStart = true
-        // const step = this.activeStep === 0 ? 0 : this.activeStep - 1
-        // this.$set(this.stepStatus, step, 'error')
+        const step = this.active[this.currentHost] === 0 ? 0 : this.active[this.currentHost] - 1
+        this.$set(this.status[this.currentHost], step, 'error')
       }
     },
     deploySuccess (data) {
@@ -226,7 +206,6 @@ export default {
         }
         this.noRun = true
         this.isStart = true
-        // this.activeStep = 7
         for (let key in this.active) {
           this.$set(this.active, key, 7)
         }
