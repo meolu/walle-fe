@@ -196,7 +196,7 @@ export default {
       if (this.isStart) {
         const host = data.data.host
         if (host) {
-          this.$set(this.active[host], host, 7)
+          this.$set(this.active, host, 7)
         } else {
           const msg = data && data.data ? data.data.message : ''
           if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
