@@ -177,27 +177,33 @@ export default {
     deployFail (data) {
       console.log('fail', data)
       if (this.isStart) {
-        const msg = data && data.data ? data.data.message : ''
-        if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
-          this.$message.error(msg)
+        const host = data.data.host
+        if (host) {
+          const step = this.active[host] === 0 ? 0 : this.active[host] - 1
+          this.$set(this.status[host], step, 'error')
+        } else {
+          const msg = data && data.data ? data.data.message : ''
+          if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
+            this.$message.error(msg)
+          }
+          this.noRun = false
+          this.isStart = true
         }
-        this.noRun = false
-        this.isStart = true
-        const step = this.active[this.currentHost] === 0 ? 0 : this.active[this.currentHost] - 1
-        this.$set(this.status[this.currentHost], step, 'error')
       }
     },
     deploySuccess (data) {
       console.log('sucess', data)
       if (this.isStart) {
-        const msg = data && data.data ? data.data.message : ''
-        if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
-          this.$message.success(msg)
-        }
-        this.noRun = true
-        this.isStart = true
-        for (let key in this.active) {
-          this.$set(this.active, key, 7)
+        const host = data.data.host
+        if (host) {
+          this.$set(this.active[host], host, 7)
+        } else {
+          const msg = data && data.data ? data.data.message : ''
+          if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
+            this.$message.success(msg)
+          }
+          this.noRun = true
+          this.isStart = true
         }
       }
     }
