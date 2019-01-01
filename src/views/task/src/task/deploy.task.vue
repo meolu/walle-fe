@@ -5,7 +5,7 @@
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
            <el-button type="success" size="small" @click="start" :disabled="noRun">开始</el-button>
         </div>
-        <wl-tree v-if="status&&isStart" :servers="servers" :status="status" :width="width"></wl-tree>
+        <wl-tree v-if="status" :servers="servers" :status="status" :width="width"></wl-tree>
         <deploy-log :value="record" v-if="isStart"></deploy-log>
     </div>
 </template>
