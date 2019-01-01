@@ -218,7 +218,7 @@ export default {
    margin: 20px;
    box-sizing: border-box;
    background: #fff;
-  //  height: calc(100% - 40px);
+   min-height: calc(100% - 40px);
    padding: 10px;
 
    .wl-steps {
