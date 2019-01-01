@@ -49,7 +49,7 @@ export default {
         ],
         password: [
           { required: true, message: '请设置密码', trigger: 'blur' },
-          { pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,}$/, message: '至少6个字符，至少1个大写字母，1个小写字母和1个数字', trigger: 'blur' }
+          { pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\s\S]{6,}$/, message: '至少6个字符，至少1个大写字母，1个小写字母和1个数字', trigger: 'blur' }
         ],
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' }

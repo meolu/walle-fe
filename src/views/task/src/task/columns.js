@@ -56,6 +56,7 @@ export default function () {
             {self.renderReview({...scope.row})}
             {self.renderDeploy({...scope.row})}
             {self.renderEditTool({...scope.row})}
+            {self.renderRollbackTool({...scope.row})}
             {self.renderDeleteTool({...scope.row})}
           </div>
         )

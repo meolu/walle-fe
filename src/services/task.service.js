@@ -109,13 +109,20 @@ export function deleteTask (id, params = {}) {
   return Delete(`task/${id}`, params)
 }
 
-// export function deployTask (params = {}) {
-//   return post('deploy/', params, {
-//     headers: {
-//       'content-type': 'multipart/form-data'
-//     },
-//     transformRequest: [function (data) {
-//       return qs.stringify(data)
-//     }]
-//   })
-// }
+/**
+ *
+ * 回滚
+ * @export
+ * @param {any} [params={}]
+ * @returns Promise
+ */
+export function rollbackTask (id, params = {}) {
+  return put(`task/${id}/rollback`, params, {
+    headers: {
+      'content-type': 'multipart/form-data'
+    },
+    transformRequest: [function (data) {
+      return qs.stringify(data)
+    }]
+  })
+}

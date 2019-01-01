@@ -5,14 +5,7 @@
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
            <el-button type="success" size="small" @click="start" :disabled="noRun">开始</el-button>
         </div>
-        <el-steps :active="activeStep" finish-status="success" v-if="isStart">
-            <el-step title="Deploy前置任务" :status="stepStatus[0]"></el-step>
-            <el-step title="Deploy" :status="stepStatus[1]"></el-step>
-            <el-step title="Deploy后置任务" :status="stepStatus[2]"></el-step>
-            <el-step title="Release前置任务" :status="stepStatus[3]"></el-step>
-            <el-step title="Release" :status="stepStatus[4]"></el-step>
-            <el-step title="Release后置任务" :status="stepStatus[5]"></el-step>
-        </el-steps>
+        <wl-tree v-if="status" :servers="servers" :status="status" :width="width"></wl-tree>
         <deploy-log :value="record" v-if="isStart"></deploy-log>
     </div>
 </template>
@@ -20,16 +13,9 @@
 import io from 'socket.io-client'
 import DeployLog from './log.vue'
 import {getTask} from '@/services/task.service'
-// const STAGE = {
-//   prev_deploy: 1,
-//   deploy: 2,
-//   post_deploy: 3,
-//   prev_release: 4,
-//   release: 5,
-//   post_release: 6
-// }
+import WlTree from './tree.vue'
 export default {
-  components: {DeployLog},
+  components: {DeployLog, WlTree},
   props: {
     taskId: [String, Number],
     space: {
@@ -56,24 +42,36 @@ export default {
       isStart: false,
       noRun: false, // 是否可以点击开始上线
       setInterval: null,
-      stepStatus: ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
+      stepStatus: ['wait', 'wait', 'wait', 'wait', 'wait', 'wait'],
+      servers: [],
+      // servers: [{name: 'dev-lizhijie', host: '172.20.95.43'}, {name: 'desdfe', host: '172.20.95.13'}, {name: 'desdfklhijie', host: '172.20.0.43'}],
+      status: {},
+      active: {},
+      currentHost: '',
+      width: 1000
     }
   },
   watch: {
-    activeStep (val) {
-      if (val === 0) {
-        this.stepStatus = ['wait', 'wait', 'wait', 'wait', 'wait', 'wait']
-      } else {
-        const index = val - 1
-        this.stepStatus = this.stepStatus.map((item, i) => {
-          if (i < index) {
-            return 'finish'
-          } else if (i === index) {
-            return 'process'
+    active: {
+      deep: true,
+      handler () {
+        for (let key in this.active) {
+          let val = this.active[key]
+          if (val === 0) {
+            this.$set(this.status, key, ['wait', 'wait', 'wait', 'wait', 'wait', 'wait'])
           } else {
-            return item
+            const index = val - 1
+            this.$set(this.status, key, this.status[key].map((item, i) => {
+              if (i < index) {
+                return 'finish'
+              } else if (i === index) {
+                return 'process'
+              } else {
+                return item
+              }
+            }))
           }
-        })
+        }
       }
     }
   },
@@ -85,6 +83,7 @@ export default {
     this.websock && this.websock.close() // 离开路由之后断开websocket连接
   },
   mounted () {
+    this.width = this.$el.offsetWidth - 20
     this.initWebSocket()
   },
   methods: {
@@ -95,9 +94,18 @@ export default {
     start () {
       this.isStart = true
       this.noRun = true
-      this.activeStep = 0
+      for (let key in this.active) {
+        this.active[key] = 0
+      }
       this.record = []
       this.websock.emit('deploy', {'task': this.taskId})
+    },
+    processData (servers) {
+      this.servers = servers
+      this.currentHost = servers[0].host
+      servers.map(item => {
+        this.$set(this.active, item.host, 0)
+      })
     },
     initWebSocket () { // 初始化weosocket
       const wsuri = `http://${location.host}/walle`
@@ -118,6 +126,7 @@ export default {
     },
     construct ({data}) {
       console.log('construct', data)
+      this.processData(data.servers_info)
       // 正在部署或已完成部署
       // 上线中，4上线完成，开始按钮不可点击，log显示
       if (parseInt(data.status) === 3 || parseInt(data.status) === 4) {
@@ -158,33 +167,44 @@ export default {
       console.log('console', data)
       const log = data.data
       this.record.push(log)
+      let isHas = this.status[log.host]
       if (log && log.sequence > 0) {
-        this.activeStep = log.sequence
+        let host = isHas ? log.host : this.currentHost
+        this.$set(this.active, host, log.sequence)
       }
+      this.currentHost = isHas ? log.host : this.currentHost
     },
     deployFail (data) {
       console.log('fail', data)
       if (this.isStart) {
-        const msg = data && data.data ? data.data.message : ''
-        if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
-          this.$message.error(msg)
+        const host = data.data.host
+        if (host) {
+          const step = this.active[host] === 0 ? 0 : this.active[host] - 1
+          this.$set(this.status[host], step, 'error')
+        } else {
+          const msg = data && data.data ? data.data.message : ''
+          if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
+            this.$message.error(msg)
+          }
+          this.noRun = false
+          this.isStart = true
         }
-        this.noRun = false
-        this.isStart = true
-        const step = this.activeStep === 0 ? 0 : this.activeStep - 1
-        this.$set(this.stepStatus, step, 'error')
       }
     },
     deploySuccess (data) {
       console.log('sucess', data)
       if (this.isStart) {
-        const msg = data && data.data ? data.data.message : ''
-        if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
-          this.$message.success(msg)
+        const host = data.data.host
+        if (host) {
+          this.$set(this.active, host, 7)
+        } else {
+          const msg = data && data.data ? data.data.message : ''
+          if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
+            this.$message.success(msg)
+          }
+          this.noRun = true
+          this.isStart = true
         }
-        this.noRun = true
-        this.isStart = true
-        this.activeStep = 7
       }
     }
   }
@@ -198,12 +218,10 @@ export default {
    margin: 20px;
    box-sizing: border-box;
    background: #fff;
-   height: calc(100% - 40px);
+   min-height: calc(100% - 40px);
    padding: 10px;
-   display: flex;
-   flex-direction: column;
 
-   .el-steps {
+   .wl-steps {
      min-height: 80px;
    }
 
@@ -220,6 +238,13 @@ export default {
        margin-right: 10px;
        font-size: 16px;
      }
+   }
+
+   .wl-task-deploy__host {
+      position: absolute;
+      bottom: 7px;
+      right: 5px;
+      color: #666;
    }
 }
 </style>
