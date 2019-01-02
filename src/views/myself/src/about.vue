@@ -4,10 +4,11 @@
             <h1 class="wl-about__title"> 关于瓦力</h1>
         </div>
         <div class="wl-about__row">
-            <div class="wl-about__strong"><p>我们期望打造一个比jenkins更为好用的的部署平台，walle团队孜孜不倦地做免费开源，愿walle能真真切切为你解决DevOps的问题，也愿能与志同道合之人相知畅聊。</p></div>
+            <div class="wl-about__strong"><p>我们期望打造一个比 jenkins 更为好用的的部署平台，walle团队孜孜不倦地做免费开源。<br>
+            愿 walle 能真真切切为你解决 DevOps 的问题，也愿能与志同道合之人相知畅聊。</p></div>
         </div>
         <div class="wl-about__row">
-            <a class="wl-about__walle" href="http://walle-web.io/">官网</a>
+            <a class="wl-about__walle" href="https://walle-web.io/" target="_blank">官网 (walle-web.io)</a> | <a class="wl-about__walle" href="https://github.com/meolu/walle-web" target="_blank">github (walle-web)</a>
         </div>
         <div class="wl-about__row">
             <div>
@@ -16,17 +17,22 @@
             </div>
         </div>
         <div class="wl-about__row">
-            <div class="wl-about__name">walle (版本信息，commit id)</div>
-            <span class="wl-about__desc">{{`${version}  ${commit}`}}</span>
+            <div class="wl-about__name">walle 版本</div>
+            <span class="wl-about__desc">{{`${version}`}}</span>
         </div>
         <div class="wl-about__row">
-            <div class="wl-about__name">服务器信息(版本、python)</div>
-            <div class="wl-about__desc">
-                <div>{{`${server}`}}</div>
-                <div>{{`python ${python}`}}</div>
-            </div>
+            <div class="wl-about__name">walle commit</div>
+            <span class="wl-about__desc">{{`${commit}`}}</span>
         </div>
-        <div class="wl-about__footer">如果喜欢，请不吝为我们github项目点个星<a href="https://github.com/meolu/walle-web">star</a>，关注公众号 walle-web 了解更多</div>
+        <div class="wl-about__row">
+            <div class="wl-about__name">服务器信息</div>
+            <span class="wl-about__desc">{{`${server}`}}</span>
+        </div>
+        <div class="wl-about__row">
+            <div class="wl-about__name">Python</div>
+            <span class="wl-about__desc">{{`${python}`}}</span>
+        </div>
+        <div class="wl-about__footer">如果喜欢，请不吝为我们github项目点个星<a href="https://github.com/meolu/walle-web" target="_blank">star</a>，关注公众号 <a href="http://walle-web.io/about/" target="_blank">walle-web</a> 了解更多</div>
     </div>
 </template>
 
