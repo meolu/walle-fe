@@ -108,7 +108,7 @@ export default {
       })
     },
     initWebSocket () { // 初始化weosocket
-      const wsuri = `http://${location.host}/walle`
+      const wsuri = `${document.location.protocol}//${location.host}/walle`
       this.websock = io.connect(wsuri, {
         reconnectionAttempts: 2
       })

@@ -226,7 +226,7 @@ export default {
       this.form.servers.splice(index, 1)
     },
     initWebSocket () { // 初始化weosocket
-      const wsuri = `http://${location.host}/walle`
+      const wsuri = `${document.location.protocol}//${location.host}/walle`
       this.websock = io.connect(wsuri, {
         reconnectionAttempts: 2
       })
