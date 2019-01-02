@@ -1,8 +1,16 @@
 <template>
     <div class="wl-home">
-        <h2>更快，更优，更 Cool !<br>欢迎使用 walle 2.0</h2>
+        <!-- <h2>更快，更优，更 Cool !<br>欢迎使用 walle 2.0</h2> -->
+        <wl-about></wl-about>
     </div>
 </template>
+<script>
+import WlAbout from '@/views/myself/src/about.vue'
+export default {
+  components: {WlAbout}
+}
+</script>
+
 <style lang="scss">
 @import 'scss';
 
@@ -13,6 +21,8 @@
     align-items: center;
     background-size: cover;
     background-image: url('~assets/img/welcom.jpg');
+    position: relative;
+    overflow: auto;
 
     h2 {
         text-align: center;
