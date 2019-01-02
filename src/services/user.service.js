@@ -167,3 +167,13 @@ export function avater (id, params = {}) {
     }]
   })
 }
+
+/**
+ *
+ * 获取walle的信息
+ * @export
+ * @returns Promise
+ */
+export function getWalleInfo () {
+  return get('general/info')
+}
