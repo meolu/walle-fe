@@ -8,7 +8,7 @@
             愿 walle 能真真切切为你解决 DevOps 的问题，也愿能与志同道合之人相知畅聊。</p></div>
         </div>
         <div class="wl-about__row">
-            <a class="wl-about__walle" href="https://walle-web.io/" target="_blank">官网 (walle-web.io)</a> | <a class="wl-about__walle" href="https://github.com/meolu/walle-web" target="_blank">github (walle-web)</a>
+            <a class="wl-about__walle" href="https://walle-web.io/" target="_blank">官网 (walle-web.io)</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a class="wl-about__walle" href="https://github.com/meolu/walle-web" target="_blank">github (walle-web)</a>
         </div>
         <div class="wl-about__row">
             <div>
