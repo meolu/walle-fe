@@ -15,8 +15,15 @@
                 </el-form-item>
             </el-form>
             <div v-if="!isSuper" class="wl-user-list__wrap">
-                <add-member @add="addMember"></add-member>
-                <el-button type="primary" size="small" icon="el-icon-edit" @click="addUser">新建</el-button>
+                <add-member @add="addMember" v-if="enableCreate"></add-member>
+                <el-input
+                    placeholder="请输入内容"
+                    size="small"
+                    class="no-super-search"
+                    v-model="value">
+                    <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+                  </el-input>
+                <el-button type="primary" size="small" v-if="enableCreate" icon="el-icon-edit" @click="addUser">新建</el-button>
             </div>
         <wl-table
             ref="table"
@@ -206,6 +213,12 @@ export default {
 
    .search {
      width: 300px;
+   }
+
+   .no-super-search {
+     width: 300px;
+     float: left;
+     margin-bottom: 20px;
    }
 
    .el-table thead th {
