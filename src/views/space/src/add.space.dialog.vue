@@ -9,12 +9,10 @@
         :append-to-body="true">
         <el-form :model="form" ref="form">
           <el-form-item label="空间名称" label-width="120px" prop="name" :rules="rules.name" :error="error.name">
-            <el-input size="small" v-model="form.name" auto-complete="off"></el-input>
+            <el-input size="small" v-model="form.name" auto-complete="off" placeholder="空间名称"></el-input>
             </el-form-item>
-            <el-form-item label="所属人" label-width="120px" prop="user_id" :rules="rules.user_id" :error="error.user_id">
-              <el-select size="small" v-model="form.user_id" placeholder="请分配用户" class="wl-add-space__option">
-                  <el-option v-for="user in users" :key="user.id" :label="user.username" :value="user.id"></el-option>
-              </el-select>
+            <el-form-item v-if="visible" label="所属人" label-width="120px" prop="user_id" :error="error.user_id">
+              <search-user @select="handleFilterSelect" @search="search" placeholder="请分配用户" :value="form.user_name"></search-user>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -26,7 +24,6 @@
 
 <script>
 import {addSpace, updateSpace} from '@/services/space.service'
-import {getUsers} from '@/services/user.service'
 export default {
   props: {
     visible: {
@@ -37,15 +34,14 @@ export default {
   },
   data () {
     return {
-      users: [],
       error: this.initError(),
       form: this.initForm(),
       rules: {
         name: [
-          { required: true, message: '请输入用户名', trigger: 'blur' }
+          { required: true, message: '请输入空间名称', trigger: 'blur' }
         ],
         user_id: [
-          { required: true, message: '请选择用户角色', trigger: 'blur' }
+          { required: true, message: '请分配用户', trigger: 'blur' }
         ]
       }
     }
@@ -56,20 +52,16 @@ export default {
       handler (val) {
         if (val) {
           Object.assign(this.form, {
-            ...this.initForm(0)
+            ...this.initForm()
           })
-          this.getUsers({}, {
-            target: '.wl-add-space__option'
-          })
+          if (this.space) this.refreshForm()
         }
       }
     },
     space (val) {
       if (this.visible) {
         if (val) {
-          let {name, user_id} = val // eslint-disable-line
-          this.form.name = name
-          this.form.user_id = user_id // eslint-disable-line
+          this.refreshForm()
         } else {
           this.form = this.initForm()
         }
@@ -82,18 +74,29 @@ export default {
     }
   },
   methods: {
-    async getUsers () {
-      let {data: {list}} = await getUsers()
-      this.users = list
+    refreshForm () {
+      let {name, user_id, user_name} = this.space // eslint-disable-line
+      this.form.name = name
+      this.form.user_id = user_id // eslint-disable-line
+      this.form.user_name = user_name // eslint-disable-line
     },
     onOk () {
+      let flag = this.check()
       this.$refs.form.validate((valid) => {
-        if (valid) {
+        if (valid && flag) {
           this.sendData()
         } else {
           return false
         }
       })
+    },
+    check () {
+      if (this.form.user_id) {
+        return true
+      } else {
+        this.error.user_id = '请分配用户'
+        return false
+      }
     },
     onCancel () {
       this.$emit('update:visible')
@@ -102,13 +105,15 @@ export default {
     initForm () {
       return {
         name: '',
-        user_id: null
+        user_id: null,
+        user_name: ''
       }
     },
     initError () {
       return {
         name: '',
-        user_id: ''
+        user_id: '',
+        user_name: ''
       }
     },
     async sendData () {
@@ -125,6 +130,14 @@ export default {
           }
         }
       }
+    },
+    handleFilterSelect (user) {
+      this.form.user_id = user.user_id
+      this.form.user_name = user.username
+    },
+    search (val) {
+      this.form.user_id = null
+      if (!val) this.error.user_id = '请分配用户'
     }
   }
 }
@@ -151,6 +164,10 @@ export default {
         border-top: 1px solid #e8e8e8;
         padding: 10px 16px;
         text-align: right;
+    }
+
+    .el-autocomplete {
+      width: 360px;
     }
 }
 </style>
