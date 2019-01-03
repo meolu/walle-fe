@@ -1,9 +1,9 @@
 <template>
-   <div class="wl-search">
+   <div class="wl-search-user">
     <el-autocomplete
       size="small"
       v-model="keyword"
-      popper-class="wl-search__input"
+      popper-class="wl-search-user__input"
       :fetch-suggestions="querySearchAsync"
       :placeholder="placeholder"
       @select="handleSelect">
@@ -84,7 +84,7 @@ export default {
 <style lang="scss">
 @import 'scss';
 
-@include b(search) {
+@include b(search-user) {
   @include e(input) {
     .highlight {
         color: $primary;
