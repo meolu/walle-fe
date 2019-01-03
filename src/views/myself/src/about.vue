@@ -1,7 +1,7 @@
 <template>
     <div class="wl-about">
         <div class="wl-about__row">
-            <h1 class="wl-about__title"> 关于瓦力</h1>
+            <h1 class="wl-about__title"> 关于 walle 瓦力</h1>
         </div>
         <div class="wl-about__row">
             <div class="wl-about__strong"><p>我们期望打造一个比 jenkins 更为好用的的部署平台，walle团队孜孜不倦地做免费开源。<br>
