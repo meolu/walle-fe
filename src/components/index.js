@@ -7,6 +7,7 @@ import FullScreen from './fullscreen'
 import AddMember from './add.member'
 import WlSteps from './steps'
 import WlStep from './step'
+import SearchUser from './search.user'
 
 const components = [
   Table,
@@ -15,7 +16,8 @@ const components = [
   FullScreen,
   AddMember,
   WlSteps,
-  WlStep
+  WlStep,
+  SearchUser
 ]
 
 const ua = navigator.userAgent
