@@ -46,7 +46,7 @@
               <el-popover
                 placement="top-start"
                 trigger="hover"
-                content="这是目标集群部署路径提示">
+                content="一般为webroot，不能为已存在目录，walle会自行生成">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
             </label>
@@ -57,7 +57,7 @@
               <el-popover
                 placement="top-start"
                 trigger="hover"
-                content="这是目标集群部署仓库提示">
+                content="仓库存储每次发布的版本，用于储存、回滚等版本管理">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
             </label>
@@ -74,7 +74,7 @@
               <el-popover
                 placement="top-start"
                 trigger="hover"
-                content="这是部署排除文件提示">
+                content="排除不需要打包同步至服务器的文件或目录。一行一个，支持正则，如：*.log">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen1')">全屏</span>
@@ -88,7 +88,7 @@
               <el-popover
                 placement="top-start"
                 trigger="hover"
-                content="这是高级任务-变量提示">
+                content="尚未完成可用，2.0.1更新">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen2')">全屏</span>
@@ -102,7 +102,7 @@
               <el-popover
                 placement="top-start"
                 trigger="hover"
-                content="这是高级任务-Deploy前置任务提示">
+                content="在宿主机未检出代码前的前置任务，常为安装依赖、配置环境变量等">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen3')">全屏</span>
@@ -116,7 +116,7 @@
               <el-popover
                 placement="top-start"
                 trigger="hover"
-                content="这是高级任务-Deploy后置任务提示">
+                content="在宿主机检出代码后的后置任务，常为编译、清除文件">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen4')">全屏</span>
@@ -130,7 +130,7 @@
               <el-popover
                 placement="top-start"
                 trigger="hover"
-                content="这是高级任务-Release前置任务提示">
+                content="在目标服务器同步代码到版本库后，服务切换的前置任务，常为停服、摘机器等">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen5')">全屏</span>
@@ -144,7 +144,7 @@
               <el-popover
                 placement="top-start"
                 trigger="hover"
-                content="这是高级任务-Release后置任务提示">
+                content="在目标服务器新版本服务切换后的后置任务，常为启动服务、启动节点">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen6')">全屏</span>
@@ -162,7 +162,7 @@
               <el-option key="notice_type3" label="邮箱通知" value="email"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item v-if="form.notice_type && form.notice_type==='dingding'" label="钉钉hock地址" prop="notice_hook" :rules="rules.notice_hook">
+          <el-form-item v-if="form.notice_type && form.notice_type==='dingding'" label="钉钉hook地址" prop="notice_hook" :rules="rules.notice_hook">
             <el-input v-model="form.notice_hook" placeholder="请输入钉钉hock地址，英文分号分隔"></el-input>
           </el-form-item>
           <el-form-item v-if="form.notice_type && form.notice_type==='email'" label="邮箱地址" prop="notice_hook" :rules="rules.notice_hook">
