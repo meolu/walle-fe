@@ -55,6 +55,10 @@ export default {
             ...this.initForm()
           })
           if (this.space) this.refreshForm()
+          this.$nextTick(() => {
+            this.$refs.form.clearValidate()
+            this.error = this.initError()
+          })
         }
       }
     },
@@ -65,6 +69,11 @@ export default {
         } else {
           this.form = this.initForm()
         }
+      }
+    },
+    'form.user_id': {
+      handler (val) {
+        if (!val) this.error.user_id = '请分配用户'
       }
     }
   },
@@ -134,10 +143,10 @@ export default {
     handleFilterSelect (user) {
       this.form.user_id = user.user_id
       this.form.user_name = user.username
+      this.error.user_id = ''
     },
     search (val) {
-      this.form.user_id = null
-      if (!val) this.error.user_id = '请分配用户'
+      if (val !== this.form.user_name) this.form.user_id = null
     }
   }
 }
