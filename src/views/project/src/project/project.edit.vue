@@ -70,13 +70,17 @@
         <wl-split title="任务配置"></wl-split>
         <el-form ref="form4" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__editor" :disabled="isRead">
           <el-form-item>
-            <div slot="label" class="wl-project-edit__code-label"><span>部署排除文件</span>
+            <div slot="label" class="wl-project-edit__code-label"><span>{{`部署${DEPLOY_FILE[form.is_include]}文件`}}</span>
               <el-popover
                 placement="top-start"
                 trigger="hover"
                 content="排除不需要打包同步至服务器的文件或目录。一行一个，支持正则，如：*.log">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
+              <el-radio-group v-model="form.is_include" class="wl-project-edit__include">
+                <el-radio :label="0">包含</el-radio>
+                <el-radio :label="1">排除</el-radio>
+              </el-radio-group>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen1')">全屏</span>
             </div>
             <wl-fullscreen ref="fullscreen1">
@@ -186,6 +190,11 @@ import {getProject, addProject, updateProject} from '@/services/project.service'
 import {mapGetters} from 'vuex'
 import userMixins from '@/mixins/user.mixins'
 require('codemirror/mode/shell/shell')
+
+const DEPLOY_FILE = {
+  0: '包含',
+  1: '排除'
+}
 export default {
   props: {
     id: String,
@@ -240,7 +249,8 @@ export default {
         notice_hook: [
           { required: true, message: '请输入内容', trigger: 'blur' }
         ]
-      }
+      },
+      DEPLOY_FILE: DEPLOY_FILE
     }
   },
   computed: {
@@ -302,7 +312,8 @@ export default {
         notice_type: '',
         notice_hook: '',
         task_audit: '',
-        status: 1
+        status: 1,
+        is_include: 0
       }
     },
     async init () {
@@ -385,6 +396,7 @@ export default {
    background: #fff;
    min-height: calc(100% - 40px);
    padding: 10px;
+   max-width: 1160px;
 
    .el-input,
    .el-textarea {
@@ -483,6 +495,14 @@ export default {
      span {
        font-size: 14px;
      }
+   }
+
+   @include e(include) {
+     margin-left: 40px;
+   }
+
+   .el-radio+.el-radio {
+     margin-left: 20px;
    }
 }
 </style>
