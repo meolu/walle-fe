@@ -88,11 +88,11 @@
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label" class="wl-project-edit__code-label"><span>高级任务-变量</span>
+            <div slot="label" class="wl-project-edit__code-label"><span>自定义全局变量</span>
               <el-popover
                 placement="top-start"
                 trigger="hover"
-                content="尚未完成可用，2.0.1更新">
+                content="自定义全局变量可在高级任务中使用，一行一个，格式：VAR=value。更多预置变量：http://walle-web.io/docs/configuration-project.html">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen2')">全屏</span>
