@@ -1,7 +1,7 @@
 <template>
     <div class="wl-login" id="wl-login">
         <div class="wl-login__content">
-            <h2 class="wl-login__title">瓦力</h2>
+            <h2 class="wl-login__title">walle 瓦力</h2>
             <el-form ref="form" :model="form">
                 <el-form-item prop="email" :rules="rules.email">
                     <el-input v-model="form.email" auto-complete="off" placeholder="请输入邮箱" prefix-icon="wl-icon-email"></el-input>
