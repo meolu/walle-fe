@@ -5,8 +5,6 @@ import Breadcrumb from './breadcrumb'
 import Split from './split'
 import FullScreen from './fullscreen'
 import AddMember from './add.member'
-import WlSteps from './steps'
-import WlStep from './step'
 import SearchUser from './search.user'
 
 const components = [
@@ -15,8 +13,6 @@ const components = [
   Split,
   FullScreen,
   AddMember,
-  WlSteps,
-  WlStep,
   SearchUser
 ]
 

@@ -73,7 +73,7 @@ export default {
 @include b(login) {
     height: 100%;
     width: 100%;
-    background: url('~assets/img/login-bg.jpg');
+    background: url('~assets/img/login.png');
     background-size: cover;
     display: flex;
     justify-content: center;
@@ -82,7 +82,7 @@ export default {
     .el-input--prefix .el-input__inner {
         background: transparent;
         color: #fff;
-        border: rgba(255,255,255,0.2) 2px solid !important;
+        border: rgba(255,255,255,0.3) 2px solid !important;
         border-radius: 50px;
     }
 
@@ -120,6 +120,7 @@ export default {
 
     @include e(content) {
         width: 300px;
+        margin-top: -120px;
     }
 }
 

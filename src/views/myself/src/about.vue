@@ -32,6 +32,9 @@
             <div class="wl-about__name">Python</div>
             <span class="wl-about__desc">{{`${python}`}}</span>
         </div>
+        <div class="wl-about__row">
+            <div class="wl-about__strong wl-about__error"><p>{{error}}</p></div>
+        </div>
         <div class="wl-about__footer">如果喜欢，请不吝为我们github项目点个星<a href="https://github.com/meolu/walle-web" target="_blank">star</a>，关注公众号 <a href="http://walle-web.io/about/" target="_blank">walle-web</a> 了解更多</div>
     </div>
 </template>
@@ -45,7 +48,8 @@ export default {
       commit: '',
       version: '',
       server: '',
-      python: ''
+      python: '',
+      error: ''
     }
   },
   created () {
@@ -53,11 +57,12 @@ export default {
   },
   methods: {
     async getWalleInfo () {
-      const {data: {commit, version, server, python}} = await getWalleInfo()
+      const {data: {commit, version, server, python, error}} = await getWalleInfo()
       this.commit = commit
       this.version = version
       this.server = server
       this.python = python
+      this.error = error
     }
   }
 }
@@ -121,6 +126,10 @@ export default {
             font-size: 18px;
             width: 800px;
         }
+    }
+
+    @include e(error) {
+        color: #F56C6C;
     }
 
     @include e(footer) {

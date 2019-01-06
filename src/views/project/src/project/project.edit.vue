@@ -70,13 +70,17 @@
         <wl-split title="任务配置"></wl-split>
         <el-form ref="form4" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__editor" :disabled="isRead">
           <el-form-item>
-            <div slot="label" class="wl-project-edit__code-label"><span>部署排除文件</span>
+            <div slot="label" class="wl-project-edit__code-label"><span>{{`部署${DEPLOY_FILE[form.is_include]}文件`}}</span>
               <el-popover
                 placement="top-start"
                 trigger="hover"
                 content="排除不需要打包同步至服务器的文件或目录。一行一个，支持正则，如：*.log">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
+              <el-radio-group v-model="form.is_include" class="wl-project-edit__include">
+                <el-radio :label="1">排除</el-radio>
+                <el-radio :label="0">包含</el-radio>
+              </el-radio-group>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen1')">全屏</span>
             </div>
             <wl-fullscreen ref="fullscreen1">
@@ -84,11 +88,11 @@
             </wl-fullscreen>
           </el-form-item>
           <el-form-item>
-            <div slot="label" class="wl-project-edit__code-label"><span>高级任务-变量</span>
+            <div slot="label" class="wl-project-edit__code-label"><span>自定义全局变量</span>
               <el-popover
                 placement="top-start"
                 trigger="hover"
-                content="尚未完成可用，2.0.1更新">
+                content="自定义全局变量可在高级任务中使用，一行一个，格式：VAR=value。更多预置变量：http://walle-web.io/docs/configuration-project.html">
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen2')">全屏</span>
@@ -111,6 +115,10 @@
             <codemirror v-model="form.prev_deploy" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
+          <div class="wl-project-edit__checkout">
+            <i class="wl-icon-gitlab"></i><br>
+            <span>检出代码</span>
+          </div>
           <el-form-item>
             <div slot="label" class="wl-project-edit__code-label"><span>高级任务-Deploy后置任务</span>
               <el-popover
@@ -139,6 +147,10 @@
             <codemirror v-model="form.prev_release" :options="editorOption" :class="{'wl-project-edit__isRead': isRead}"></codemirror>
             </wl-fullscreen>
           </el-form-item>
+          <div class="wl-project-edit__checkout">
+            <i class="wl-icon-turn-right2"></i><br>
+            <span>版本切换</span>
+          </div>
           <el-form-item>
             <div slot="label" class="wl-project-edit__code-label"><span>高级任务-Release后置任务</span>
               <el-popover
@@ -186,6 +198,11 @@ import {getProject, addProject, updateProject} from '@/services/project.service'
 import {mapGetters} from 'vuex'
 import userMixins from '@/mixins/user.mixins'
 require('codemirror/mode/shell/shell')
+
+const DEPLOY_FILE = {
+  0: '包含',
+  1: '排除'
+}
 export default {
   props: {
     id: String,
@@ -240,7 +257,8 @@ export default {
         notice_hook: [
           { required: true, message: '请输入内容', trigger: 'blur' }
         ]
-      }
+      },
+      DEPLOY_FILE: DEPLOY_FILE
     }
   },
   computed: {
@@ -302,7 +320,8 @@ export default {
         notice_type: '',
         notice_hook: '',
         task_audit: '',
-        status: 1
+        status: 1,
+        is_include: 1
       }
     },
     async init () {
@@ -385,6 +404,7 @@ export default {
    background: #fff;
    min-height: calc(100% - 40px);
    padding: 10px;
+   max-width: 1160px;
 
    .el-input,
    .el-textarea {
@@ -482,6 +502,34 @@ export default {
    @include e(code-label) {
      span {
        font-size: 14px;
+     }
+   }
+
+   @include e(include) {
+     margin-left: 40px;
+   }
+
+   .el-radio+.el-radio {
+     margin-left: 20px;
+   }
+
+   @include e(checkout) {
+     display: inline-block;
+     margin-left: -100px;
+     width: 94px;
+     height: 131px;
+     text-align: center;
+     padding: 50px 0 30px 0;
+     box-sizing: border-box;
+     color: #606266;
+
+     i {
+       font-size: 40px;
+     }
+
+     .wl-icon-gitlab {
+       font-size: 30px;
+       margin-bottom: 10px;
      }
    }
 }
