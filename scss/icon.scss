@@ -1,11 +1,12 @@
 /* stylelint-disable */
 @font-face {
   font-family: 'iconfont';  /* project id 819129 */
-  src: url('//at.alicdn.com/t/font_819129_fj3532q3ots.eot');
-  src: url('//at.alicdn.com/t/font_819129_fj3532q3ots.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_819129_fj3532q3ots.woff') format('woff'),
-  url('//at.alicdn.com/t/font_819129_fj3532q3ots.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_819129_fj3532q3ots.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_819129_sv02kr2xl5.eot');
+  src: url('//at.alicdn.com/t/font_819129_sv02kr2xl5.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_819129_sv02kr2xl5.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_819129_sv02kr2xl5.woff') format('woff'),
+  url('//at.alicdn.com/t/font_819129_sv02kr2xl5.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_819129_sv02kr2xl5.svg#iconfont') format('svg');
 }
   
   %wl-icon {
@@ -93,6 +94,14 @@
 
     // 回滚
     &-about-walle::before { content: "\e637"; }
+
+    // 向右
+    &-turn-right1::before { content: "\e72d"; }
+    &-turn-right2::before { content: "\e657"; }
+    &-turn-right3::before { content: "\e7cf"; }
+
+    // gitlab
+    &-gitlab::before { content: "\e692"; }
 
   }
   
