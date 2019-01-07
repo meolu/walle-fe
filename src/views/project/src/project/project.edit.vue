@@ -200,8 +200,8 @@ import userMixins from '@/mixins/user.mixins'
 require('codemirror/mode/shell/shell')
 
 const DEPLOY_FILE = {
-  0: '包含',
-  1: '排除'
+  1: '包含',
+  0: '排除'
 }
 export default {
   props: {
@@ -321,7 +321,7 @@ export default {
         notice_hook: '',
         task_audit: '',
         status: 1,
-        is_include: 1
+        is_include: 0
       }
     },
     async init () {
