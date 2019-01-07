@@ -78,8 +78,8 @@
                 <i class="el-icon-info" slot="reference"></i>
               </el-popover>
               <el-radio-group v-model="form.is_include" class="wl-project-edit__include">
-                <el-radio :label="1">排除</el-radio>
-                <el-radio :label="0">包含</el-radio>
+                <el-radio :label="0">排除</el-radio>
+                <el-radio :label="1">包含</el-radio>
               </el-radio-group>
               <span class="fullscreen" @click="()=>fullscreenOpen('fullscreen1')">全屏</span>
             </div>
@@ -200,8 +200,8 @@ import userMixins from '@/mixins/user.mixins'
 require('codemirror/mode/shell/shell')
 
 const DEPLOY_FILE = {
-  0: '包含',
-  1: '排除'
+  1: '包含',
+  0: '排除'
 }
 export default {
   props: {
@@ -321,7 +321,7 @@ export default {
         notice_hook: '',
         task_audit: '',
         status: 1,
-        is_include: 1
+        is_include: 0
       }
     },
     async init () {
