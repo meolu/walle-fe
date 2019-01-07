@@ -40,7 +40,7 @@ export default {
     return {
       data: [],
       value: '',
-      size: 5,
+      size: 30,
       count: 30,
       page: 1
     }
