@@ -58,5 +58,9 @@ export default {
    padding: 10px;
    display: flex;
    flex-direction: column;
+
+   .el-collapse-item__wrap {
+     overflow: unset;
+   }
 }
 </style>
