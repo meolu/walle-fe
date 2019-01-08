@@ -22,24 +22,15 @@
           </el-form-item>
         </el-form>
         <wl-split title="目标集群"></wl-split>
-        <!-- <el-form ref="form2" :model="form" label-position="top" size="small" :inline="true" :disabled="isRead">
-          <el-form-item label="目标集群登录用户" prop="target_user" :rules="rules.target_user">
-            <el-input v-model="form.target_user" placeholder="请输入目标集群用户名"></el-input>
-          </el-form-item>
-          <el-form-item label="目标集群登录端口" prop="target_port" :rules="rules.target_port">
-            <el-input v-model="form.target_port" placeholder="请输入目标集群登录端口"></el-input>
-          </el-form-item>
-        </el-form> -->
-        <el-transfer
-          filterable
+        <wl-transfer
+          :remoteSearch="filterMethod"
           :class="{'wl-project-edit__isRead': isRead}"
           :titles="['服务器', '目标集群']"
-          :filter-method="filterMethod"
           filter-placeholder="请输入服务器名称"
           :props="serverProps"
           v-model="target_servers"
           :data="servers">
-        </el-transfer>
+        </wl-transfer>
         <el-form ref="form3" :model="form" label-position="top" size="small" :inline="true" class="wl-project-edit__target" :disabled="isRead">
           <el-form-item prop="target_root" :rules="rules.target_root">
             <label slot="label"><span>目标集群部署路径 </span>
@@ -242,12 +233,6 @@ export default {
         environment_id: [
           { required: true, message: '请选择环境', trigger: 'blur' }
         ],
-        // target_user: [
-        //   { required: true, message: '请输入目标集群用户', trigger: 'blur' }
-        // ],
-        // target_port: [
-        //   { required: true, message: '请输入目标集群登录端口', trigger: 'blur' }
-        // ],
         target_root: [
           { required: true, message: '一般为webroot，不能为已存在目录', trigger: 'blur' }
         ],
@@ -305,8 +290,6 @@ export default {
         environment_id: '',
         repo_url: '',
         repo_mode: 'branch',
-        // target_user: '',
-        // target_port: 22,
         excludes: '',
         server_ids: '',
         keep_version_num: '',
@@ -341,17 +324,34 @@ export default {
       this.loadingEnvironments = false
       this.environments = list
     },
-    async getServers () {
-      let {data: {list}} = await getServers()
-      this.servers = list.map(item => {
+    async getServers (kw) {
+      let {data: {list}} = await getServers({
+        size: 50,
+        page: 1,
+        kw: kw
+      })
+      const checkedServers = this.servers.filter(item => {
+        return this.target_servers.indexOf(item.id) > -1
+      })
+      let responseServers = list.map(item => {
         return {
           ...item,
           disabled: this.isRead
         }
       })
+      if (checkedServers.length > 0) {
+        responseServers = responseServers.filter(item => {
+          return this.target_servers.indexOf(item.id) === -1
+        })
+      }
+      this.servers = [].concat(checkedServers, responseServers)
     },
     filterMethod (query, item) {
-      return item.name.indexOf(query) > -1
+      if (item) {
+        return item.name.indexOf(query) > -1
+      } else {
+        this.getServers(query)
+      }
     },
     fullscreenOpen (name) {
       this.$refs[name] && this.$refs[name].toggle()
@@ -375,7 +375,6 @@ export default {
         }
       }
       this.$refs.form1.validate(callback)
-      // this.$refs.form2.validate(callback)
       this.$refs.form3.validate(callback)
       this.$refs.form5.validate(callback)
     },

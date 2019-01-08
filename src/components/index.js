@@ -6,6 +6,7 @@ import Split from './split'
 import FullScreen from './fullscreen'
 import AddMember from './add.member'
 import SearchUser from './search.user'
+import Transfer from './transfer'
 
 const components = [
   Table,
@@ -13,7 +14,8 @@ const components = [
   Split,
   FullScreen,
   AddMember,
-  SearchUser
+  SearchUser,
+  Transfer
 ]
 
 const ua = navigator.userAgent
