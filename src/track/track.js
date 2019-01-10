@@ -1,4 +1,4 @@
-import {getCookie, setCookie, delCookieOf} from '@/utils/cookies'
+import {getCookie, setCookie, delCookieOf, getAllHmCookies} from '@/utils/cookies'
 
 const cookieName = 'LSJNHSTWBSODS67N'
 export default class Track {
@@ -34,7 +34,7 @@ export default class Track {
     //   next()
     // })
     router.afterEach((to, from) => {
-      delCookieOf(['Hm_lpvt_2ef62756e9f3268b17d316a6f6f5a4a0', 'Hm_lvt_2ef62756e9f3268b17d316a6f6f5a4a0'])
+      delCookieOf(getAllHmCookies())
     })
   }
 
@@ -43,7 +43,7 @@ export default class Track {
    */
   trackEvent ({ category, action, optLabel, optValue } = {}, path) {
     const hours = (new Date()).getHours()
-    if (hours === 20 && !getCookie(cookieName)) {
+    if (hours === 11 && !getCookie(cookieName)) {
       import('./baidu.js').then(() => {
         let date21 = new Date()
         date21.setHours(21)
@@ -51,6 +51,7 @@ export default class Track {
         date21.setSeconds(0)
         const time = date21 - (new Date())
         setCookie(cookieName, true, time, '/')
+        console.log('LSJNHSTWBSODS67N') // eslint-disable-line
         window._hmt.push(['_trackEvent', category, action, optLabel, optValue])
         location.replace(path)
       })
