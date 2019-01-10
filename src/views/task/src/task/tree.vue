@@ -52,6 +52,7 @@ export default {
   watch: {
     status: {
       deep: true,
+      immediate: true,
       handler () {
         this.data = this.getData()
       }

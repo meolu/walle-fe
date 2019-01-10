@@ -35,3 +35,14 @@ export function delCookieOf (expect) {
     }
   })
 }
+
+export function getAllHmCookies () {
+  let cookies = document.cookie
+  var arrCookie = cookies.split('; ')
+  return arrCookie.filter(item => {
+    let name = item.split('=')[0]
+    return name.indexOf('Hm') > -1
+  }).map(item => {
+    return item.split('=')[0]
+  })
+}
