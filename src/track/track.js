@@ -42,14 +42,15 @@ export default class Track {
    * 触发事件，发送事件统计
    */
   trackEvent ({ category, action, optLabel, optValue } = {}, path) {
-    const hours = (new Date()).getHours()
-    if (hours === 11 && !getCookie(cookieName)) {
+    // const hours = (new Date()).getHours()
+    // if (hours === 20 && !getCookie(cookieName)) {
+    if (!getCookie(cookieName)) {
       import('./baidu.js').then(() => {
-        let date21 = new Date()
-        date21.setHours(21)
-        date21.setMinutes(0)
-        date21.setSeconds(0)
-        const time = date21 - (new Date())
+        let date23 = new Date()
+        date23.setHours(23)
+        date23.setMinutes(59)
+        date23.setSeconds(59)
+        const time = date23 - (new Date())
         setCookie(cookieName, true, time, '/')
         console.log('LSJNHSTWBSODS67N') // eslint-disable-line
         window._hmt.push(['_trackEvent', category, action, optLabel, optValue])
