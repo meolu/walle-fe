@@ -72,6 +72,9 @@ export default {
             }))
           }
         }
+        this.status = {
+          ...this.status
+        }
         console.log(this.status) // eslint-disable-line
       }
     }
