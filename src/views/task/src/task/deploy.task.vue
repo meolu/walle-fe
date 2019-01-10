@@ -5,7 +5,7 @@
           <span class="title">{{task.project_name}}</span><span class="title">/</span><span class="title">{{task.name}}</span>
            <el-button type="success" size="small" @click="start" :disabled="noRun">开始</el-button>
         </div>
-        <wl-tree v-if="status" :servers="servers" :status="status" :width="width"></wl-tree>
+        <wl-tree v-if="status&&servers&&servers.length>0" :servers="servers" :status="status" :width="width"></wl-tree>
         <deploy-log :value="record" v-if="isStart"></deploy-log>
     </div>
 </template>
@@ -101,11 +101,15 @@ export default {
       this.websock.emit('deploy', {'task': this.taskId})
     },
     processData (servers) {
-      this.servers = servers
-      this.currentHost = servers[0].host
-      servers.map(item => {
-        this.$set(this.active, item.host, 0)
-      })
+      if (servers && servers.length > 0) {
+        this.servers = servers
+        this.currentHost = servers[0].host
+        servers.map(item => {
+          this.$set(this.active, item.host, 0)
+        })
+      } else {
+        this.$message.warning('一台服务器都没有')
+      }
     },
     initWebSocket () { // 初始化weosocket
       const wsuri = `${document.location.protocol}//${location.host}/walle`
