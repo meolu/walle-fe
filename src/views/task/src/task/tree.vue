@@ -55,7 +55,6 @@ export default {
       immediate: true,
       handler () {
         this.data = this.getData()
-        console.log(this.data) // eslint-disable-line
       }
     }
   },
