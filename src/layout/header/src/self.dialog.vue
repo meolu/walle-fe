@@ -28,9 +28,6 @@
                         <el-form-item label="昵称" prop="username" :rules="rules.username">
                             <el-input v-model="info.username"></el-input>
                         </el-form-item>
-                        <el-form-item label="邮箱" prop="email" :rules="rules.email">
-                            <el-input v-model="info.email"></el-input>
-                        </el-form-item>
                         <el-form-item>
                             <el-button size="small" type="primary" @click="save">更新基本信息</el-button>
                         </el-form-item>
@@ -74,7 +71,6 @@ export default {
       defaultIcon: defaultIcon,
       info: {
         username: '',
-        email: '',
         avatar: ''
       },
       passwordForm: {
@@ -82,10 +78,6 @@ export default {
         password2: ''
       },
       rules: {
-        email: [
-          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-        ],
         username: [
           { required: true, message: '请输入昵称', trigger: 'blur' }
         ],
@@ -130,7 +122,6 @@ export default {
     async save () {
       await updateUser(this.user.id, {
         username: this.info.username,
-        email: this.info.email,
         avatar: this.info.avatar
       })
       this.getUser()
