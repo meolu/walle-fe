@@ -92,10 +92,11 @@ export function switchSpace (id, params = {}) {
  * @param {any} [params={}]
  * @returns Promise
  */
-export function getSpaceMembers (id, params = {}) {
+export function getSpaceMembers (id, params = {}, config) {
   return get(`space/${id}/members`, params, {
     isRemoveField: true,
-    target: '.wl-table'
+    target: '.wl-table',
+    ...config
   })
 }
 

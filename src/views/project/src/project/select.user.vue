@@ -17,7 +17,7 @@
    </div>
 </template>
 <script>
-import {getSpace} from '@/services/space.service'
+import {getSpaceMembers} from '@/services/space.service'
 export default {
   props: {
     members: {
@@ -34,19 +34,11 @@ export default {
       noExist: false
     }
   },
-  async created () {
-    this.getExistMembers()
-  },
   watch: {
     value: {
       immediate: true,
       handler (val) {
         this.keyword = val
-      }
-    },
-    spaceId (val) {
-      if (val) {
-        this.getExistMembers()
       }
     }
   },
@@ -59,14 +51,15 @@ export default {
     handleSelect (args) {
       if (!this.noExist) this.$emit('select', args)
     },
-    async getExistMembers () {
-      if (this.spaceId) {
-        let {data: {members}} = await getSpace(this.spaceId)
-        this.existMembers = members
-      }
-    },
-    querySearchAsync (queryString, cb) {
-      let mems = this.existMembers.filter(user => {
+    async querySearchAsync (queryString, cb) {
+      let {data: {list}} = await getSpaceMembers(this.spaceId, {
+        size: 30,
+        kw: queryString
+      },
+      {
+        target: '.wl-project-search__input'
+      })
+      let mems = list.filter(user => {
         return this.userIds.indexOf(user.id) === -1
       })
       if (mems.length > 0) {
