@@ -140,7 +140,7 @@ export default {
     }
   },
   destroyed () {
-    this.websock && this.websock.close() // 离开路由之后断开websocket连接
+    this.websock && this.websock.disconnect() // 离开路由之后断开websocket连接
   },
   methods: {
     checkServers () {
