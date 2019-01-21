@@ -96,7 +96,7 @@ export default {
     ...mapGetters(['user']),
     uploadSrc () {
       if (this.user) {
-        return `http://${location.host}/api/user/${this.user.id}/avatar`
+        return `${document.location.protocol}//${location.host}/api/user/${this.user.id}/avatar`
       } else {
         return ''
       }
