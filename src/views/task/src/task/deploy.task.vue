@@ -62,9 +62,9 @@ export default {
           } else {
             const index = val - 1
             this.$set(this.status, key, this.status[key].map((item, i) => {
-              if (i < index) {
+              if (i < index && item !== 'error') {
                 return 'finish'
-              } else if (i === index) {
+              } else if (i === index && item !== 'error') {
                 return 'process'
               } else {
                 return item
