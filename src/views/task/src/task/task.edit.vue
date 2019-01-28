@@ -20,7 +20,7 @@
                 </el-form-item>
                 <el-form-item  v-if="project&&project.repo_mode==='branch'" label="选取版本">
                     <el-select v-model="form.commit_id" placeholder="先选取分支再选取版本" v-loading="commitLoading">
-                        <el-option v-for="item in commits" :key="item.id" :label="item.message" :value="item.id"></el-option>
+                        <el-option v-for="item in commits" :key="item.id" :label="`${item.id}#${item.message}`" :value="item.id"></el-option>
                     </el-select>
                     <i v-if="!commitLoading" class="wl-icon-refresh wl-task-edit__refresh" @click="emitCommits"></i>
                 </el-form-item>
@@ -140,7 +140,7 @@ export default {
     }
   },
   destroyed () {
-    this.websock && this.websock.close() // 离开路由之后断开websocket连接
+    this.websock && this.websock.disconnect() // 离开路由之后断开websocket连接
   },
   methods: {
     checkServers () {
@@ -162,7 +162,7 @@ export default {
         this.form.servers_mode = this.checkServers()
       }
       const projectBranch = getCookie(`projectID_${this.project.id}`)
-      if (projectBranch && !this.form.branch) {
+      if (projectBranch && !this.form.branch && data.repo_mode === 'branch') {
         this.form.branch = projectBranch
       }
       this.initWebSocket()
