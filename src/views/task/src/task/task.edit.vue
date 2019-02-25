@@ -195,7 +195,14 @@ export default {
     },
     onSubmit () {
       this.$refs.form.validate((vaild) => {
-        if (vaild) {
+        let isPass = false
+        if (this.project && this.project.repo_mode === 'tag') {
+          isPass = this.form.tag
+        } else {
+          isPass = this.form.commit_id && this.form.branch
+        }
+        !isPass && this.$message.error('请选择版本')
+        if (vaild && isPass) {
           if (this.isNew) {
             this.addTask()
           } else {
