@@ -25,9 +25,11 @@ export default function () {
       width: 100
     },
     {
-      prop: 'commit_id',
       label: '版本',
-      width: 120
+      width: 120,
+      render (h, scope) {
+        return scope.row.tag || scope.row.commit_id
+      }
     },
     {
       prop: 'environment_name',
