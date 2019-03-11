@@ -72,7 +72,6 @@ export default {
             }))
           }
         }
-        console.log(this.active, this.status)
       }
     }
   },
@@ -176,8 +175,9 @@ export default {
       if (log && log.sequence > 0) {
         let host = isHas ? log.host : this.currentHost
         const hostSequence = this.active[host]
-        const isFinish = hostSequence === 7
-        isFinish && this.$set(this.active, host, log.sequence)
+        const isNoFinish = hostSequence !== 7
+        console.log(isNoFinish)
+        isNoFinish && this.$set(this.active, host, log.sequence)
       }
       this.currentHost = isHas ? log.host : this.currentHost
     },
