@@ -176,6 +176,7 @@ export default {
       if (log && log.sequence > 0) {
         let host = isHas ? log.host : this.currentHost
         this.$set(this.active, host, log.sequence)
+        console.log(log.sequence, host, JSON.stringify(this.active))
       }
       this.currentHost = isHas ? log.host : this.currentHost
     },
@@ -201,8 +202,8 @@ export default {
       if (this.isStart) {
         const host = data.data.host
         if (host) {
+          console.log(7, JSON.stringify(this.active))
           this.$set(this.active, host, 7)
-          console.log(host, this.active, this.status)
         } else {
           const msg = data && data.data ? data.data.message : ''
           if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
