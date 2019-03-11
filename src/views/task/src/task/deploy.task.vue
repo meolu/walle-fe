@@ -201,6 +201,9 @@ export default {
         const host = data.data.host
         if (host) {
           this.$set(this.active, host, 7)
+          this.$nextTick(() => {
+            console.log(this.active, this.status)
+          })
         } else {
           const msg = data && data.data ? data.data.message : ''
           if (msg && (this.task.status !== 4 && this.task.status !== 5)) {
