@@ -76,6 +76,13 @@ service.interceptors.response.use(
 
     IS_LOADING = false
     let response = error.response
+    if (response.status === 404 || response.status.toString().indexOf('50') === 0) {
+      Vue.prototype.$notify.error({
+        title: '后台服务未启动',
+        message: '请检查日志或者点官网链接查看帮助'
+      })
+      return Promise.reject(error)
+    }
     if (response === undefined) {
       Vue.prototype.$notify.error({
         title: '操作提示',
