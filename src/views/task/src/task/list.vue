@@ -13,6 +13,9 @@
               <el-form-item v-if="enableCreate">
                 <el-button type="primary" size="small" @click="addTask">新建上线单</el-button>
               </el-form-item>
+              <el-form-item>
+                <el-checkbox v-model="isMy" label="我的" border></el-checkbox>
+              </el-form-item>
             </el-form>
         <wl-table
             ref="table"
@@ -22,6 +25,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import COLUMNS from './columns'
 import {getTasks, deleteTask, auditTask, rejectTask, rollbackTask} from '@/services/task.service'
 export default {
@@ -45,7 +49,8 @@ export default {
           to: '',
           name: '上线单'
         }
-      ]
+      ],
+      isMy: false
     }
   },
   watch: {
@@ -53,12 +58,19 @@ export default {
       this.search()
     }
   },
+  computed: {
+    ...mapGetters(['user']),
+    userId () {
+      return this.isMy ? this.user.id : ''
+    }
+  },
   methods: {
     async callServe (table = this.$refs.table) {
       let {data: {list, count, enable_create}} = await getTasks({ // eslint-disable-line
         size: table.page.size,
         page: table.page.currentPage,
-        kw: this.value
+        kw: this.value,
+        user_id: this.userId
       })
       this.enableCreate = enable_create // eslint-disable-line
       table.page.total = count
