@@ -58,7 +58,8 @@ export default {
     async querySearchAsync (queryString, cb) {
       let {data: {list}} = await getUsers({
         kw: queryString,
-        space_id: this.spaceId
+        space_id: this.spaceId,
+        size: 50
       })
       cb(list.filter(user => {
         return this.userIds.indexOf(user.id) === -1
