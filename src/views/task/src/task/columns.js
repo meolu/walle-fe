@@ -10,8 +10,9 @@ export default function () {
   const self = this
   return [
     {
-      prop: 'id',
+      // prop: 'id',
       label: 'ID',
+      type: 'index',
       width: 50
     },
     {

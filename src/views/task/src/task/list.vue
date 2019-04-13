@@ -14,7 +14,7 @@
                 <el-button type="primary" size="small" @click="addTask">新建上线单</el-button>
               </el-form-item>
               <el-form-item>
-                <el-checkbox v-model="isMy" label="我的" border></el-checkbox>
+                <el-checkbox v-model="isMy" label="我的" @change="search"></el-checkbox>
               </el-form-item>
             </el-form>
         <wl-table
