@@ -176,7 +176,6 @@ export default {
         let host = isHas ? log.host : this.currentHost
         const hostSequence = this.active[host]
         const isNoFinish = hostSequence !== 7
-        console.log(isNoFinish)
         isNoFinish && this.$set(this.active, host, log.sequence)
       }
       this.currentHost = isHas ? log.host : this.currentHost

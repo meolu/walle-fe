@@ -10,6 +10,12 @@ export default function () {
   const self = this
   return [
     {
+      // prop: 'id',
+      label: 'ID',
+      type: 'index',
+      width: 50
+    },
+    {
       prop: 'name',
       label: '上线单',
       width: 180
@@ -26,7 +32,7 @@ export default function () {
     },
     {
       label: '版本',
-      width: 120,
+      width: 80,
       render (h, scope) {
         return scope.row.tag || scope.row.commit_id
       }
